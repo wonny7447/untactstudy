@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "162916251645",
+    "firebase_url": "https://untactstudy-a1307.firebaseio.com",
+    "project_id": "untactstudy-a1307",
+    "storage_bucket": "untactstudy-a1307.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162916251645:android:83075377475a8d3458cb94",
+        "android_client_info": {
+          "package_name": "com.dongguk.untactstudy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162916251645-aipce5c8ptnko18obtugcvtm5htq7uv0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATB5h3l9NaNCXQdnUGcy28aXfIegNhAOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162916251645-aipce5c8ptnko18obtugcvtm5htq7uv0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
