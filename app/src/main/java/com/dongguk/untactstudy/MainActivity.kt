@@ -15,7 +15,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 
 class MainActivity : AppCompatActivity() {
 
-    // firebase 인증을 위한 변수 (박민기 커밋 테스트)
+    // firebase 인증을 위한 변수 (박민기 커밋 테스트....)
     var auth : FirebaseAuth ? = null
 
     // 구글 로그인 연동에 필요한 변수
