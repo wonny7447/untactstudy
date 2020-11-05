@@ -6,8 +6,8 @@
     <string name="title_notifications">Notifications</string>
 
     <string name="action_settings">Settings</string>
-    <string name="lblAcc">1차 분류</string>
-    <string name="lblSubAcc">2차 분류</string>
+    <string name="first">1차 분류</string>
+    <string name="second">2차 분류</string>
 
     //study category
     <string-array name="study_array">

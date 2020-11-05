@@ -9,9 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UntactStudy">
-        <activity
-            android:name=".StudyRecommendActivity"
-            android:label="@string/title_activity_study_recommend"></activity>
+        <activity android:name=".StudyRecommendActivity"></activity>    //android:label="@string/title_activity_study_recommend"
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
