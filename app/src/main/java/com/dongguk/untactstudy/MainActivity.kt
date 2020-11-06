@@ -1,98 +1,49 @@
 package com.dongguk.untactstudy
 
-import android.content.Intent
-import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
+import android.os.Bundle
+import android.provider.ContactsContract
+import android.view.MenuItem
+import com.dongguk.untactstudy.navigation.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
-    // firebase 인증을 위한 변수
-    var auth : FirebaseAuth ? = null
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_profile -> {
+                var profileFragment = ProfileFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.main_content, profileFragment).commit() // 프로필 (마이 페이지) 로 이동
+                return true
+            }
+            R.id.action_todolist -> {
+                var todolistFragment = TodolistFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.main_content, todolistFragment).commit() // 해야할 일로 이동
+                return true
+            }
+            R.id.action_mystudy -> {
+                var myStudyFragment = MyStudyFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.main_content, myStudyFragment).commit() // 현재 가입해 있는 스터디 페이지 (채팅 포함) 로 이동
+                return true
+            }
+            R.id.action_findstudy -> {
+                var findStudyFragment = FindStudyFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.main_content, findStudyFragment).commit() // 스터디 추천 및 찾기로 이동
+                return true
+            }
+            R.id.action_setting -> {
+                var settingsFragment = SettingsFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.main_content, settingsFragment).commit() // 설정이 아니라, 개인 채팅으로 이동
+                return true
+            }
+        }
+        return false
+    }
 
-    // 구글 로그인 연동에 필요한 변수
-    var googleSignInClient : GoogleSignInClient ? = null
-    var GOOGLE_LOGIN_CODE = 9001
-
-
-    // onCreate는 Acitivity가 처음 실행 되는 상태에 제일 먼저 호출되는 메소드로 여기에 실행시 필요한 각종 초기화 작업을 적어줌
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // 로그인 페이지가 첫화면임 (activity_main.xml의 레이아웃 사용)
         setContentView(R.layout.activity_main)
-
-        // firebaseauth를 사용하기 위한 인스턴스 get
-        auth = FirebaseAuth.getInstance()
-
-        // xml에서 구글 로그인 버튼 코드 가져오기
-        var google_sign_in_button = findViewById<SignInButton>(R.id.google_sign_in_button)
-
-        // 구글 로그인 버튼 클릭 시 이벤트 : googleLogin function 실행
-        google_sign_in_button.setOnClickListener {
-            googleLogin()
-        }
-
-        // 구글 로그인을 위해 구성되어야 하는 코드 (Id, Email request)
-        var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-    } // onCreate
-
-    fun googleLogin() {
-        var signInIntent = googleSignInClient?.signInIntent
-        startActivityForResult(signInIntent, GOOGLE_LOGIN_CODE)
-    } // googleLogin
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == GOOGLE_LOGIN_CODE) {
-            var result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            if (result != null) {
-                if(result.isSuccess) {
-                    var account = result.signInAccount
-                    firebaseAuthWithGoogle(account)
-                }
-            }
-        } //if
-    } // onActivityResult
-
-    fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
-        var credential = GoogleAuthProvider.getCredential(account?.idToken, null)
-        auth?.signInWithCredential(credential)
-            ?.addOnCompleteListener { task ->
-                if(task.isSuccessful) {
-                    // 로그인 성공 시
-                    val isNew = task.result!!.additionalUserInfo!!.isNewUser
-                    //Toast.makeText(this, "success", Toast.LENGTH_LONG).show()
-
-                    if(isNew){  //최초 로그인 유저인 경우
-                        Toast.makeText(this, "New User", Toast.LENGTH_LONG).show()
-                        startActivity(Intent(this, StudyCategoryActivity::class.java))  //관심 스터디 분야창으로 이동
-                        finish()    //로그인 화면 종료
-                    }
-                    else{   //기존 로그인 유저인 경우
-                        Toast.makeText(this, "Old User", Toast.LENGTH_LONG).show()
-                    }
-
-                    //startActivity(Intent(this, StudyRecommendActivity::class.java))   //로그아웃
-
-                } else {
-                    // 로그인 실패 시
-                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
-                }
-            }
-    } //firebaseAuthWithGoogle
-
-
+        bottom_navigation.setOnNavigationItemSelectedListener(this)
+    }
 }

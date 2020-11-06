@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_profile"
+        android:icon="@drawable/ic_profile"
+        android:enabled="true"
+        android:title="Profile"/>
+    <item
+        android:id="@+id/action_todolist"
+        android:icon="@drawable/ic_todolist"
+        android:enabled="true"
+        android:title="To do List"/>
+    <item
+        android:id="@+id/action_mystudy"
+        android:icon="@drawable/ic_mystudy"
+        android:enabled="true"
+        android:title="My Study"/>
+    <item
+        android:id="@+id/action_findstudy"
+        android:icon="@drawable/ic_search"
+        android:enabled="true"
+        android:title="Find Study"/>
+    <item
+        android:id="@+id/action_setting"
+        android:icon="@drawable/ic_settings"
+        android:enabled="true"
+        android:title="Setting"/>
+
+</menu>

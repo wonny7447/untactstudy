@@ -9,15 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UntactStudy">
-        <activity android:name=".StudyRecommendActivity"></activity>    //android:label="@string/title_activity_study_recommend"
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StudyCategoryActivity"></activity>
+        <activity android:name=".StudyRecommendActivity" />
+        <activity android:name=".MainActivity">
+
+        </activity>
+        <activity android:name=".StudyCategoryActivity" />
     </application>
 
 </manifest>
