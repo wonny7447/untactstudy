@@ -1,22 +1,28 @@
 package com.dongguk.untactstudy
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
-//해결해야할 이슈 : 1차 분류가 어학으로 고정되어 나옴
 //저장 버튼을 통해 DB에 분류 내용 저장
 
-class StudyCategoryActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener{
+class StudyCategoryActivity: AppCompatActivity() {
 
-    var spinner1:Spinner? = null
-    var spinner2:Spinner? = null
+    var spinner1: Spinner? = null
+    var spinner2: Spinner? = null
 
+    var dataAdapter1: ArrayAdapter<CharSequence>? = null
+    var dataAdapter2: ArrayAdapter<kotlin.CharSequence?>? = null
 
+    var first = ""
+    var second = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,53 +30,106 @@ class StudyCategoryActivity: AppCompatActivity(), AdapterView.OnItemSelectedList
 
         spinner1 = findViewById(R.id.spinner1) as Spinner
         spinner2 = findViewById(R.id.spinner2) as Spinner
-        spinner1?.setSelection(0,false)
-        spinner1?.setOnItemSelectedListener(this);
+        var btn = findViewById(R.id.btn) as Button
 
-    }
+        dataAdapter1 = ArrayAdapter.createFromResource(
+            this,
+            R.array.study_array,
+            android.R.layout.simple_spinner_item
+        )
+        dataAdapter1!!.setDropDownViewResource(android.R.layout.simple_spinner_item)
 
-    override fun onItemSelected(
-        parent: AdapterView<*>,
-        view: View,
-        position: Int,
-        id: Long
-    ) {
-        val sp1 = spinner1!!.selectedItem.toString()
-        Toast.makeText(this, sp1, Toast.LENGTH_SHORT).show();
+        spinner1?.setAdapter(dataAdapter1)
+        spinner1?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (dataAdapter1!!.getItem(position) == "어학") {
+                    first = "어학"
+                    dataAdapter2 = ArrayAdapter.createFromResource(
+                        this@StudyCategoryActivity,
+                        R.array.language_array,
+                        android.R.layout.simple_spinner_item
+                    )
+                    dataAdapter2!!.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                    spinner2?.setAdapter(dataAdapter2)
+                    spinner2?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            second = dataAdapter2!!.getItem(position).toString()
+                        }
 
-        if (sp1.contentEquals("어학")) {
-            val list: MutableList<String> = ArrayList()
-            list.add("토익");
-            list.add("토플");
-            list.add("HSK");
-            list.add("JLPT");
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
 
-            val dataAdapter = ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_item, list
-            )
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            dataAdapter.notifyDataSetChanged()
-            spinner2!!.adapter = dataAdapter
+                        }
+                    }
+                } else if (dataAdapter1!!.getItem(position) == "자격증") {
+                    first = "자격증"
+                    dataAdapter2 = ArrayAdapter.createFromResource(
+                        this@StudyCategoryActivity,
+                        R.array.certification_array,
+                        android.R.layout.simple_spinner_item
+                    )
+                    dataAdapter2!!.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                    spinner2?.setAdapter(dataAdapter2)
+                    spinner2?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            second = dataAdapter2!!.getItem(position).toString()
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                        }
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
         }
-        if (sp1.contentEquals("자격증")) {
-            val list: MutableList<String> = ArrayList()
-            list.add("정보처리기사")
-            list.add("컴퓨터활용능력")
-            list.add("ADSP")
-            val dataAdapter2 = ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_item, list
-            )
-            dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            dataAdapter2.notifyDataSetChanged()
-            spinner2!!.adapter = dataAdapter2
-        }
 
+        //확인 버튼
+        btn.setOnClickListener(object : View.OnClickListener {
+            var mRootRef = FirebaseDatabase.getInstance().reference
+
+            override fun onClick(view: View?) {
+
+                //1차, 2차 분류 값 DB 저장
+                var fbAuth: FirebaseAuth? = null
+                fbAuth = FirebaseAuth.getInstance()
+
+                var fbDatabase = mRootRef.child("Users").child(fbAuth?.uid.toString())
+
+                if (second != "2차 분류를 선택하세요.") {
+
+                    var userInfo = DB__informationActivity()
+
+                    userInfo.uid = fbAuth?.uid
+                    userInfo.userId = fbAuth?.currentUser?.email
+                    userInfo.first_Classification = first
+                    userInfo.second_Classification = second
+
+                    fbDatabase.setValue(userInfo).addOnCompleteListener {   //DB save
+                        task ->if (task.isSuccessful) {    //DB 저장 확인
+                            println("DB 저장 완료")
+                            startActivity(Intent(this@StudyCategoryActivity, MainActivity::class.java)) //메인 액티비티로 이동
+                        }
+                    }
+                }
+            }
+        })
     }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
-
 }
+

@@ -81,12 +81,12 @@ class LoginActivity : AppCompatActivity() {
                         //Toast.makeText(this, "success", Toast.LENGTH_LONG).show()
 
                         if(isNew){  //최초 로그인 유저인 경우
-                            Toast.makeText(this, "New User", Toast.LENGTH_LONG).show()
+                            //Toast.makeText(this, "New User", Toast.LENGTH_LONG).show()
                             startActivity(Intent(this, StudyCategoryActivity::class.java))  //관심 스터디 분야창으로 이동
                             finish()    //로그인 화면 종료
                         }
                         else{   //기존 로그인 유저인 경우
-                            Toast.makeText(this, "Old User", Toast.LENGTH_LONG).show()
+                            //Toast.makeText(this, "Old User", Toast.LENGTH_LONG).show()
                             startActivity(Intent(this, MainActivity::class.java)) //메인 액티비티로 이동
                         }
 

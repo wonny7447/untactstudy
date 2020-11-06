@@ -5,14 +5,29 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
+    <string name="introduce">Untact Study가 처음이시네요! \n관심 분야를 선택해주시면 도움이 될만한 스터디를 추천해드릴게요!</string>
     <string name="action_settings">Settings</string>
     <string name="first">1차 분류</string>
     <string name="second">2차 분류</string>
 
     //study category
     <string-array name="study_array">
+        <item>1차 분류를 선택하세요.</item>
         <item>어학</item>
         <item>자격증</item>
+    </string-array>
+    <string-array name="language_array">
+        <item>2차 분류를 선택하세요.</item>
+        <item>토익</item>
+        <item>토플</item>
+        <item>HSK</item>
+        <item>JLPT</item>
+    </string-array>
+    <string-array name="certification_array">
+        <item>2차 분류를 선택하세요.</item>
+        <item>정보처리기사</item>
+        <item>컴퓨터활용능력</item>
+        <item>ADSP</item>
     </string-array>
 
 </resources>
