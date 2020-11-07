@@ -45,5 +45,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bottom_navigation.setOnNavigationItemSelectedListener(this)
+
+        var profileFragment = ProfileFragment()
+        supportFragmentManager.beginTransaction().replace(R.id.main_content, profileFragment).commit() // 프로필 (마이 페이지) 로 이동
     }
 }

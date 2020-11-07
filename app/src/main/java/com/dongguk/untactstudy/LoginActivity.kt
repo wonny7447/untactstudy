@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.dongguk.untactstudy.navigation.ProfileFragment
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -88,6 +89,7 @@ class LoginActivity : AppCompatActivity() {
                         else{   //기존 로그인 유저인 경우
                             //Toast.makeText(this, "Old User", Toast.LENGTH_LONG).show()
                             startActivity(Intent(this, MainActivity::class.java)) //메인 액티비티로 이동
+
                         }
 
                         //startActivity(Intent(this, StudyRecommendActivity::class.java))   //로그아웃
