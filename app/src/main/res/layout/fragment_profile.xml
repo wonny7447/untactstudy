@@ -1,8 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#AA2244"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/profileimage">
+
+        </ImageView>
+
+        <TextView
+
+            android:id="@+id/mystudy_userid"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="user_id213"
+            android:textSize="16dp">
+
+        </TextView>
+
+        <Button
+            android:id="@+id/mystudy_profile_edit"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="300dp"
+            android:text="편집"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/mystudy_name"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="60dp"
+            android:gravity="center"
+            android:text="name"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/mystudy_introduction"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="60dp"
+            android:gravity="center"
+            android:text="introduction"
+            android:textSize="16dp" />
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

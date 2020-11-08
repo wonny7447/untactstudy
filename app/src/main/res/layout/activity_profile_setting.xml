@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".profile_setting">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-32dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <Button
+            android:id="@+id/mystudy_insert"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="160dp"
+            android:layout_marginTop="400dp"
+            android:gravity="center"
+            android:text="수정"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="573dp" />
+
+        <EditText
+            android:id="@+id/newname"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="115dp"
+            android:layout_marginTop="300dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="New Name"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="174dp" />
+
+        <EditText
+            android:id="@+id/newintroduction"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="115dp"
+            android:layout_marginTop="200dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="New Introduction"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="313dp" />
+    </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
