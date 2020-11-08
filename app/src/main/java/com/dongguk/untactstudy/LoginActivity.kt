@@ -3,9 +3,11 @@ package com.dongguk.untactstudy
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.dongguk.untactstudy.Model.LoginUserData
 import com.dongguk.untactstudy.navigation.ProfileFragment
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -16,10 +18,13 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
+    //로그 변수
+    private val TAG = LoginActivity::class.java.simpleName
 
     // firebase 인증을 위한 변수
     var auth : FirebaseAuth ? = null
@@ -79,8 +84,26 @@ class LoginActivity : AppCompatActivity() {
                     if(task.isSuccessful) {
                         // 로그인 성공 시
                         val isNew = task.result!!.additionalUserInfo!!.isNewUser
-                        //Toast.makeText(this, "success", Toast.LENGTH_LONG).show()
 
+                        // FireStore 데이터베이스에 로그인 사용자 정보 저장 (테이블 이름 : loginUserData)
+                        val uid = auth?.uid.toString()
+                        val userName = auth?.currentUser?.displayName.toString()
+                        val email = auth?.currentUser?.email.toString()
+                        val photoUrl = auth?.currentUser?.photoUrl.toString()
+
+                        val loginUserData = LoginUserData(uid, userName, email, photoUrl, System.currentTimeMillis())
+
+                        val db = FirebaseFirestore.getInstance().collection("loginUserData")
+                        db.document(uid)
+                                .set(loginUserData)
+                                .addOnCompleteListener {
+                                    Log.e(TAG, "DB에 로그인 정보 생성 성공")
+                                }
+                                .addOnFailureListener {
+                                    Log.e(TAG, "DB에 로그인 정보 생성 실패")
+                                }
+
+                        // 화면 이동
                         if(isNew){  //최초 로그인 유저인 경우
                             //Toast.makeText(this, "New User", Toast.LENGTH_LONG).show()
                             startActivity(Intent(this, StudyCategoryActivity::class.java))  //관심 스터디 분야창으로 이동
@@ -89,17 +112,11 @@ class LoginActivity : AppCompatActivity() {
                         else{   //기존 로그인 유저인 경우
                             //Toast.makeText(this, "Old User", Toast.LENGTH_LONG).show()
                             startActivity(Intent(this, MainActivity::class.java)) //메인 액티비티로 이동
-
                         }
-
-                        //startActivity(Intent(this, StudyRecommendActivity::class.java))   //로그아웃
-
                     } else {
                         // 로그인 실패 시
                         Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
                     }
                 }
     } //firebaseAuthWithGoogle
-
-
 }
