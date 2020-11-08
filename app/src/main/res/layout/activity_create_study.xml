@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".StudyCategoryActivity">
+
+    <!-- Label -->
+
+    <TextView
+        android:id="@+id/createStudyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
+        android:padding="8dp"
+        android:text="스터디 만들기"
+        android:textSize="20sp"
+        android:textAlignment="center"/>
+
+    <EditText
+        android:id="@+id/createStudyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_below="@+id/createStudyText"
+        android:ems="10"
+        android:paddingLeft="10dp"
+        android:inputType="text"
+        android:textColorHighlight="@color/red_pink"
+        android:hint="스터디 이름" />
+
+    <EditText
+        android:id="@+id/createStudyInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_below="@+id/createStudyName"
+        android:ems="10"
+        android:paddingLeft="10dp"
+        android:inputType="text"
+        android:textColorHighlight="@color/red_pink"
+        android:hint="스터디 설명" />
+
+    <EditText
+        android:id="@+id/createStudyMemberAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_below="@+id/createStudyInfo"
+        android:ems="10"
+        android:paddingLeft="10dp"
+        android:inputType="number"
+        android:textColorHighlight="@color/red_pink"
+        android:hint="최대 인원 수" />
+
+    <TextView
+        android:id="@+id/createStudyFinishDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/createStudyMemberAmount"
+        android:paddingTop="40dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:textSize="16dp"
+        android:text="스터디 종료 일자" />
+
+    <!-- Spinner Dropdown -->
+
+    <Spinner
+        android:id="@+id/createStudySpinnerYear"
+        android:layout_width="110dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:entries="@array/studyFinishYear"
+        android:layout_below="@+id/createStudyFinishDate"/>
+
+    <TextView
+        android:id="@+id/createStudySpinnerYearText"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/createStudySpinnerYear"
+        android:layout_below="@+id/createStudyFinishDate"
+        android:padding="8dip"
+        android:textSize="16sp"
+        android:text="년"/>
+
+    <Spinner
+        android:id="@+id/createStudySpinnerMonth"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:entries="@array/studyFinishMonth"
+        android:layout_below="@+id/createStudyFinishDate"
+        android:layout_toRightOf="@+id/createStudySpinnerYearText"/>
+
+    <TextView
+        android:id="@+id/createStudySpinnerMonthText"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/createStudySpinnerMonth"
+        android:layout_below="@+id/createStudyFinishDate"
+        android:padding="8dip"
+        android:textSize="16sp"
+        android:text="월"/>
+
+    <Spinner
+        android:id="@+id/createStudySpinnerDay"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:entries="@array/studyFinishDay"
+        android:layout_below="@+id/createStudyFinishDate"
+        android:layout_toRightOf="@+id/createStudySpinnerMonthText"/>
+
+    <TextView
+        android:id="@+id/createStudySpinnerDayText"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/createStudySpinnerDay"
+        android:layout_below="@+id/createStudyFinishDate"
+        android:padding="8dip"
+        android:textSize="16sp"
+        android:text="일"/>
+
+    <TextView
+        android:id="@+id/createStudySpinner1stSortText"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/createStudySpinnerYear"
+        android:padding="8dip"
+        android:textSize="16sp"
+        android:text="1차 분류"/>
+
+    <Spinner
+        android:id="@+id/createStudySpinner1stSort"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:entries="@array/study_array"
+        android:layout_below="@+id/createStudySpinnerYear"
+        android:layout_toRightOf="@+id/createStudySpinner1stSortText"/>
+
+    <TextView
+        android:id="@+id/createStudySpinner2ndSortText"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/createStudySpinner1stSort"
+        android:padding="8dip"
+        android:textSize="16sp"
+        android:text="2차 분류"/>
+
+    <Spinner
+        android:id="@+id/createStudySpinner2ndSort"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:entries="@array/language_array"
+        android:layout_below="@+id/createStudySpinner1stSort"
+        android:layout_toRightOf="@+id/createStudySpinner2ndSortText"/>
+
+    <EditText
+        android:id="@+id/createStudyIndex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_below="@+id/createStudySpinner2ndSort"
+        android:ems="10"
+        android:paddingTop="30dp"
+        android:paddingLeft="10dp"
+        android:inputType="text"
+        android:textColorHighlight="@color/red_pink"
+        android:hint="스터디 목차" />
+
+    <Button
+        android:id="@+id/createStudyCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:text="취소" />
+
+    <Button
+        android:id="@+id/createStudyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:text="완료" />
+
+</RelativeLayout>
