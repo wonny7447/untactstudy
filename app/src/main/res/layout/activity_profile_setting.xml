@@ -25,7 +25,7 @@
             tools:layout_editor_absoluteY="573dp" />
 
         <EditText
-            android:id="@+id/newname"
+            android:id="@+id/new_name"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginLeft="115dp"
@@ -33,13 +33,13 @@
             android:ems="10"
             android:gravity="center"
             android:hint="New Name"
-            android:inputType="textPersonName"
+            android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="174dp" />
 
         <EditText
-            android:id="@+id/newintroduction"
+            android:id="@+id/new_introduction"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginLeft="115dp"
@@ -47,7 +47,7 @@
             android:ems="10"
             android:gravity="center"
             android:hint="New Introduction"
-            android:inputType="textPersonName"
+            android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="313dp" />

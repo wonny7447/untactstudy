@@ -1,6 +1,6 @@
 package com.dongguk.untactstudy.Model
 
 class ProfileModel(
-    val newname = String,
-    val newintrduction = String
+    var newname : String? = null,
+    val newintrduction : String? = null
 )
