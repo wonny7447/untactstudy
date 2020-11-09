@@ -22,27 +22,27 @@ class profile_setting : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_setting)
 
-        var btn = findViewById(R.id.mystudy_insert) as Button
+        mystudy_insert.setOnClickListener {
+            val newname = new_name.text.toString()
+            val newintrduction = new_introduction.text.toString()
 
-      btn.setOnClickListener(object : View.OnClickListener {
+            val profilesetting = ProfileModel(newname, newintrduction)
+
+            val store = FirebaseFirestore.getInstance().collection("profile_setting")
+                .document("name")
+                .set(profilesetting)
+                .addOnCompleteListener {
+                    println("저장")
+                    startActivity(Intent(this@profile_setting, MainActivity::class.java))
+                }
+
+        }
+/*
+        mystudy_insert.setOnClickListener(object : View.OnClickListener {
           override fun onClick(v: View?) {
-
-
-              val newname = new_name.text.toString()
-              val newintrduction = new_introduction.text.toString()
-
-              val profilesetting = ProfileModel(newname, newintrduction)
-
-              val store = FirebaseFirestore.getInstance().collection("profile_setting")
-                      .document("name")
-                      .set(profilesetting)
-                      .addOnCompleteListener {
-                          println("저장")
-              startActivity(Intent(this@profile_setting, MainActivity::class.java))
-                      }
           }
       }
-      )
+      )*/
 
     }
 }

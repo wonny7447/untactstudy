@@ -16,37 +16,29 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import android.content.Intent as s
 
 class ProfileFragment : Fragment(){
-
+/*
     var auth: FirebaseAuth? = null
     var firestore : FirebaseFirestore?=null
 
     var uid : String?=null
-    var useremail : String? = null
+    var useremail : String? = null*/
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        var view = LayoutInflater.from(activity).inflate(R.layout.fragment_profile,
-            container, false)
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        var view = LayoutInflater.from(activity).inflate(R.layout.fragment_profile, container, false)
+/*
         auth = FirebaseAuth.getInstance()
         val uid = auth?.uid
 
         firestore = FirebaseFirestore.getInstance()
-
-
-        mystudy_profile_edit.setOnClickListener {
-            activity?.let {
+*/
+        var button = view?.findViewById<Button>(R.id.mystudy_profile_edit)
+        button?.setOnClickListener(object :View.OnClickListener {
+            override fun onClick(v: View?) {
                 val intent = Intent(context, profile_setting::class.java)
                 startActivity(intent)
             }
-        }
-
-
-
+        })
 
         return view
-
     }
-
-
 }
