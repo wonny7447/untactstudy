@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="300dp">
 
         <ImageView
             android:layout_width="100dp"
@@ -54,6 +54,16 @@
             android:gravity="center"
             android:text="introduction"
             android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/createStudy"
+            android:layout_width="500dp"
+            android:layout_height="80dp"
+            android:text="스터디 만들기"
+            android:textSize="24sp"
+            android:layout_marginTop="40dp"
+            android:layout_below="@+id/mystudy_introduction"
+            android:layout_centerInParent="true"/>
 
 
     </RelativeLayout>

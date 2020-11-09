@@ -5,13 +5,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/createStudy"
-        android:layout_width="200dp"
-        android:layout_height="80dp"
-        android:text="스터디 만들기"
-        android:textSize="24sp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"/>
-
 </RelativeLayout>

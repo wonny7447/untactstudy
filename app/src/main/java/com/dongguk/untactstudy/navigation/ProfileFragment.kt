@@ -39,6 +39,14 @@ class ProfileFragment : Fragment(){
             }
         })
 
+        var button2 = view?.findViewById<Button>(R.id.createStudy)
+        button2?.setOnClickListener(object :View.OnClickListener {
+            override fun onClick(v: View?) {
+                val intent = Intent(context, CreateStudyActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
         return view
     }
 }

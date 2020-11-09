@@ -18,13 +18,7 @@ class MyStudyFragment : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.fragment_mystudy, container, false)
 
-        var button = view?.findViewById<Button>(R.id.createStudy)
-        button?.setOnClickListener(object :View.OnClickListener {
-            override fun onClick(v: View?) {
-                val intent = Intent(context, CreateStudyActivity::class.java)
-                startActivity(intent)
-            }
-        })
+
 
         return view
     }
