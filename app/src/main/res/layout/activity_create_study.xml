@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".StudyCategoryActivity">
 
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="1920px">
     <!-- Label -->
 
     <TextView
@@ -180,6 +185,26 @@
         android:hint="스터디 목차" />
 
     <Button
+        android:id="@+id/createStudyCreateIndex"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/createStudySpinner2ndSort"
+        android:layout_toRightOf="@+id/createStudyIndex"
+        android:text="추가" />
+
+        <Button
+            android:id="@+id/createStudyDeleteIndex"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/createStudySpinner2ndSort"
+            android:layout_toRightOf="@+id/createStudyCreateIndex"
+            android:text="삭제" />
+
+    <Button
         android:id="@+id/createStudyCancel"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -195,4 +220,6 @@
         android:layout_alignParentBottom="true"
         android:text="완료" />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

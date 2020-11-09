@@ -2,14 +2,15 @@ package com.dongguk.untactstudy
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_study.*
+
 
 class CreateStudyActivity : AppCompatActivity() {
 
@@ -48,6 +49,7 @@ class CreateStudyActivity : AppCompatActivity() {
 
         var btn = findViewById(R.id.createStudyButton) as Button
         var cancelbtn = findViewById(R.id.createStudyCancel) as Button
+        var plusbtn = findViewById(R.id.createStudyCreateIndex) as Button
 
         dataAdapter1 = ArrayAdapter.createFromResource(
             this,
@@ -177,6 +179,28 @@ class CreateStudyActivity : AppCompatActivity() {
             }
         }
 
+        //목차 추가 버튼
+
+        var relativeLayout: RelativeLayout
+        relativeLayout = findViewById(R.id.relativeLayout);
+        var indexNum: Int = 1
+
+        plusbtn.setOnClickListener(View.OnClickListener {
+
+            indexNum += 1
+            for (i in 0 until indexNum) {
+                val et = EditText(applicationContext)
+                val p = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                et.layoutParams = p
+                et.setText("스터디 목차 " + i)
+                et.id = indexNum
+                relativeLayout.addView(et)
+            }
+        })
+
         //취소 버튼
 
         cancelbtn.setOnClickListener(object : View.OnClickListener {
@@ -187,6 +211,7 @@ class CreateStudyActivity : AppCompatActivity() {
         })
 
         //확인 버튼
+
         btn.setOnClickListener(object : View.OnClickListener {
 
            override fun onClick(view: View?) {
