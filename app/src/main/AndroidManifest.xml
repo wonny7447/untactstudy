@@ -20,6 +20,7 @@
         <activity android:name=".MainActivity"/>
         <activity android:name=".StudyCategoryActivity" />
         <activity android:name=".profile_setting" />
+        <activity android:name=".CreateStudyActivity" />
     </application>
 
 </manifest>
