@@ -2,7 +2,6 @@ package com.dongguk.untactstudy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.view.MenuItem
 import com.dongguk.untactstudy.navigation.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,7 +32,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 return true
             }
             R.id.action_setting -> {
-                var settingsFragment = SettingsFragment()
+                var settingsFragment = ChattingFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.main_content, settingsFragment).commit() // 설정이 아니라, 개인 채팅으로 이동
                 return true
             }

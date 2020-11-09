@@ -21,6 +21,7 @@
         <activity android:name=".StudyCategoryActivity" />
         <activity android:name=".profile_setting" />
         <activity android:name=".CreateStudyActivity" />
+        <activity android:name=".chat.ChatRoomActivity" />
     </application>
 
 </manifest>
