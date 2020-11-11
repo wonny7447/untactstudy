@@ -2,14 +2,15 @@ package com.dongguk.untactstudy
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_study.*
+
 
 class CreateStudyActivity : AppCompatActivity() {
 
@@ -35,6 +36,8 @@ class CreateStudyActivity : AppCompatActivity() {
     var month = "1"
     var day = "1"
 
+    var createStudyIndex = mutableListOf("0")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_study)
@@ -48,6 +51,7 @@ class CreateStudyActivity : AppCompatActivity() {
 
         var btn = findViewById(R.id.createStudyButton) as Button
         var cancelbtn = findViewById(R.id.createStudyCancel) as Button
+        var plusbtn = findViewById(R.id.createStudyCreateIndex) as Button
 
         dataAdapter1 = ArrayAdapter.createFromResource(
             this,
@@ -177,16 +181,46 @@ class CreateStudyActivity : AppCompatActivity() {
             }
         }
 
+        //목차 추가 버튼
+
+        var linearLayout:LinearLayout
+        linearLayout = findViewById(R.id.createStudyLinearLayout);
+        var indexNum: Int = 0
+        val createStudyIndex = mutableListOf(0)
+
+        plusbtn.setOnClickListener(View.OnClickListener {
+
+            if(indexNum < 16)
+            {
+                indexNum += 1
+
+                val et = EditText(applicationContext)
+                val p = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                et.layoutParams = p
+
+                et.setHint("스터디 목차 " + indexNum)
+                et.id = indexNum
+                 // = et.text.toString()
+                linearLayout.addView(et)
+            }
+
+        })
+
         //취소 버튼
 
         cancelbtn.setOnClickListener(object : View.OnClickListener {
 
             override fun onClick(view: View?) {
                 startActivity(Intent(this@CreateStudyActivity, MainActivity::class.java)) //메인 액티비티로 이동
+                finish() // 현재 액티비티 종료
             }
         })
 
         //확인 버튼
+
         btn.setOnClickListener(object : View.OnClickListener {
 
            override fun onClick(view: View?) {
@@ -196,22 +230,77 @@ class CreateStudyActivity : AppCompatActivity() {
 
                val uid = fbAuth.uid
 
-                val createStudyName = createStudyName.text.toString()
-                val createStudyInfo = createStudyInfo.text.toString()
-                val createStudyMemberAmount = createStudyMemberAmount.text.toString()
-                val createStudyIndex = createStudyIndex.text.toString()
+               val createStudyName = createStudyName.text.toString()
+               val createStudyInfo = createStudyInfo.text.toString()
+               val createStudyMemberAmount = createStudyMemberAmount.text.toString()
 
-                if (second != "2차 분류를 선택하세요.") {
 
-                    val study = StudyModel(createStudyName, createStudyInfo, createStudyMemberAmount, year, month, day, first,  second, createStudyIndex, uid.toString())
+                if (first == "1차 분류를 선택하세요." || first == "")
+                {
+
+                }
+                else if (second == "2차 분류를 선택하세요." || second == "")
+                {
+
+                }
+                else if (createStudyName == "")
+                {
+
+                }
+                else if (createStudyInfo == "")
+                {
+
+                }
+                else if (createStudyMemberAmount == "" || createStudyMemberAmount > "50")
+                {
+
+                }
+                else if (month == "2" && day > "28")
+                {
+
+                }
+                else if (month == "4" && day > "30")
+                {
+
+                }
+                else if (month == "6" && day > "30")
+                {
+
+                }
+                else if (month == "9" && day > "30")
+                {
+
+                }
+                else if (month == "11" && day > "30")
+                {
+
+                }
+                else
+                {
+
+                    for (i in 0 until 15) {
+                        //createStudyIndex[i] = (linearLayout.getChildAt(i).text.toString())
+                    }
+
+                    var study = StudyModel(createStudyName, createStudyInfo, createStudyMemberAmount, year, month, day, first, second, "0", "0", "0","0","0","0","0","0","0","0","0","0","0","0","0","0", uid.toString())
+                    //study.studyIndex1 = createStudyIndex[0]
 
                     val firestore = FirebaseFirestore.getInstance()
+                    /*var studyNumber = firestore.collection("studyRoom").document("studyNumber").get(studyRoomNumber)
+                    studyNumber += 1
+
+                    firestore.collection("studyRoomNumber")
+                        .document("studyRoomNumber")
+                        .set(studyNumber)
+                        */
+
                     firestore.collection("studyInfo")
-                        .document(uid.toString())
+                        .document(/*studyNumber*/uid.toString())
                         .set(study)
                         .addOnCompleteListener{
                             println("DB 저장 완료")
                          startActivity(Intent(this@CreateStudyActivity, MainActivity::class.java)) //메인 액티비티로 이동
+                            finish() // 현재 액티비티 종료
                         }
                 }
             }

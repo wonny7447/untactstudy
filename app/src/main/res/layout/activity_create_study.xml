@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".StudyCategoryActivity">
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1920px">
     <!-- Label -->
 
     <TextView
@@ -166,23 +170,28 @@
         android:layout_below="@+id/createStudySpinner1stSort"
         android:layout_toRightOf="@+id/createStudySpinner2ndSortText"/>
 
-    <EditText
-        android:id="@+id/createStudyIndex"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_below="@+id/createStudySpinner2ndSort"
-        android:ems="10"
-        android:paddingTop="30dp"
-        android:paddingLeft="10dp"
-        android:inputType="text"
-        android:textColorHighlight="@color/red_pink"
-        android:hint="스터디 목차" />
+        <Button
+            android:id="@+id/createStudyCreateIndex"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@id/createStudySpinner2ndSort"
+            android:text="추가" />
 
+
+        <LinearLayout
+        android:id="@+id/createStudyLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/createStudyCreateIndex">
+
+    </LinearLayout>
     <Button
         android:id="@+id/createStudyCancel"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
+        android:layout_below="@id/createStudyLinearLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:text="취소" />
@@ -191,8 +200,11 @@
         android:id="@+id/createStudyButton"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
+        android:layout_below="@id/createStudyLinearLayout"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:text="완료" />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

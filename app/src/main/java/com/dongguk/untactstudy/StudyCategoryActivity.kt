@@ -113,7 +113,7 @@ class StudyCategoryActivity: AppCompatActivity() {
 
                 var fbDatabase = mRootRef.child("Users").child(fbAuth?.uid.toString())
 
-                if (second != "2차 분류를 선택하세요.") {
+                if (second != "2차 분류를 선택하세요." && second != "") {
 
                     var userInfo = DB__informationActivity()
 
