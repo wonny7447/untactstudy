@@ -223,85 +223,76 @@ class CreateStudyActivity : AppCompatActivity() {
 
         btn.setOnClickListener(object : View.OnClickListener {
 
-           override fun onClick(view: View?) {
+            override fun onClick(view: View?) {
 
-               var fbAuth: FirebaseAuth? = null
-               fbAuth = FirebaseAuth.getInstance()
+                var fbAuth: FirebaseAuth? = null
+                fbAuth = FirebaseAuth.getInstance()
 
-               val uid = fbAuth.uid
+                val uid = fbAuth.uid
 
-               val createStudyName = createStudyName.text.toString()
-               val createStudyInfo = createStudyInfo.text.toString()
-               val createStudyMemberAmount = createStudyMemberAmount.text.toString()
+                val createStudyName = createStudyName.text.toString()
+                val createStudyInfo = createStudyInfo.text.toString()
+                val createStudyMemberAmount = createStudyMemberAmount.text.toString()
 
 
-                if (first == "1차 분류를 선택하세요." || first == "")
-                {
+                if (first == "1차 분류를 선택하세요." || first == "") {
 
-                }
-                else if (second == "2차 분류를 선택하세요." || second == "")
-                {
+                } else if (second == "2차 분류를 선택하세요." || second == "") {
 
-                }
-                else if (createStudyName == "")
-                {
+                } else if (createStudyName == "") {
 
-                }
-                else if (createStudyInfo == "")
-                {
+                } else if (createStudyInfo == "") {
 
-                }
-                else if (createStudyMemberAmount == "" || createStudyMemberAmount > "50")
-                {
+                } else if (createStudyMemberAmount == "") {
 
-                }
-                else if (month == "2" && day > "28")
-                {
+                } else if (month == "2" && (day == "29") || (day == "30") || (day == "31")) {
 
-                }
-                else if (month == "4" && day > "30")
-                {
+                } else if (month == "4" && day == "31") {
 
-                }
-                else if (month == "6" && day > "30")
-                {
+                } else if (month == "6" && day == "31") {
 
-                }
-                else if (month == "9" && day > "30")
-                {
+                } else if (month == "9" && day == "31") {
 
-                }
-                else if (month == "11" && day > "30")
-                {
+                } else if (month == "11" && day == "31") {
 
-                }
-                else
-                {
+                } else {
 
                     for (i in 0 until 15) {
                         //createStudyIndex[i] = (linearLayout.getChildAt(i).text.toString())
                     }
 
-                    var study = StudyModel(createStudyName, createStudyInfo, createStudyMemberAmount, year, month, day, first, second, "0", "0", "0","0","0","0","0","0","0","0","0","0","0","0","0","0", uid.toString())
+                    var study = StudyModel(createStudyName, createStudyInfo, createStudyMemberAmount, year, month, day, first, second, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", uid.toString())
                     //study.studyIndex1 = createStudyIndex[0]
 
+                    var studyRoomNumber: Int = 999
+
+
                     val firestore = FirebaseFirestore.getInstance()
-                    /*var studyNumber = firestore.collection("studyRoom").document("studyNumber").get(studyRoomNumber)
-                    studyNumber += 1
+                    firestore.collection("studyRoomNumber")
+                            .get()
+                            .addOnSuccessListener { result ->
+                                for (document in result) {
+                                    studyRoomNumber = document.get("studyRoomNumber") as Int
+                                }
+                            }
+
+                    studyRoomNumber = studyRoomNumber.plus(1)
+
+                    var studyNumber = StudyNumberModel(studyRoomNumber)
 
                     firestore.collection("studyRoomNumber")
-                        .document("studyRoomNumber")
-                        .set(studyNumber)
-                        */
+                            .document("studyRoomNumber")
+                            .set(studyNumber)
+
 
                     firestore.collection("studyInfo")
-                        .document(/*studyNumber*/uid.toString())
-                        .set(study)
-                        .addOnCompleteListener{
-                            println("DB 저장 완료")
-                         startActivity(Intent(this@CreateStudyActivity, MainActivity::class.java)) //메인 액티비티로 이동
-                            finish() // 현재 액티비티 종료
-                        }
+                            .document(studyRoomNumber.toString())
+                            .set(study)
+                            .addOnCompleteListener {
+                                println("DB 저장 완료")
+                                startActivity(Intent(this@CreateStudyActivity, MainActivity::class.java)) //메인 액티비티로 이동
+                                finish() // 현재 액티비티 종료
+                            }
                 }
             }
         })
