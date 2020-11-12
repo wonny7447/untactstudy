@@ -1,6 +1,7 @@
 package com.dongguk.untactstudy
 
 class StudyModel (
+    val studyRoomNumber : Long,
     val studyName : String,
     val studyInfo : String,
     val studyMemberAmount : String,

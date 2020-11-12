@@ -2,11 +2,13 @@ package com.dongguk.untactstudy
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.dongguk.untactstudy.Model.LoginUserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_study.*
@@ -38,9 +40,25 @@ class CreateStudyActivity : AppCompatActivity() {
 
     var createStudyIndex = mutableListOf("0")
 
+    // log
+    private val TAG = LoginActivity::class.java.simpleName
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_study)
+
+
+        // 스터디 번호 생성을 위한 코드
+        var studyNumberList = ArrayList<StudyNumberModel>()
+        FirebaseFirestore.getInstance()
+            .collection("studyRoomNumber")
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                studyNumberList.clear()
+                if(querySnapshot == null) return@addSnapshotListener
+                for (snapshot in querySnapshot?.documents!!) {
+                    studyNumberList.add(snapshot.toObject(StudyNumberModel::class.java)!!)
+                }
+            }
 
         spinner1 = findViewById(R.id.createStudySpinner1stSort) as Spinner
         spinner2 = findViewById(R.id.createStudySpinner2ndSort) as Spinner
@@ -210,9 +228,7 @@ class CreateStudyActivity : AppCompatActivity() {
         })
 
         //취소 버튼
-
         cancelbtn.setOnClickListener(object : View.OnClickListener {
-
             override fun onClick(view: View?) {
                 startActivity(Intent(this@CreateStudyActivity, MainActivity::class.java)) //메인 액티비티로 이동
                 finish() // 현재 액티비티 종료
@@ -220,9 +236,7 @@ class CreateStudyActivity : AppCompatActivity() {
         })
 
         //확인 버튼
-
         btn.setOnClickListener(object : View.OnClickListener {
-
             override fun onClick(view: View?) {
 
                 var fbAuth: FirebaseAuth? = null
@@ -257,39 +271,30 @@ class CreateStudyActivity : AppCompatActivity() {
 
                 } else {
 
+                    // 모두 입력받으면 데이터 저장하기
+
                     for (i in 0 until 15) {
                         //createStudyIndex[i] = (linearLayout.getChildAt(i).text.toString())
                     }
 
-                    var study = StudyModel(createStudyName, createStudyInfo, createStudyMemberAmount, year, month, day, first, second, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", uid.toString())
+                    // 스터디 룸 번호 생성 (데이터 가져와서 +1 해주기)
+                    var studyNumber = studyNumberList[0].studyNumber
+                    studyNumber = studyNumber + 1
+
+                    var study = StudyModel(studyNumber, createStudyName, createStudyInfo, createStudyMemberAmount, year, month, day, first, second, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", uid.toString())
                     //study.studyIndex1 = createStudyIndex[0]
 
-                    var studyRoomNumber: Int = 999
-
-
-                    val firestore = FirebaseFirestore.getInstance()
-                    firestore.collection("studyRoomNumber")
-                            .get()
-                            .addOnSuccessListener { result ->
-                                for (document in result) {
-                                    studyRoomNumber = document.get("studyRoomNumber") as Int
-                                }
-                            }
-
-                    studyRoomNumber = studyRoomNumber.plus(1)
-
-                    var studyNumber = StudyNumberModel(studyRoomNumber)
-
-                    firestore.collection("studyRoomNumber")
-                            .document("studyRoomNumber")
-                            .set(studyNumber)
-
-
-                    firestore.collection("studyInfo")
-                            .document(studyRoomNumber.toString())
+                    FirebaseFirestore.getInstance().collection("studyInfo")
+                            .document(studyNumber.toString())
                             .set(study)
                             .addOnCompleteListener {
                                 println("DB 저장 완료")
+
+                                // DB에 새로운 스터디를 저장하면 studyRoomNumber 컬렉션에도 변경 값을 넣어줘야함
+                                FirebaseFirestore.getInstance().collection("studyRoomNumber")
+                                    .document("studyRoomNumber")
+                                    .set(StudyNumberModel(studyNumber))
+
                                 startActivity(Intent(this@CreateStudyActivity, MainActivity::class.java)) //메인 액티비티로 이동
                                 finish() // 현재 액티비티 종료
                             }
