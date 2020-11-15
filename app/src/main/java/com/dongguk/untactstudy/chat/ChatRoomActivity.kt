@@ -4,9 +4,11 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
@@ -28,6 +30,9 @@ import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_chat_room.*
 import kotlinx.android.synthetic.main.chat_attach_right_me.*
 import kotlinx.android.synthetic.main.chat_attach_right_me.view.*
+import java.io.BufferedInputStream
+import java.io.FileOutputStream
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -102,16 +107,12 @@ class ChatRoomActivity : AppCompatActivity() {
                     if(fileName == "") {
                         adapter.add(ChatRightMe(msg))
                     } else {
-                        //adapter.add(ChatRightMe(uri))
-                        //adapter.add(ChatAttachRightMe(fileName))
                         adapter.add(ChatAttachLeftAndRight(fileName, "", "R"))
                     }
                 } else {
                     if(fileName == "") {
                         adapter.add(ChatLeftYou(msg, yourName))
                     } else {
-                        //adapter.add(ChatLeftYou(uri, yourName))
-                        //adapter.add(ChatAttachLeftYou(fileName))
                         adapter.add(ChatAttachLeftAndRight(fileName, yourName, "L"))
                     }
                 }
@@ -123,8 +124,14 @@ class ChatRoomActivity : AppCompatActivity() {
 
         adapter.setOnItemClickListener { item, view ->
             val fileName = (item as ChatAttachLeftAndRight).fileName
-            Toast.makeText(this, "button click : "+fileName, Toast.LENGTH_LONG).show()
-            Log.e(TAG,"button click : "+fileName)
+            val extender = fileName.substringAfterLast(".")
+
+            Log.e(TAG,"button click : "+fileName+"extender : "+extender)
+
+            var storageRef = FirebaseStorage.getInstance().reference.child("files").child(fileName)
+            storageRef.downloadUrl.addOnSuccessListener { uri ->
+                DownloadFileFromURL(extender).execute(uri.toString())
+            }
         }
 
     }//onCreate
@@ -227,4 +234,47 @@ class ChatRoomActivity : AppCompatActivity() {
         }
     } //uploadPhoto
 
+    inner class DownloadFileFromURL(extender:String) : AsyncTask<String?, String?, String?>() {
+        val innerExtender = extender
+        override fun doInBackground(vararg p0: String?): String? {
+
+            // file download path
+            val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
+
+            //image download url
+            val url = URL(p0[0])
+            val conection = url.openConnection()
+            conection.connect()
+
+            // input stream to read file - with 8k buffer
+            val input = BufferedInputStream(url.openStream(), 8192)
+
+            // output stream to write file
+            var timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+            val output = FileOutputStream(downloadFolder + "/ATTACH"+timestamp+"."+innerExtender)
+            val data = ByteArray(1024)
+            var total = 0L
+
+            // writing data to file
+            var count : Int
+            while (input.read(data).also { count = it } != -1) {
+                total += count.toLong()
+
+                output.write(data, 0, count)
+            }
+            // flushing output
+            output.flush()
+            // closing streams
+            output.close()
+            input.close()
+
+            return null
+        } //doInBackground
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            Toast.makeText(this@ChatRoomActivity,"download file completed",Toast.LENGTH_LONG).show()
+        } //onPostExecute
+
+    } //DownloadFileFromURL
 }
