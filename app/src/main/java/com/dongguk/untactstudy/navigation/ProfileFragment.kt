@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.dongguk.untactstudy.CreateStudyActivity
-import com.dongguk.untactstudy.MainActivity
+import com.dongguk.untactstudy.Model.LoginUserData
 import com.dongguk.untactstudy.R
 import com.dongguk.untactstudy.profile_setting
 import com.google.firebase.auth.FirebaseAuth
@@ -16,21 +16,32 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import android.content.Intent as s
 
 class ProfileFragment : Fragment(){
-/*
-    var auth: FirebaseAuth? = null
-    var firestore : FirebaseFirestore?=null
-
-    var uid : String?=null
-    var useremail : String? = null*/
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.fragment_profile, container, false)
-/*
-        auth = FirebaseAuth.getInstance()
-        val uid = auth?.uid
 
-        firestore = FirebaseFirestore.getInstance()
-*/
+        var userdata : LoginUserData ? = null
+
+        FirebaseFirestore.getInstance().collection("loginUserData")
+                .document(FirebaseAuth.getInstance().uid.toString())
+                .get()
+                .addOnCompleteListener {
+                    task ->
+                    if(task.isSuccessful) {
+                        userdata = task.result?.toObject(LoginUserData::class.java)
+
+                        mystudy_userid?.text = userdata?.userEmail.toString()
+                        mystudy_name?.text = userdata?.userName.toString()
+                        if(userdata?.introduction.toString() == "") {
+                            mystudy_introduction?.text = "프로필을 등록하세요"
+                        } else {
+                            mystudy_introduction?.text = userdata?.introduction.toString()
+                        }
+
+                    }
+                }
+
+
         var button = view?.findViewById<Button>(R.id.mystudy_profile_edit)
         button?.setOnClickListener(object :View.OnClickListener {
             override fun onClick(v: View?) {

@@ -24,19 +24,6 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="573dp" />
 
-        <EditText
-            android:id="@+id/new_name"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="115dp"
-            android:layout_marginTop="300dp"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="New Name"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="174dp" />
 
         <EditText
             android:id="@+id/new_introduction"

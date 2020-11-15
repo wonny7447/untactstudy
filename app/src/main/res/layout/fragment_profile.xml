@@ -17,8 +17,8 @@
         <TextView
 
             android:id="@+id/mystudy_userid"
-            android:layout_width="100dp"
-            android:layout_height="35dp"
+            android:layout_width="188dp"
+            android:layout_height="33dp"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
@@ -47,8 +47,8 @@
 
         <TextView
             android:id="@+id/mystudy_introduction"
-            android:layout_width="100dp"
-            android:layout_height="35dp"
+            android:layout_width="159dp"
+            android:layout_height="49dp"
             android:layout_marginLeft="250dp"
             android:layout_marginTop="60dp"
             android:gravity="center"
