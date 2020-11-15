@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@drawable/round"
+    android:layout_marginLeft="50dp"
+    android:layout_height="90dp">
+
+    <TextView
+        android:layout_width="47dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="right"
+        android:text="나" />
+
+    <ImageView
+        android:id="@+id/right_attach_image"
+        android:layout_width="221dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        tools:src="@drawable/attach" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="65dp"
+        android:background="#00ff0000"
+        android:text="첨부파일 다운로드 시 Click"
+        android:textColor="@color/black"
+        android:textSize="5pt" />
+
+    <TextView
+        android:id="@+id/right_attach_text"
+        android:layout_width="wrap_content"
+        android:layout_height="9dp"
+        android:background="#00ff0000"
+        android:text="data"
+        android:textColor="#00ff0000" />
+
+</RelativeLayout>
