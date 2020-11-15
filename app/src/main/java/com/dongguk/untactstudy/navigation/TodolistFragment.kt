@@ -11,19 +11,16 @@ import com.dongguk.untactstudy.R
 import com.dongguk.untactstudy.GetStudyModel
 import com.dongguk.untactstudy.StudyModel
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_todolist.*
-import kotlinx.android.synthetic.main.fragment_todolist.view.*
 
 class TodolistFragment : Fragment(){
 
     var studyIndex = mutableListOf<String>("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0")
 
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.fragment_todolist, container, false)
 
-        fun Show() {
+        /*
+        var studyIndexRef = FirebaseFirestore.getInstance().collection("studyInfo").document("1")
 
             var studyWeek = 1
 
@@ -38,9 +35,17 @@ class TodolistFragment : Fragment(){
                 view.todolistNextWeek.text = studyIndex[studyWeek]
             } else {
                 view.todolistPrevWeek.text = "마지막 주입니다."
+        var studyIndexList = ArrayList<GetStudyModel>()
+        FirebaseFirestore.getInstance()
+            .collection("studyInfo")
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                studyIndexList.clear()
+                if(querySnapshot == null) return@addSnapshotListener
+                for (snapshot in querySnapshot?.documents!!) {
+                    studyIndexList.add(snapshot.toObject(GetStudyModel::class.java)!!)
+                }
             }
-
-        }
+        */
 
         var studyIndexList = ArrayList<GetStudyModel>()
         val db = FirebaseFirestore.getInstance()
@@ -67,7 +72,6 @@ class TodolistFragment : Fragment(){
                     studyIndex[14] = document.data?.get("studyIndex15").toString()
                     studyIndex[15] = document.data?.get("studyIndex16").toString()
                     Log.d("1", "studyIndex : $studyIndex")
-                    Show()
                 } else {
                     Log.d("1", "No such document")
                 }
@@ -77,6 +81,9 @@ class TodolistFragment : Fragment(){
             }
 
 
+        var prevWeekText : TextView = getView()?.findViewById(R.id.todolistPrevWeek) as TextView // 문제가 생기는 부분
+
+        prevWeekText.text = "1"
 
         return view
     }

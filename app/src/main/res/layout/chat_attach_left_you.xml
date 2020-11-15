@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:background="@drawable/round"
+    android:layout_marginRight="50dp"
+    android:layout_height="90dp">
+
+    <TextView
+        android:id="@+id/left_username"
+        android:layout_width="wrap_content"
+        android:layout_height="47dp"
+        android:layout_margin="30dp"
+        android:text="name" />
+
+
+    <LinearLayout
+        android:layout_width="188dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/left_attach"
+            android:layout_width="177dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            tools:src="@drawable/attach" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:background="#00ff0000"
+            android:text="첨부파일 다운로드 시 Click"
+            android:textColor="@color/black"
+            android:textSize="5pt" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/left_attach_text"
+        android:layout_width="224dp"
+        android:layout_height="14dp"
+        android:layout_weight="1"
+        android:background="#00ff0000"
+        android:text="data"
+        android:textColor="#00ff0000" />
+
+</LinearLayout>

@@ -17,11 +17,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".StudyRecommendActivity" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity android:name=".StudyCategoryActivity" />
         <activity android:name=".profile_setting" />
         <activity android:name=".CreateStudyActivity" />
         <activity android:name=".chat.ChatRoomActivity" />
+        <activity android:name=".StudyMemberListActivity"></activity>
     </application>
 
 </manifest>

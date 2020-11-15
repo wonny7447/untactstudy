@@ -317,19 +317,19 @@ class CreateStudyActivity : AppCompatActivity() {
 
 
                     FirebaseFirestore.getInstance().collection("studyInfo")
-                            .document(studyNumber.toString())
-                            .set(study)
-                            .addOnCompleteListener {
-                                println("DB 저장 완료")
+                        .document(studyNumber.toString())
+                        .set(study)
+                        .addOnCompleteListener {
+                            println("DB 저장 완료")
 
-                                // DB에 새로운 스터디를 저장하면 studyRoomNumber 컬렉션에도 변경 값을 넣어줘야함
-                                FirebaseFirestore.getInstance().collection("studyRoomNumber")
-                                    .document("studyRoomNumber")
-                                    .set(StudyNumberModel(studyNumber))
+                            // DB에 새로운 스터디를 저장하면 studyRoomNumber 컬렉션에도 변경 값을 넣어줘야함
+                            FirebaseFirestore.getInstance().collection("studyRoomNumber")
+                                .document("studyRoomNumber")
+                                .set(StudyNumberModel(studyNumber))
 
-                                startActivity(Intent(this@CreateStudyActivity, MainActivity::class.java)) //메인 액티비티로 이동
-                                finish() // 현재 액티비티 종료
-                            }
+                            startActivity(Intent(this@CreateStudyActivity, MainActivity::class.java)) //메인 액티비티로 이동
+                            finish() // 현재 액티비티 종료
+                        }
                 }
             }
         })
