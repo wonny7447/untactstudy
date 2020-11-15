@@ -95,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
                             val userName = auth?.currentUser?.displayName.toString()
                             val email = auth?.currentUser?.email.toString()
                             val photoUrl = auth?.currentUser?.photoUrl.toString()
-                            val time = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                            val time = System.currentTimeMillis()
                             val introduction = ""
                             val loginUserData = LoginUserData(uid, userName, email, photoUrl, time, introduction)
 
@@ -114,7 +114,7 @@ class LoginActivity : AppCompatActivity() {
                         }
                         else{   //기존 로그인 유저인 경우
 
-                            val time = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                            val time = System.currentTimeMillis()
                             val db = FirebaseFirestore.getInstance().collection("loginUserData")
                             db.document(auth?.uid.toString())
                                 .update("time", time)
