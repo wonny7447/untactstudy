@@ -1,8 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#CC3366"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/todolist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="To do List"
+        android:textSize="24sp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+    <TextView
+        android:id="@+id/todolistThisWeekText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="이번 주 할 일"
+        android:textSize="24sp"
+        android:layout_below="@+id/todolist"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+    <TextView
+        android:id="@+id/todolistThisWeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="과제\n과제\n과제"
+        android:textSize="24sp"
+        android:layout_below="@+id/todolistThisWeekText"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+    <TextView
+        android:id="@+id/todolistPrevWeekText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="저번 주 할 일"
+        android:textSize="24sp"
+        android:layout_below="@+id/todolistThisWeek"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+    <TextView
+        android:id="@+id/todolistPrevWeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="과제\n과제\n과제"
+        android:textSize="24sp"
+        android:layout_below="@+id/todolistPrevWeekText"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+    <TextView
+        android:id="@+id/todolistNextWeekText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="다음 주 할 일"
+        android:textSize="24sp"
+        android:layout_below="@+id/todolistPrevWeek"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+    <TextView
+        android:id="@+id/todolistNextWeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="과제\n과제\n과제"
+        android:textSize="24sp"
+        android:layout_below="@+id/todolistNextWeekText"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+</RelativeLayout>
