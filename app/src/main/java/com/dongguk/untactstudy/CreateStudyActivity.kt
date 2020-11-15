@@ -2,13 +2,11 @@ package com.dongguk.untactstudy
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.dongguk.untactstudy.Model.LoginUserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_study.*
@@ -38,7 +36,7 @@ class CreateStudyActivity : AppCompatActivity() {
     var month = "1"
     var day = "1"
 
-    var createStudyIndex = mutableListOf("0")
+    var studyIndex = MutableList<String>(16) { i -> i.toString() }
 
     // log
     private val TAG = LoginActivity::class.java.simpleName
@@ -204,7 +202,7 @@ class CreateStudyActivity : AppCompatActivity() {
         var linearLayout:LinearLayout
         linearLayout = findViewById(R.id.createStudyLinearLayout);
         var indexNum: Int = 0
-        val createStudyIndex = mutableListOf(0)
+        var createStudyIndex = mutableListOf<EditText>()
 
         plusbtn.setOnClickListener(View.OnClickListener {
 
@@ -219,10 +217,11 @@ class CreateStudyActivity : AppCompatActivity() {
                 )
                 et.layoutParams = p
 
-                et.setHint("스터디 목차 " + indexNum)
+                et.setHint("스터디 목차 $indexNum")
                 et.id = indexNum
                  // = et.text.toString()
                 linearLayout.addView(et)
+                createStudyIndex.add(et)
             }
 
         })
@@ -281,8 +280,41 @@ class CreateStudyActivity : AppCompatActivity() {
                     var studyNumber = studyNumberList[0].studyNumber
                     studyNumber = studyNumber + 1
 
-                    var study = StudyModel(studyNumber, createStudyName, createStudyInfo, createStudyMemberAmount, year, month, day, first, second, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", uid.toString())
-                    //study.studyIndex1 = createStudyIndex[0]
+                    var study = StudyModel(studyNumber, createStudyName, createStudyInfo, createStudyMemberAmount, year, month, day, first, second, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",  uid.toString())
+
+                    if(createStudyIndex.size > 0)
+                        study.studyIndex1 = createStudyIndex[0].text.toString()
+                    if(createStudyIndex.size > 1)
+                        study.studyIndex2 = createStudyIndex[1].text.toString()
+                    if(createStudyIndex.size > 2)
+                        study.studyIndex3 = createStudyIndex[2].text.toString()
+                    if(createStudyIndex.size > 3)
+                        study.studyIndex4 = createStudyIndex[3].text.toString()
+                    if(createStudyIndex.size > 4)
+                        study.studyIndex5 = createStudyIndex[4].text.toString()
+                    if(createStudyIndex.size > 5)
+                        study.studyIndex6 = createStudyIndex[5].text.toString()
+                    if(createStudyIndex.size > 6)
+                        study.studyIndex7 = createStudyIndex[6].text.toString()
+                    if(createStudyIndex.size > 7)
+                        study.studyIndex8 = createStudyIndex[7].text.toString()
+                    if(createStudyIndex.size > 8)
+                        study.studyIndex9 = createStudyIndex[8].text.toString()
+                    if(createStudyIndex.size > 9)
+                        study.studyIndex10 = createStudyIndex[9].text.toString()
+                    if(createStudyIndex.size > 10)
+                        study.studyIndex11 = createStudyIndex[10].text.toString()
+                    if(createStudyIndex.size > 11)
+                        study.studyIndex12 = createStudyIndex[11].text.toString()
+                    if(createStudyIndex.size > 12)
+                        study.studyIndex13 = createStudyIndex[12].text.toString()
+                    if(createStudyIndex.size > 13)
+                        study.studyIndex14 = createStudyIndex[13].text.toString()
+                    if(createStudyIndex.size > 14)
+                        study.studyIndex15 = createStudyIndex[14].text.toString()
+                    if(createStudyIndex.size > 15)
+                        study.studyIndex16 = createStudyIndex[15].text.toString()
+
 
                     FirebaseFirestore.getInstance().collection("studyInfo")
                             .document(studyNumber.toString())

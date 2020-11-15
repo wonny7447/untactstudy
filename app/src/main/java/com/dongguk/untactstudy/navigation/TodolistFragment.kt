@@ -34,7 +34,7 @@ class TodolistFragment : Fragment(){
             }
             view.todolistThisWeek.text = studyIndex[studyWeek - 1]
             Log.d("1", studyIndex.toString())
-            if (studyWeek < 12) {
+            if (studyWeek < 16) {
                 view.todolistNextWeek.text = studyIndex[studyWeek]
             } else {
                 view.todolistPrevWeek.text = "마지막 주입니다."
