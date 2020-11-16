@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UntactStudy">
+        <activity android:name=".EvalAtivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +23,7 @@
         <activity android:name=".profile_setting" />
         <activity android:name=".CreateStudyActivity" />
         <activity android:name=".chat.ChatRoomActivity" />
-        <activity android:name=".StudyMemberListActivity"></activity>
+        <activity android:name=".StudyMemberListActivity" />
     </application>
 
 </manifest>

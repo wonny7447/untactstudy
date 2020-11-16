@@ -96,8 +96,7 @@ class LoginActivity : AppCompatActivity() {
                             val email = auth?.currentUser?.email.toString()
                             val photoUrl = auth?.currentUser?.photoUrl.toString()
                             val time = System.currentTimeMillis()
-                            val introduction = ""
-                            val loginUserData = LoginUserData(uid, userName, email, photoUrl, time, introduction)
+                            val loginUserData = LoginUserData(uid, userName, email, photoUrl, time, "", 0, false)
 
                             val db = FirebaseFirestore.getInstance().collection("loginUserData")
                             db.document(uid)

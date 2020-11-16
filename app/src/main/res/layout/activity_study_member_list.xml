@@ -6,4 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".StudyMemberListActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/member_recyclerview"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="119dp"
+        tools:layout_editor_absoluteY="182dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

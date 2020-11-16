@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:background="@drawable/round">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="161dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="name"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/chat_button"
+        android:layout_width="78dp"
+        android:layout_height="36dp"
+        android:layout_margin="15dp"
+        android:layout_weight="1"
+        android:text="채팅" />
+
+    <Button
+        android:id="@+id/evaluation_button"
+        android:layout_width="78dp"
+        android:layout_height="36dp"
+        android:layout_margin="15dp"
+        android:layout_weight="1"
+        android:text="평가" />
+
+    <TextView
+        android:id="@+id/member_uid"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:layout_weight="1"
+        android:background="#00ff0000"
+        android:text="data"
+        android:textColor="#00ff0000" />
+
+</LinearLayout>
