@@ -1,8 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#EEAA00"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <!-- introduction-->
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_Find_study_introduction"
+            android:textColor="#000000"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            />
+
+        <!-- search_view-->
+        <LinearLayout
+            android:layout_margin="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            >
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:iconifiedByDefault="false"
+                app:queryHint="검색어를 입력하시오" />
+        </LinearLayout>
+
+        <!--search tag-->
+        <HorizontalScrollView
+            android:id="@+id/horizontal_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp">
+
+            <LinearLayout
+                android:id="@+id/ll_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/study_tag_1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/round_shape_button"
+                    android:padding="5dp"
+                    android:text="#토익" />
+
+                <Button
+                    android:id="@+id/study_tag_2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/round_shape_button"
+                    android:padding="5dp"
+                    android:text="#토플" />
+
+                <Button
+                    android:id="@+id/study_tag_3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/round_shape_button"
+                    android:padding="5dp"
+                    android:text="#HSK" />
+
+                <Button
+                    android:id="@+id/study_tag_4"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/round_shape_button"
+                    android:padding="5dp"
+                    android:text="#JLPT" />
+
+                <Button
+                    android:id="@+id/study_tag_5"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/round_shape_button"
+                    android:padding="5dp"
+                    android:text="#정보처리기사" />
+
+                <Button
+                    android:id="@+id/study_tag_6"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/round_shape_button"
+                    android:padding="5dp"
+                    android:text="#컴퓨터활용능력" />
+
+                <Button
+                    android:id="@+id/study_tag_7"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/round_shape_button"
+                    android:padding="5dp"
+                    android:text="#ADSP" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -96,4 +96,9 @@
         <item>31</item>
     </string-array>
     <string name="title_activity_profile_model">ProfileModel</string>
+
+    <!--Find Study Category-->
+    <string name="title_Find_study_introduction">스터디 검색</string>
+    <string name="apply_sign">지원하기</string>
+
 </resources>
