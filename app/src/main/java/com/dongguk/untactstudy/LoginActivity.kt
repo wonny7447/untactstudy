@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -85,16 +87,20 @@ class LoginActivity : AppCompatActivity() {
                         // 로그인 성공 시
                         val isNew = task.result!!.additionalUserInfo!!.isNewUser
 
-                        // FireStore 데이터베이스에 로그인 사용자 정보 저장 (테이블 이름 : loginUserData)
-                        val uid = auth?.uid.toString()
-                        val userName = auth?.currentUser?.displayName.toString()
-                        val email = auth?.currentUser?.email.toString()
-                        val photoUrl = auth?.currentUser?.photoUrl.toString()
+                        // 화면 이동
+                        if(isNew){  //최초 로그인 유저인 경우
 
-                        val loginUserData = LoginUserData(uid, userName, email, photoUrl, System.currentTimeMillis())
+                            // FireStore 데이터베이스에 로그인 사용자 정보 저장 (테이블 이름 : loginUserData)
+                            val uid = auth?.uid.toString()
+                            val userName = auth?.currentUser?.displayName.toString()
+                            val email = auth?.currentUser?.email.toString()
+                            val photoUrl = auth?.currentUser?.photoUrl.toString()
+                            val time = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                            val introduction = ""
+                            val loginUserData = LoginUserData(uid, userName, email, photoUrl, time, introduction)
 
-                        val db = FirebaseFirestore.getInstance().collection("loginUserData")
-                        db.document(uid)
+                            val db = FirebaseFirestore.getInstance().collection("loginUserData")
+                            db.document(uid)
                                 .set(loginUserData)
                                 .addOnCompleteListener {
                                     Log.e(TAG, "DB에 로그인 정보 생성 성공")
@@ -103,14 +109,22 @@ class LoginActivity : AppCompatActivity() {
                                     Log.e(TAG, "DB에 로그인 정보 생성 실패")
                                 }
 
-                        // 화면 이동
-                        if(isNew){  //최초 로그인 유저인 경우
-                            //Toast.makeText(this, "New User", Toast.LENGTH_LONG).show()
                             startActivity(Intent(this, StudyCategoryActivity::class.java))  //관심 스터디 분야창으로 이동
                             finish()    //로그인 화면 종료
                         }
                         else{   //기존 로그인 유저인 경우
-                            //Toast.makeText(this, "Old User", Toast.LENGTH_LONG).show()
+
+                            val time = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                            val db = FirebaseFirestore.getInstance().collection("loginUserData")
+                            db.document(auth?.uid.toString())
+                                .update("time", time)
+                                .addOnCompleteListener {
+                                    Log.e(TAG, "DB에 로그인 시간 갱신 성공")
+                                }
+                                .addOnFailureListener {
+                                    Log.e(TAG, "DB에 로그인 시간 갱신 실패")
+                                }
+
                             startActivity(Intent(this, MainActivity::class.java)) //메인 액티비티로 이동
                         }
                     } else {

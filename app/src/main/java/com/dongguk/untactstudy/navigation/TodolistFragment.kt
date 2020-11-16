@@ -18,8 +18,6 @@ class TodolistFragment : Fragment(){
 
     var studyIndex = mutableListOf<String>("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0")
 
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.fragment_todolist, container, false)
 
@@ -34,7 +32,7 @@ class TodolistFragment : Fragment(){
             }
             view.todolistThisWeek.text = studyIndex[studyWeek - 1]
             Log.d("1", studyIndex.toString())
-            if (studyWeek < 12) {
+            if (studyWeek < 16) {
                 view.todolistNextWeek.text = studyIndex[studyWeek]
             } else {
                 view.todolistPrevWeek.text = "마지막 주입니다."
