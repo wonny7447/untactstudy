@@ -170,28 +170,10 @@
         android:layout_below="@+id/createStudySpinner1stSort"
         android:layout_toRightOf="@+id/createStudySpinner2ndSortText"/>
 
-        <Button
-            android:id="@+id/createStudyCreateIndex"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_below="@id/createStudySpinner2ndSort"
-            android:text="추가" />
-
-
-        <LinearLayout
-        android:id="@+id/createStudyLinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/createStudyCreateIndex">
-
-    </LinearLayout>
     <Button
         android:id="@+id/createStudyCancel"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_below="@id/createStudyLinearLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:text="취소" />
@@ -200,10 +182,9 @@
         android:id="@+id/createStudyButton"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_below="@id/createStudyLinearLayout"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:text="완료" />
+        android:text="목차생성" />
 
     </RelativeLayout>
 

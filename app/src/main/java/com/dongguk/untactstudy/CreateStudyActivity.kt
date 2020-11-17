@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_study.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CreateStudyActivity : AppCompatActivity() {
@@ -32,9 +35,9 @@ class CreateStudyActivity : AppCompatActivity() {
     var first = ""
     var second = ""
 
-    var year = "2020"
-    var month = "1"
-    var day = "1"
+    var year = SimpleDateFormat("yyyy").format(Date())
+    var month = SimpleDateFormat("MM").format(Date())
+    var day = SimpleDateFormat("dd").format(Date())
 
     var studyIndex = MutableList<String>(16) { i -> i.toString() }
 
@@ -45,9 +48,9 @@ class CreateStudyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_study)
 
-
         // 스터디 번호 생성을 위한 코드
         var studyNumberList = ArrayList<StudyNumberModel>()
+
         FirebaseFirestore.getInstance()
             .collection("studyRoomNumber")
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
@@ -67,7 +70,6 @@ class CreateStudyActivity : AppCompatActivity() {
 
         var btn = findViewById(R.id.createStudyButton) as Button
         var cancelbtn = findViewById(R.id.createStudyCancel) as Button
-        var plusbtn = findViewById(R.id.createStudyCreateIndex) as Button
 
         dataAdapter1 = ArrayAdapter.createFromResource(
             this,
@@ -197,35 +199,6 @@ class CreateStudyActivity : AppCompatActivity() {
             }
         }
 
-        //목차 추가 버튼
-
-        var linearLayout:LinearLayout
-        linearLayout = findViewById(R.id.createStudyLinearLayout);
-        var indexNum: Int = 0
-        var createStudyIndex = mutableListOf<EditText>()
-
-        plusbtn.setOnClickListener(View.OnClickListener {
-
-            if(indexNum < 16)
-            {
-                indexNum += 1
-
-                val et = EditText(applicationContext)
-                val p = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                et.layoutParams = p
-
-                et.setHint("스터디 목차 $indexNum")
-                et.id = indexNum
-                 // = et.text.toString()
-                linearLayout.addView(et)
-                createStudyIndex.add(et)
-            }
-
-        })
-
         //취소 버튼
         cancelbtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
@@ -271,50 +244,22 @@ class CreateStudyActivity : AppCompatActivity() {
                 } else {
 
                     // 모두 입력받으면 데이터 저장하기
-
-                    for (i in 0 until 15) {
-                        //createStudyIndex[i] = (linearLayout.getChildAt(i).text.toString())
-                    }
-
                     // 스터디 룸 번호 생성 (데이터 가져와서 +1 해주기)
                     var studyNumber = studyNumberList[0].studyNumber
                     studyNumber = studyNumber + 1
 
-                    var study = StudyModel(studyNumber, createStudyName, createStudyInfo, createStudyMemberAmount, year, month, day, first, second, "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",  uid.toString())
+                    var studyEndDate = year+"-"+month+"-"+day
 
-                    if(createStudyIndex.size > 0)
-                        study.studyIndex1 = createStudyIndex[0].text.toString()
-                    if(createStudyIndex.size > 1)
-                        study.studyIndex2 = createStudyIndex[1].text.toString()
-                    if(createStudyIndex.size > 2)
-                        study.studyIndex3 = createStudyIndex[2].text.toString()
-                    if(createStudyIndex.size > 3)
-                        study.studyIndex4 = createStudyIndex[3].text.toString()
-                    if(createStudyIndex.size > 4)
-                        study.studyIndex5 = createStudyIndex[4].text.toString()
-                    if(createStudyIndex.size > 5)
-                        study.studyIndex6 = createStudyIndex[5].text.toString()
-                    if(createStudyIndex.size > 6)
-                        study.studyIndex7 = createStudyIndex[6].text.toString()
-                    if(createStudyIndex.size > 7)
-                        study.studyIndex8 = createStudyIndex[7].text.toString()
-                    if(createStudyIndex.size > 8)
-                        study.studyIndex9 = createStudyIndex[8].text.toString()
-                    if(createStudyIndex.size > 9)
-                        study.studyIndex10 = createStudyIndex[9].text.toString()
-                    if(createStudyIndex.size > 10)
-                        study.studyIndex11 = createStudyIndex[10].text.toString()
-                    if(createStudyIndex.size > 11)
-                        study.studyIndex12 = createStudyIndex[11].text.toString()
-                    if(createStudyIndex.size > 12)
-                        study.studyIndex13 = createStudyIndex[12].text.toString()
-                    if(createStudyIndex.size > 13)
-                        study.studyIndex14 = createStudyIndex[13].text.toString()
-                    if(createStudyIndex.size > 14)
-                        study.studyIndex15 = createStudyIndex[14].text.toString()
-                    if(createStudyIndex.size > 15)
-                        study.studyIndex16 = createStudyIndex[15].text.toString()
-
+                    var study = StudyModel(
+                        studyNumber,
+                        createStudyName,
+                        createStudyInfo,
+                        createStudyMemberAmount,
+                        first, second,
+                        uid.toString(),
+                        studyEndDate,
+                        SimpleDateFormat("yyyyMMdd").format(Date())
+                    )
 
                     FirebaseFirestore.getInstance().collection("studyInfo")
                         .document(studyNumber.toString())
@@ -327,7 +272,12 @@ class CreateStudyActivity : AppCompatActivity() {
                                 .document("studyRoomNumber")
                                 .set(StudyNumberModel(studyNumber))
 
-                            startActivity(Intent(this@CreateStudyActivity, MainActivity::class.java)) //메인 액티비티로 이동
+                            println("studyNumber in create study : "+studyNumber)
+                            var intent = Intent(this@CreateStudyActivity, CreateTodoActivity::class.java)
+                            intent.putExtra("studyNumber", studyNumber.toString())
+                            intent.putExtra("studyEndDate", studyEndDate)
+                            intent.putExtra("studyCreateDate", SimpleDateFormat("yyyy-MM-dd").format(Date()))
+                            startActivity(intent)
                             finish() // 현재 액티비티 종료
                         }
                 }
