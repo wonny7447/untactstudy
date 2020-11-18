@@ -9,5 +9,6 @@ class StudyModel(
     val sort2nd: String,
     val userid: String,
     val studyCreateDate : String,
+    val studyStartDate : String,
     val studyEndDate : String
 )

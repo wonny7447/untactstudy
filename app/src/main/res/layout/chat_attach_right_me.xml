@@ -21,21 +21,21 @@
 
     <ImageView
         android:id="@+id/right_attach_image"
-        android:layout_width="221dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="63dp"
+        android:layout_height="75dp"
         android:layout_marginLeft="20dp"
-        tools:src="@drawable/attach" />
+        android:layout_marginTop="10dp"
+        tools:srcCompat="@android:drawable/ic_menu_save" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="65dp"
+        android:layout_width="165dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="20dp"
         android:background="#00ff0000"
-        android:text="첨부파일 다운로드 시 Click"
+        android:text="저장하시려면\n클릭하세요!"
         android:textColor="@color/black"
-        android:textSize="5pt" />
+        android:textSize="8pt" />
 
     <TextView
         android:id="@+id/right_attach_text"

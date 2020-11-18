@@ -2,6 +2,7 @@ package com.dongguk.untactstudy
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -248,7 +249,16 @@ class CreateStudyActivity : AppCompatActivity() {
                     var studyNumber = studyNumberList[0].studyNumber
                     studyNumber = studyNumber + 1
 
-                    var studyEndDate = year+"-"+month+"-"+day
+
+                    val cal : Calendar = Calendar.getInstance()
+                    cal.set(Calendar.YEAR, SimpleDateFormat("yyyy").format(Date()).toInt())
+                    cal.set(Calendar.MONTH, SimpleDateFormat("MM").format(Date()).toInt() - 1)
+                    cal.set(Calendar.DATE, SimpleDateFormat("dd").format(Date()).toInt())
+                    cal.add(Calendar.DATE, 7)
+
+                    var studyStartDate : String = SimpleDateFormat("yyyy-MM-dd").format(cal.time)
+
+                    Log.e(TAG, "year : "+SimpleDateFormat("yyyy").format(Date()).toInt()+", month : "+SimpleDateFormat("MM").format(Date()).toInt()+", date : "+SimpleDateFormat("dd").format(Date()).toInt()+", studyStartDate : "+studyStartDate)
 
                     var study = StudyModel(
                         studyNumber,
@@ -257,8 +267,9 @@ class CreateStudyActivity : AppCompatActivity() {
                         createStudyMemberAmount,
                         first, second,
                         uid.toString(),
-                        studyEndDate,
-                        SimpleDateFormat("yyyyMMdd").format(Date())
+                        SimpleDateFormat("yyyy-MM-dd").format(Date()),
+                        studyStartDate,
+                        year+"-"+month+"-"+day
                     )
 
                     FirebaseFirestore.getInstance().collection("studyInfo")
@@ -272,11 +283,13 @@ class CreateStudyActivity : AppCompatActivity() {
                                 .document("studyRoomNumber")
                                 .set(StudyNumberModel(studyNumber))
 
-                            println("studyNumber in create study : "+studyNumber)
+                            // 목차 만드는 페이지로 넘겨야 하는 정보
+                            Log.e(TAG, "studyStartDate : "+studyStartDate+", endDate : "+year+"-"+month+"-"+day)
+
                             var intent = Intent(this@CreateStudyActivity, CreateTodoActivity::class.java)
                             intent.putExtra("studyNumber", studyNumber.toString())
-                            intent.putExtra("studyEndDate", studyEndDate)
-                            intent.putExtra("studyCreateDate", SimpleDateFormat("yyyy-MM-dd").format(Date()))
+                            intent.putExtra("studyStartDate", studyStartDate)
+                            intent.putExtra("studyEndDate", year+"-"+month+"-"+day)
                             startActivity(intent)
                             finish() // 현재 액티비티 종료
                         }

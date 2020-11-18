@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dongguk.untactstudy.Model.TodoData
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_todo.*
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -22,9 +24,21 @@ class CreateTodoActivity : AppCompatActivity() {
 
         // CreateStudyActivity에서 받아온 값
         val studyNumber = intent.getStringExtra("studyNumber")
-        val createDate = intent.getStringExtra("studyCreateDate")
+        val startDate = intent.getStringExtra("studyStartDate")
         val endDate = intent.getStringExtra("studyEndDate")
 
+        Log.e(TAG, "startDate : "+startDate+", endDate : "+endDate)
+
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val studyStartDate : Long = sdf.parse(startDate).time
+        val studyEndDate : Long = sdf.parse(endDate).time
+        var diff : Long = studyStartDate - studyEndDate
+        diff /= (24 * 60 * 60 * 1000)
+        diff = Math.abs(diff)
+
+        Log.e(TAG, "studyCreateDate : "+studyStartDate+", studyEndDate : "+studyEndDate+", diff : "+diff)
+
+        //to do 리스트를 만들고, 안드로이드에서 제공하는 기본 레이아웃에 adapter로 연결
         var todoList = ArrayList<String>()
         var todoAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, todoList)
 
@@ -49,9 +63,20 @@ class CreateTodoActivity : AppCompatActivity() {
         // 완료 버튼 클릭 시 발생하는 이벤트
         createTodoButton.setOnClickListener {
 
-            // 임시로 주차와 매주 할일의 개수를 강제 세팅함
-            var week = 4
-            var week_todo : Int = 3
+            // 스터디 생성일
+            var week : Long = 0
+            if((diff % 7) > 0) {
+                week = (diff / 7) + 1
+            } else {
+                week = diff / 7
+            }
+
+            var week_todo : Long = 0
+            if((todoList.size % week) > 0) {
+                week_todo = (todoList.size / week) + 1
+            } else {
+                week_todo = (todoList.size / week)
+            }
 
             // 전체 할일의 개수가 주차수와 딱 떨어지지 않는 경우 빈값으로 채움
             // ex) 4주에 총 할일이 10개인 경우, 2개의 빈값을 추가해서 12개로 만듦
@@ -65,12 +90,12 @@ class CreateTodoActivity : AppCompatActivity() {
 
 
             // 매주 할일에 대한 데이터를 쌓기 위한 변수 선언
-            var c = 0
-            var d = week_todo
+            var c : Long = 0
+            var d : Long = week_todo
 
             // 주차별 할일에 대한 데이터를 쌓는다.
             for(i in 1 .. week) {
-                var tempList = todoList.subList(c,d)
+                var tempList = todoList.subList(c.toInt(), d.toInt())
                 Log.e(TAG, "c : "+c+", d : "+d+", tempList"+i+" : "+tempList)
 
                 FirebaseFirestore.getInstance().collection("studyInfo")

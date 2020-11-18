@@ -122,6 +122,7 @@ class ChatRoomActivity : AppCompatActivity() {
         recyclerView_chat.adapter = adapter
         readRef.addChildEventListener(childEventListener)
 
+        // 첨부파일을 보낸 챗을 클릭하면 첨부파일이 다운로드 됨
         adapter.setOnItemClickListener { item, view ->
             val fileName = (item as ChatAttachLeftAndRight).fileName
             val extender = fileName.substringAfterLast(".")
@@ -131,6 +132,7 @@ class ChatRoomActivity : AppCompatActivity() {
             var storageRef = FirebaseStorage.getInstance().reference.child("files").child(fileName)
             storageRef.downloadUrl.addOnSuccessListener { uri ->
                 DownloadFileFromURL(extender).execute(uri.toString())
+                Toast.makeText(this, "첨부파일 다운로드가 완료되었습니다.", Toast.LENGTH_LONG).show()
             }
         }
 
