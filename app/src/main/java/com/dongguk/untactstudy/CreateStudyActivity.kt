@@ -265,7 +265,7 @@ class CreateStudyActivity : AppCompatActivity() {
                         .document(studyNumber.toString())
                         .set(study)
                         .addOnCompleteListener {
-                            println("DB 저장 완료")
+                            println("스터디 생성 정보 DB 저장 완료")
 
                             // DB에 새로운 스터디를 저장하면 studyRoomNumber 컬렉션에도 변경 값을 넣어줘야함
                             FirebaseFirestore.getInstance().collection("studyRoomNumber")

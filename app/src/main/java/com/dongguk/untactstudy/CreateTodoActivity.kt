@@ -44,19 +44,48 @@ class CreateTodoActivity : AppCompatActivity() {
                 todoInput.text = null
                 todoInput.hint = "목차를 입력하세요."
             }
-
         }
 
         // 완료 버튼 클릭 시 발생하는 이벤트
         createTodoButton.setOnClickListener {
 
-            FirebaseFirestore.getInstance().collection("studyInfo")
-                    .document(studyNumber.toString())
-                    .collection("todoList")
-                    .add(TodoData(todoList))
-                    .addOnSuccessListener {
-                        Log.e(TAG, "todo list 데이터 insert 성공")
-                    }
+            // 임시로 주차와 매주 할일의 개수를 강제 세팅함
+            var week = 4
+            var week_todo : Int = 3
+
+            // 전체 할일의 개수가 주차수와 딱 떨어지지 않는 경우 빈값으로 채움
+            // ex) 4주에 총 할일이 10개인 경우, 2개의 빈값을 추가해서 12개로 만듦
+            if((todoList.size % week) > 0) {
+                for(a in 1 .. (todoList.size % week)) {
+                    todoList.add("")
+                }
+            }
+
+            Log.e(TAG, "데이터 처리할 최종 todoList : "+todoList)
+
+
+            // 매주 할일에 대한 데이터를 쌓기 위한 변수 선언
+            var c = 0
+            var d = week_todo
+
+            // 주차별 할일에 대한 데이터를 쌓는다.
+            for(i in 1 .. week) {
+                var tempList = todoList.subList(c,d)
+                Log.e(TAG, "c : "+c+", d : "+d+", tempList"+i+" : "+tempList)
+
+                FirebaseFirestore.getInstance().collection("studyInfo")
+                        .document(studyNumber.toString())
+                        .collection("todoList")
+                        .document(i.toString())
+                        .set(TodoData(tempList))
+                        .addOnSuccessListener {
+                            Log.e(TAG, "todo list 데이터 insert 성공")
+                        }
+
+                // 반복을 위한 변수 값 추가
+                c = c + week_todo
+                d = d + week_todo
+            }
 
         }//button
     }//onCreate
