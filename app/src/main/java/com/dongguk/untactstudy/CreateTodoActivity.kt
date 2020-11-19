@@ -81,7 +81,7 @@ class CreateTodoActivity : AppCompatActivity() {
             // 전체 할일의 개수가 주차수와 딱 떨어지지 않는 경우 빈값으로 채움
             // ex) 4주에 총 할일이 10개인 경우, 2개의 빈값을 추가해서 12개로 만듦
             if((todoList.size % week) > 0) {
-                for(a in 1 .. (todoList.size % week)) {
+                for(a in 1 .. (week - (todoList.size % week))) {
                     todoList.add("")
                 }
             }

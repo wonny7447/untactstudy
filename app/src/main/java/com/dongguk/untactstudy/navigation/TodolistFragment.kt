@@ -75,9 +75,7 @@ class TodolistFragment : Fragment(){
 
             // 현재 보여주는 to do 리스트의 주차 수 값이 마지막 주차보다 작을때만 리스트 새로 보여줌
             if(currentWeek < endWeek) {
-                Log.e(TAG, "currentWeek : "+currentWeek+", endWeek : "+endWeek)
                 currentWeek = currentWeek + 1
-                Log.e(TAG, "currentWeek +1 : "+currentWeek+", endWeek : "+endWeek)
 
                 view.todoRecyclerView.removeAllViewsInLayout()
                 view.todoRecyclerView.adapter = TodoRecyclerViewAdapter(currentWeek)
