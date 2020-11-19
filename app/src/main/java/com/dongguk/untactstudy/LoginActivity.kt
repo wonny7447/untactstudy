@@ -50,6 +50,8 @@ class LoginActivity : AppCompatActivity() {
 
         // 구글 로그인 버튼 클릭 시 이벤트 : googleLogin function 실행
         google_sign_in_button.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            googleSignInClient?.signOut()
             googleLogin()
         }
 
