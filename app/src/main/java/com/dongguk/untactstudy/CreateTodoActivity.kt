@@ -99,13 +99,13 @@ class CreateTodoActivity : AppCompatActivity() {
                 Log.e(TAG, "c : "+c+", d : "+d+", tempList"+i+" : "+tempList)
 
                 FirebaseFirestore.getInstance().collection("studyInfo")
-                        .document(studyNumber.toString())
-                        .collection("todoList")
-                        .document(i.toString())
-                        .set(TodoData(tempList))
-                        .addOnSuccessListener {
-                            Log.e(TAG, "todo list 데이터 insert 성공")
-                        }
+                    .document(studyNumber.toString())
+                    .collection("todoList")
+                    .document(i.toString())
+                    .set(TodoData(tempList))
+                    .addOnSuccessListener {
+                        Log.e(TAG, "todo list 데이터 insert 성공")
+                    }
 
                 // 반복을 위한 변수 값 추가
                 c = c + week_todo

@@ -1,92 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/todolist"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="To do List"
-        android:textSize="24sp"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/todolistThisWeekText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="이번 주 할 일"
-        android:textSize="24sp"
-        android:layout_below="@+id/todolist"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        <LinearLayout
+            android:layout_marginTop="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/todolistThisWeek"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="이번 주 할 일을 불러오는 중입니다..."
-        android:textSize="24sp"
-        android:layout_below="@+id/todolistThisWeekText"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+            <ImageButton
+                android:id="@+id/preWeekButton"
+                android:layout_width="154dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="?attr/actionModeCloseDrawable" />
 
-    <TextView
-        android:id="@+id/todolistPrevWeekText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="저번 주 할 일"
-        android:textSize="24sp"
-        android:layout_below="@+id/todolistThisWeek"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+            <TextView
+                android:id="@+id/thisWeekText"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="TextView" />
 
-    <TextView
-        android:id="@+id/todolistPrevWeek"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="저번 주 할 일을 불러오는 중입니다..."
-        android:textSize="24sp"
-        android:layout_below="@+id/todolistPrevWeekText"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+            <ImageButton
+                android:id="@+id/nextWeekButton"
+                android:layout_width="154dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:rotation="180"
+                app:srcCompat="?attr/actionModeCloseDrawable" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/todolistNextWeekText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="다음 주 할 일"
-        android:textSize="24sp"
-        android:layout_below="@+id/todolistPrevWeek"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/todoRecyclerView"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="372dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"/>
 
-    <TextView
-        android:id="@+id/todolistNextWeek"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="다음 주 할 일을 불러오는 중입니다..."
-        android:textSize="24sp"
-        android:layout_below="@+id/todolistNextWeekText"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="40dp"/>
-
-</RelativeLayout>
-
+    </LinearLayout>
 </ScrollView>

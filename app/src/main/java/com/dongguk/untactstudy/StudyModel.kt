@@ -11,4 +11,6 @@ class StudyModel(
     val studyCreateDate : String,
     val studyStartDate : String,
     val studyEndDate : String
-)
+) {
+    constructor() : this(0, "","","","","","","","","")
+}
