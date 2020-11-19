@@ -1,5 +1,7 @@
 package com.dongguk.untactstudy.navigation
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,10 +12,12 @@ import android.widget.CompoundButton
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dongguk.untactstudy.R
 import com.dongguk.untactstudy.LoginActivity
+import com.dongguk.untactstudy.MainActivity
 import com.dongguk.untactstudy.Model.LoginUserData
 import com.dongguk.untactstudy.Model.TodoData
 import com.dongguk.untactstudy.StudyModel
@@ -38,6 +42,8 @@ class TodolistFragment : Fragment(){
     var thisWeek : Long = 0
     var currentWeek : Long = 0
     var studyRoomNumber : String = "0"
+
+    private val mFragmentManager = fragmentManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.fragment_todolist, container, false)
@@ -159,9 +165,7 @@ class TodolistFragment : Fragment(){
                         // 1-1. 가입 스터디 유무 조회
                         if(studyRoomNumber == null || studyRoomNumber == "0") {
                             // 가입한 스터디가 없으면 (null or 0) 스터디 추천으로 이동
-                            // Alert : 스터디에 가입해주세요.
-                            var intent = Intent(context, FindStudyFragment::class.java)
-                            startActivity(intent)
+                            noticeAndSwitch("스터디에 가입해주세요.", TodolistFragment(), FindStudyFragment())
                         } else {
                             // 2. 가입한 스터디가 있으면 현재 주차 수를 확인해서 to-do List 노출한다.
                             FirebaseFirestore.getInstance()
@@ -185,9 +189,8 @@ class TodolistFragment : Fragment(){
                                         *  2) 스터디 시작
                                         * */
                                         if(studyStartDate > today) {
-                                            // Alert : 스터디가 시작하지 않았습니다. yyyy-mm-dd부터 to-do 조회가 가능합니다.
-                                            var intent = Intent(context, FindStudyFragment::class.java)
-                                            startActivity(intent)
+                                            val msg : String = "스터디가 시작하지 않았습니다.\n"+ studyData?.studyStartDate.toString()+"부터 to-do 조회가 가능합니다."
+                                            noticeAndSwitch(msg, TodolistFragment(), MyStudyFragment())
                                         } else {
                                             var diff : Long = studyStartDate - today
                                             diff /= (24 * 60 * 60 * 1000)
@@ -236,6 +239,28 @@ class TodolistFragment : Fragment(){
                     } //if(task.isSuccessful)
                 } //addOnCompleteListener
         } // fun data()
+
+        // 파라미터에 따라서 알럿을 보여주고 화면 전환 시키는 function
+        // 화면전환은 fragment -> fragment만 가능
+        fun noticeAndSwitch(alertMessage : String, nowFrag : Fragment, afterFrag : Fragment) {
+            var builder = AlertDialog.Builder(context)
+            builder.setTitle("")
+            builder.setMessage(alertMessage)
+
+            var listener = object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            fragmentManager?.beginTransaction()?.remove(nowFrag)?.commit()
+                            fragmentManager?.beginTransaction()?.replace(R.id.main_content, afterFrag)?.commit()
+                        }
+                    }
+                }
+            }
+
+            builder.setPositiveButton("확인", listener)
+            builder.show()
+        } //noticeAndSwitch
 
         inner class TodoCustomViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView)
     } // class : TodoRecyclerViewAdapter
