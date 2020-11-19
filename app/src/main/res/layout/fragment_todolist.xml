@@ -17,7 +17,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/preWeekButton"
+                android:id="@+id/prevWeekButton"
                 android:layout_width="154dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
