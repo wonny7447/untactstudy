@@ -47,16 +47,16 @@ class StudyMemberListActivity : AppCompatActivity() {
 
 
             FirebaseFirestore.getInstance()
-                .collection("loginUserData")
-                .whereEqualTo("studyRoomNumber", 0)
-                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                    memberList.clear()
-                    if(querySnapshot == null) return@addSnapshotListener
-                    for (snapshot in querySnapshot?.documents!!) {
-                        memberList.add(snapshot.toObject(LoginUserData::class.java)!!)
+                    .collection("loginUserData")
+                    .whereEqualTo("studyRoomNumber", "0")
+                    .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                        memberList.clear()
+                        if(querySnapshot == null) return@addSnapshotListener
+                        for (snapshot in querySnapshot?.documents!!) {
+                            memberList.add(snapshot.toObject(LoginUserData::class.java)!!)
+                        }
+                        notifyDataSetChanged()
                     }
-                    notifyDataSetChanged()
-                }
         } //init
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -79,6 +79,12 @@ class StudyMemberListActivity : AppCompatActivity() {
 
             evaluation_button.setOnClickListener {
                 Log.e(TAG, "평가 버튼 클릭 - member_name : "+member_name.text)
+
+
+                val intent = Intent(this@StudyMemberListActivity, EvalAtivity::class.java)
+                intent.putExtra("yourUid", memberList[position].uid)
+                intent.putExtra("yourName", memberList[position].userName)
+                startActivity(intent)
 
                 if(uid == memberList[position].uid)
                 {
