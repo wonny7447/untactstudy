@@ -1,5 +1,6 @@
 package com.dongguk.untactstudy
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,13 +14,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
+import kotlinx.android.synthetic.main.activity_eval.*
 import kotlinx.android.synthetic.main.activity_study_member_list.*
 import kotlinx.android.synthetic.main.member_list_row.view.*
+import kotlinx.android.synthetic.main.message_list_row.*
 
 class StudyMemberListActivity : AppCompatActivity() {
 
     //로그 변수
     private val TAG = LoginActivity::class.java.simpleName
+    val uid = FirebaseAuth.getInstance().currentUser!!.uid
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +43,7 @@ class StudyMemberListActivity : AppCompatActivity() {
         val memberList = ArrayList<LoginUserData>()
 
         init {
-            val uid = FirebaseAuth.getInstance().currentUser!!.uid
+
 
             FirebaseFirestore.getInstance()
                 .collection("loginUserData")
@@ -74,6 +78,13 @@ class StudyMemberListActivity : AppCompatActivity() {
 
             evaluation_button.setOnClickListener {
                 Log.e(TAG, "평가 버튼 클릭 - member_name : "+member_name.text)
+
+
+                val intent = Intent(this@StudyMemberListActivity, EvalAtivity::class.java)
+                intent.putExtra("yourUid", memberList[position].uid)
+                intent.putExtra("yourName", memberList[position].userName)
+                startActivity(intent)
+
             }
 
         } //onBindViewHolder
@@ -84,21 +95,5 @@ class StudyMemberListActivity : AppCompatActivity() {
 
         inner class CustomViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView)
     } // class : MemberRecyclerViewAdapter
-
-    /* 성우 참고하라고 일부러 남겨놓음!! => 확인하면 지워주세요~
-    // 채팅으로 이동
-    val name = (item as UserItem).name
-    val uid = (item as UserItem).uid
-
-    //val intent = Intent(this, ChatRoomActivity::class.java)
-    intent.putExtra("yourUid", uid)
-    intent.putExtra("yourName", name)
-    startActivity(intent)
-
-    val intent = Intent(this, EvalAtivity::class.java)
-    intent.putExtra("yourUid", uid)
-    intent.putExtra("yourName", name)
-    startActivity(intent)
-    */
 
 } //StudyMemberListActivity
