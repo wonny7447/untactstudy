@@ -2,11 +2,15 @@ package com.dongguk.untactstudy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.dongguk.untactstudy.Model.LoginUserData
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_eval.*
 
 class EvalAtivity : AppCompatActivity() {
+
+    private val TAG = LoginActivity::class.java.simpleName
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_eval)
@@ -26,16 +30,18 @@ class EvalAtivity : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         loginUserData = task.result?.toObject(LoginUserData::class.java)!!
+
+                        loginUserData.totalRater++
+                        loginUserData.totalRating += (ratingBar1.rating + ratingBar2.rating + ratingBar3.rating) * 2
+
+                        docRef.update("totalRater", loginUserData.totalRater)
+                        docRef.update("totalRating", loginUserData.totalRating)
+
+                        finish()
                     }
                 } //addonCompleteListener
 
-            loginUserData.totalRater++
-            loginUserData.totalRating += (ratingBar1.rating + ratingBar2.rating + ratingBar3.rating) * 2
 
-            docRef.update("totalRater", loginUserData.totalRater)
-            docRef.update("totalRating", loginUserData.totalRating)
-
-            finish()
         } //button.setOnClickListener
     }
 }

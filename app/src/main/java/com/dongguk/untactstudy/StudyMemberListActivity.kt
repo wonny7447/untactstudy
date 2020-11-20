@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dongguk.untactstudy.Model.LoginUserData
@@ -79,12 +80,17 @@ class StudyMemberListActivity : AppCompatActivity() {
             evaluation_button.setOnClickListener {
                 Log.e(TAG, "평가 버튼 클릭 - member_name : "+member_name.text)
 
-
-                val intent = Intent(this@StudyMemberListActivity, EvalAtivity::class.java)
-                intent.putExtra("yourUid", memberList[position].uid)
-                intent.putExtra("yourName", memberList[position].userName)
-                startActivity(intent)
-
+                if(uid == memberList[position].uid)
+                {
+                    Toast.makeText(applicationContext, "자기 자신을 평가할 수 없습니다.", Toast.LENGTH_LONG).show()
+                }
+                else
+                {
+                    val intent = Intent(this@StudyMemberListActivity, EvalAtivity::class.java)
+                    intent.putExtra("yourUid", memberList[position].uid)
+                    intent.putExtra("yourName", memberList[position].userName)
+                    startActivity(intent)
+                }
             }
 
         } //onBindViewHolder
