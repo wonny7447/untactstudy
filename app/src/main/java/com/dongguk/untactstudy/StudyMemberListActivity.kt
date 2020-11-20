@@ -1,11 +1,15 @@
 package com.dongguk.untactstudy
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.dongguk.untactstudy.Adapter.UserItem
-import com.dongguk.untactstudy.chat.ChatRoomActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.dongguk.untactstudy.Model.LoginUserData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -23,38 +27,78 @@ class StudyMemberListActivity : AppCompatActivity() {
 
         var adapter = GroupAdapter<GroupieViewHolder>()
 
-        FirebaseFirestore.getInstance().collection("loginUserData")
-                .whereEqualTo("studyRoomNumber", 0)
-                .get()
-                .addOnSuccessListener { result ->
-                    for(document in result) {
-                        adapter.add(UserItem(document.get("userName").toString()+"("+document.get("userEmail").toString()+")", document.get("uid").toString()))
-                    }
-                    member_recyclerview.adapter = adapter
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "studyRoomNumber 가져오기 실패", exception)
-                } // db
-
-        adapter.setOnItemClickListener { item, view ->
-
-            // 채팅으로 이동
-            val name = (item as UserItem).name
-            val uid = (item as UserItem).uid
-
-            /*val intent = Intent(this, ChatRoomActivity::class.java)
-            intent.putExtra("yourUid", uid)
-            intent.putExtra("yourName", name)
-            startActivity(intent)*/
-
-            val intent = Intent(this, EvalAtivity::class.java)
-            intent.putExtra("yourUid", uid)
-            intent.putExtra("yourName", name)
-            startActivity(intent)
-
+        member_recyclerview.apply {
+            member_recyclerview.layoutManager = LinearLayoutManager(this@StudyMemberListActivity)
+            member_recyclerview.adapter = MemberRecyclerViewAdapter()
         }
 
     } //onCreate
 
+    inner class MemberRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        val memberList = ArrayList<LoginUserData>()
+
+        init {
+            val uid = FirebaseAuth.getInstance().currentUser!!.uid
+
+            FirebaseFirestore.getInstance()
+                .collection("loginUserData")
+                .whereEqualTo("studyRoomNumber", 0)
+                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    memberList.clear()
+                    if(querySnapshot == null) return@addSnapshotListener
+                    for (snapshot in querySnapshot?.documents!!) {
+                        memberList.add(snapshot.toObject(LoginUserData::class.java)!!)
+                    }
+                    notifyDataSetChanged()
+                }
+        } //init
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.member_list_row, parent, false)
+            return CustomViewHolder(view)
+        } //onCreateViewHolder
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            val member_name = holder.itemView.member_name
+            val member_uid = holder.itemView.member_uid
+            val chat_button = holder.itemView.chat_button
+            val evaluation_button = holder.itemView.evaluation_button
+
+            member_name.text = memberList[position].userName
+            member_uid.text = memberList[position].uid
+
+            chat_button.setOnClickListener {
+                Log.e(TAG, "채팅 버튼 클릭 - member_name : "+member_name.text)
+            }
+
+            evaluation_button.setOnClickListener {
+                Log.e(TAG, "평가 버튼 클릭 - member_name : "+member_name.text)
+            }
+
+        } //onBindViewHolder
+
+        override fun getItemCount(): Int {
+            return memberList.size
+        } //getItemCount
+
+        inner class CustomViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView)
+    } // class : MemberRecyclerViewAdapter
+
+    /* 성우 참고하라고 일부러 남겨놓음!! => 확인하면 지워주세요~
+    // 채팅으로 이동
+    val name = (item as UserItem).name
+    val uid = (item as UserItem).uid
+
+    //val intent = Intent(this, ChatRoomActivity::class.java)
+    intent.putExtra("yourUid", uid)
+    intent.putExtra("yourName", name)
+    startActivity(intent)
+
+    val intent = Intent(this, EvalAtivity::class.java)
+    intent.putExtra("yourUid", uid)
+    intent.putExtra("yourName", name)
+    startActivity(intent)
+    */
 
 } //StudyMemberListActivity

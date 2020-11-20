@@ -5,7 +5,7 @@
     android:background="@drawable/round">
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/member_name"
         android:layout_width="161dp"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
