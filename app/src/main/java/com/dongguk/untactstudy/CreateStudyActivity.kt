@@ -283,6 +283,19 @@ class CreateStudyActivity : AppCompatActivity() {
                                 .document("studyRoomNumber")
                                 .set(StudyNumberModel(studyNumber))
 
+                            // 스터디 생성자는 해당 스터디에 가입하고, 리더가 되게 바꿈
+                            FirebaseFirestore.getInstance()
+                                .collection("loginUserData")
+                                .document(uid.toString())
+                                .update("leader", true, "studyRoomNumber", studyNumber.toString())
+                                .addOnCompleteListener {
+                                    Log.e(TAG, "스터디 생성자의 loginUserData 업데이트 성공")
+                                }
+                                .addOnFailureListener {
+                                    Log.e(TAG, "스터디 생성자의 loginUserData 업데이트 실패")
+                                }
+
+
                             // 목차 만드는 페이지로 넘겨야 하는 정보
                             Log.e(TAG, "studyStartDate : "+studyStartDate+", endDate : "+year+"-"+month+"-"+day)
 
