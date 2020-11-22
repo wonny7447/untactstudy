@@ -1,4 +1,5 @@
 package com.dongguk.untactstudy.navigation
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,25 +9,35 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.dongguk.untactstudy.CreateStudyActivity
 import com.dongguk.untactstudy.Model.LoginUserData
+import com.dongguk.untactstudy.NetworkStatus
 import com.dongguk.untactstudy.R
 import com.dongguk.untactstudy.profile_setting
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_eval.*
 import kotlinx.android.synthetic.main.fragment_profile.*
-import android.content.Intent as s
+
 
 class ProfileFragment : Fragment(){
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = LayoutInflater.from(activity).inflate(R.layout.fragment_profile, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        var view = LayoutInflater.from(activity).inflate(
+            R.layout.fragment_profile,
+            container,
+            false
+        )
 
         var userdata : LoginUserData ? = null
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
 
         FirebaseFirestore.getInstance().collection("loginUserData")
                 .document(FirebaseAuth.getInstance().uid.toString())
                 .get()
-                .addOnCompleteListener {
-                    task ->
+                .addOnCompleteListener { task ->
                     if(task.isSuccessful) {
                         userdata = task.result?.toObject(LoginUserData::class.java)
 
@@ -42,16 +53,57 @@ class ProfileFragment : Fragment(){
                 }
 
 
+        var loginUserData = LoginUserData()
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("loginUserData").document(uid)
+
+        docRef.get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    loginUserData = task.result?.toObject(LoginUserData::class.java)!!
+
+                    if(loginUserData.onStudy)
+                    {
+                        mystudy_studyonoff.text = "Study ON"
+                    }
+                    else
+                    {
+                        mystudy_studyonoff.text = "Study OFF"
+                    }
+
+                }
+            } //addonCompleteListener
+
         var button = view?.findViewById<Button>(R.id.mystudy_profile_edit)
-        button?.setOnClickListener(object :View.OnClickListener {
+        button?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val intent = Intent(context, profile_setting::class.java)
                 startActivity(intent)
             }
         })
 
-        var button2 = view?.findViewById<Button>(R.id.createStudy)
-        button2?.setOnClickListener(object :View.OnClickListener {
+        var button2 = view?.findViewById<Button>(R.id.mystudy_studyon)
+        button2?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                mystudy_studyonoff.text = "Study ON"
+
+                docRef.update("onStudy", true) //스터디 여부를 파이어스토어에 전송
+
+            }
+        })
+
+        var button3 = view?.findViewById<Button>(R.id.mystudy_studyoff)
+        button3?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                mystudy_studyonoff.text = "Study OFF"
+
+                docRef.update("onStudy", false) //스터디 여부를 파이어스토어에 전송
+
+            }
+        })
+
+        var button4 = view?.findViewById<Button>(R.id.createStudy)
+        button4?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val intent = Intent(context, CreateStudyActivity::class.java)
                 startActivity(intent)
@@ -60,4 +112,10 @@ class ProfileFragment : Fragment(){
 
         return view
     }
+
+    fun changeFragmentTextView(text : String)
+    {
+        mystudy_studyonoff.text = text
+    }
+
 }

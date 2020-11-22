@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="600dp">
 
         <ImageView
             android:layout_width="100dp"
@@ -55,6 +55,36 @@
             android:text="introduction"
             android:textSize="16dp" />
 
+        <TextView
+            android:id="@+id/mystudy_studyonoff"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/mystudy_introduction"
+            android:text="인터넷 연결 확인 중"
+            android:textSize="36sp" />
+
+        <Button
+            android:id="@+id/mystudy_studyon"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
+            android:text="Study ON"
+            android:textSize="20sp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="25dp"
+            android:layout_below="@+id/mystudy_studyonoff"/>
+
+        <Button
+            android:id="@+id/mystudy_studyoff"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
+            android:text="Study OFF"
+            android:textSize="18sp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="225dp"
+            android:layout_below="@+id/mystudy_studyonoff"/>
+
         <Button
             android:id="@+id/createStudy"
             android:layout_width="500dp"
@@ -62,7 +92,7 @@
             android:text="스터디 만들기"
             android:textSize="24sp"
             android:layout_marginTop="40dp"
-            android:layout_below="@+id/mystudy_introduction"
+            android:layout_below="@+id/mystudy_studyon"
             android:layout_centerInParent="true"/>
 
 

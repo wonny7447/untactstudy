@@ -34,6 +34,23 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             R.id.action_profile -> {
                 var profileFragment = ProfileFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.main_content, profileFragment).commit() // 프로필 (마이 페이지) 로 이동
+
+                /*
+                // 네트워크 상태에 따라 공부 여부를 결정함
+                NetworkStatus(this, {
+                    //네트워크 연결됨
+                    val profileFragment: ProfileFragment =
+                        supportFragmentManager.findFragmentById(R.id.main_content) as ProfileFragment
+                    profileFragment.changeFragmentTextView("Study ON")
+
+                }, {
+                    //네트워크 연결 끊김
+                    val profileFragment: ProfileFragment =
+                        supportFragmentManager.findFragmentById(R.id.main_content) as ProfileFragment
+                    profileFragment.changeFragmentTextView("Study OFF")
+                })
+                */
+
                 return true
             }
 
@@ -48,5 +65,21 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         var profileFragment = ProfileFragment()
         supportFragmentManager.beginTransaction().replace(R.id.main_content, profileFragment).commit() // 프로필 (마이 페이지) 로 이동
+
+        /*
+        NetworkStatus(this, {
+            //네트워크 연결됨
+            val profileFragment: ProfileFragment =
+                supportFragmentManager.findFragmentById(R.id.main_content) as ProfileFragment
+            profileFragment.changeFragmentTextView("Study ON")
+
+        }, {
+            //네트워크 연결 끊김
+            val profileFragment: ProfileFragment =
+                supportFragmentManager.findFragmentById(R.id.main_content) as ProfileFragment
+            profileFragment.changeFragmentTextView("Study OFF")
+        })
+        */
+
     }
 }

@@ -9,8 +9,9 @@ class LoginUserData(val uid : String,
                     val studyRoomNumber : String,
                     val isLeader : Boolean,
                     var totalRating : Float,
-                    var totalRater : Long) {
+                    var totalRater : Long,
+                    var onStudy : Boolean) {
 
-    constructor() : this("","","","",0,"", "", false, 0f, 0)
+    constructor() : this("","","","",0,"", "", false, 0f, 0, false)
 
 }

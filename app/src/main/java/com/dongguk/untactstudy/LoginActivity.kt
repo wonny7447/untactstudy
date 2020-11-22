@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -98,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
                             val email = auth?.currentUser?.email.toString()
                             val photoUrl = auth?.currentUser?.photoUrl.toString()
                             val time = System.currentTimeMillis()
-                            val loginUserData = LoginUserData(uid, userName, email, photoUrl, time, "", "", false, 0f, 0)
+                            val loginUserData = LoginUserData(uid, userName, email, photoUrl, time, "", "", false, 0f, 0, false)
 
                             val db = FirebaseFirestore.getInstance().collection("loginUserData")
                             db.document(uid)
@@ -126,7 +127,20 @@ class LoginActivity : AppCompatActivity() {
                                     Log.e(TAG, "DB에 로그인 시간 갱신 실패")
                                 }
 
-                            startActivity(Intent(this, MainActivity::class.java)) //메인 액티비티로 이동
+                            var loginUserData = LoginUserData()
+                            val docRef = db.document(FirebaseAuth.getInstance().currentUser!!.uid)
+
+                            docRef.get()
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        loginUserData = task.result?.toObject(LoginUserData::class.java)!!
+
+                                        docRef.update("onStudy", false) //스터디 여부를 파이어스토어에 전송
+                                        startActivity(Intent(this, MainActivity::class.java)) //메인 액티비티로 이동
+
+                                    }
+                                } //addonCompleteListener
+
                         }
                     } else {
                         // 로그인 실패 시
