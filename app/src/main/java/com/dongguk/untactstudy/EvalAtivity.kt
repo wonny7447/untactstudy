@@ -45,6 +45,7 @@ class EvalAtivity : AppCompatActivity() {
 
                         suggestionData.suggestion = editTextTextPersonName.text.toString()
                         suggestionData.evalTargetUid = yourUid
+                        suggestionData.evalTargetName = yourName
                         suggestionData.rating = (ratingBar1.rating + ratingBar2.rating + ratingBar3.rating) * 2 // 점수 환산 (30점 만점)
 
                         FirebaseFirestore.getInstance().collection("studyInfo") // 건의사항 반영
