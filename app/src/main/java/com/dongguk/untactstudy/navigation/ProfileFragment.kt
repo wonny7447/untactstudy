@@ -9,12 +9,10 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.dongguk.untactstudy.CreateStudyActivity
 import com.dongguk.untactstudy.Model.LoginUserData
-import com.dongguk.untactstudy.NetworkStatus
 import com.dongguk.untactstudy.R
 import com.dongguk.untactstudy.profile_setting
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_eval.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 

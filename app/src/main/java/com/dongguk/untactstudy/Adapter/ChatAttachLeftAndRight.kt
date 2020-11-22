@@ -22,9 +22,10 @@ class ChatAttachLeftAndRight(val fileName : String, val userName : String, val d
         if(directionLR == "L") {
             viewHolder.itemView.left_attach_text?.text = fileName
             viewHolder.itemView.left_username.text = userName
-
+            viewHolder.itemView.left_attach.setImageResource(android.R.drawable.ic_menu_save)
         } else {
             viewHolder.itemView.right_attach_text?.text = fileName
+            viewHolder.itemView.right_attach_image.setImageResource(android.R.drawable.ic_menu_save)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.dongguk.untactstudy.chat
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -11,6 +12,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -59,15 +61,19 @@ class ChatRoomActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_room)
-
         auth = FirebaseAuth.getInstance()
 
         // ChatListActivity.kt에서 intent.putextra로 보낸 값 (대화방의 user name, uid)
         val yourUid = intent.getStringExtra("yourUid").toString()
         val yourName = intent.getStringExtra("yourName").toString()
+        setTitle(yourName+"님과의 채팅")
 
         // 나의 uid 값
         val myUid = auth.uid.toString()
+
+        chat_edittext.requestFocus()
+        val keyboard : InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        keyboard.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
 
         var adapter = GroupAdapter<GroupieViewHolder>()
 
@@ -272,11 +278,6 @@ class ChatRoomActivity : AppCompatActivity() {
 
             return null
         } //doInBackground
-
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-            Toast.makeText(this@ChatRoomActivity,"download file completed",Toast.LENGTH_LONG).show()
-        } //onPostExecute
 
     } //DownloadFileFromURL
 }

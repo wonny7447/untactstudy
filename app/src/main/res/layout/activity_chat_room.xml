@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:windowSoftInputMode="adjustResize"
     tools:context=".chat.ChatRoomActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_chat"
-        android:layout_width="353dp"
-        android:layout_height="503dp"
-        android:layout_marginTop="68dp"
+        android:layout_width="361dp"
+        android:layout_height="321dp"
+        android:layout_marginTop="28dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,36 +19,47 @@
 
     <EditText
         android:id="@+id/chat_edittext"
-        android:layout_width="184dp"
-        android:layout_height="42dp"
+        android:layout_width="232dp"
+        android:layout_height="43dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
         android:ems="10"
-        android:hint="Name"
-        android:inputType="textPersonName"
+        android:hint="메세지를 입력하세요."
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/send_button"
-        app:layout_constraintHorizontal_bias="0.904"
+        app:layout_constraintHorizontal_bias="0.915"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView_chat" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView_chat"
+        app:layout_constraintVertical_bias="0.006">
+
+        <requestFocus />
+    </EditText>
 
     <Button
         android:id="@+id/send_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="36dp"
-        android:text="Button"
+        android:layout_width="62dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="12dp"
+        android:text="전송"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView_chat" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView_chat"
+        app:layout_constraintVertical_bias="0.013" />
 
     <ImageButton
         android:id="@+id/attach_button"
         android:layout_width="48dp"
         android:layout_height="43dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/chat_edittext"
+        app:layout_constraintHorizontal_bias="0.41"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView_chat"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@android:drawable/ic_menu_upload" />
 
 

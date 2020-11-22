@@ -1,42 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".profile_setting">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="-32dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/mystudy_insert"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="160dp"
-            android:layout_marginTop="400dp"
-            android:gravity="center"
-            android:text="수정"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="573dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp">
+
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="232dp"
+                    android:layout_height="37dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="fill"
+                    android:textSize="8pt"
+                    android:textColor="@color/black"
+                    android:text="이름" />
+
+                <TextView
+                    android:id="@+id/user_email"
+                    android:layout_width="233dp"
+                    android:layout_height="37dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="fill"
+                    android:textSize="8pt"
+                    android:textColor="@color/black"
+                    android:text="이메일" />
+
+            </LinearLayout>
+        </LinearLayout>
 
 
         <EditText
-            android:id="@+id/new_introduction"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="115dp"
-            android:layout_marginTop="200dp"
+            android:id="@+id/user_info"
+            android:layout_width="369dp"
+            android:layout_height="225dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="fill"
+            android:textSize="8pt"
+            android:textColor="@color/black"
             android:ems="10"
-            android:gravity="center"
-            android:hint="New Introduction"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="313dp" />
-    </RelativeLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            android:hint="나를 설명해주세요 :)" />
+
+        <Button
+            android:id="@+id/mystudy_insert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:text="프로필 등록" />
+
+    </LinearLayout>
+</RelativeLayout>
