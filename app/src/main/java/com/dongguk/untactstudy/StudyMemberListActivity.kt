@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dongguk.untactstudy.Model.LoginUserData
+import com.dongguk.untactstudy.Model.SuggestionData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.GroupAdapter
@@ -36,6 +37,9 @@ class StudyMemberListActivity : AppCompatActivity() {
             member_recyclerview.layoutManager = LinearLayoutManager(this@StudyMemberListActivity)
             member_recyclerview.adapter = MemberRecyclerViewAdapter()
         }
+
+
+
 
     } //onCreate
 
@@ -86,16 +90,35 @@ class StudyMemberListActivity : AppCompatActivity() {
                 intent.putExtra("yourName", memberList[position].userName)
                 startActivity(intent)
 
-                if(uid == memberList[position].uid)
-                {
-                    Toast.makeText(applicationContext, "자기 자신을 평가할 수 없습니다.", Toast.LENGTH_LONG).show()
-                }
-                else
-                {
-                    val intent = Intent(this@StudyMemberListActivity, EvalAtivity::class.java)
-                    intent.putExtra("yourUid", memberList[position].uid)
-                    intent.putExtra("yourName", memberList[position].userName)
-                    startActivity(intent)
+                val db = FirebaseFirestore.getInstance()
+                val evalAlreadyDocument = db.collection("loginUserData").document(uid).collection("evalAlreadyPersonData")
+                var isEvalAlready = false
+
+
+                evalAlreadyDocument
+                    .get()
+                    .addOnSuccessListener { result ->
+                        for (document in result) {
+                            if(memberList[position].uid == document.id)
+                            {
+                                isEvalAlready = true
+                            }
+                        }
+                    }
+
+                when {
+                    uid == memberList[position].uid -> {
+                        Toast.makeText(applicationContext, "자기 자신을 평가할 수 없습니다.", Toast.LENGTH_LONG).show()
+                    }
+                    isEvalAlready -> {
+                        Toast.makeText(applicationContext, "이미 평가한 상대입니다.", Toast.LENGTH_LONG).show()
+                    }
+                    else -> {
+                        val intent = Intent(this@StudyMemberListActivity, EvalAtivity::class.java)
+                        intent.putExtra("yourUid", memberList[position].uid)
+                        intent.putExtra("yourName", memberList[position].userName)
+                        startActivity(intent)
+                    }
                 }
             }
 
