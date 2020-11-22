@@ -7,7 +7,7 @@ class LoginUserData(val uid : String,
                     val time : Long,
                     val introduction : String,
                     val studyRoomNumber : String,
-                    val isLeader : Boolean,
+                    val leader : Boolean,
                     var totalRating : Float,
                     var totalRater : Long,
                     var onStudy : Boolean) {
