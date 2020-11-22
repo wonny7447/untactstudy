@@ -3,11 +3,13 @@ package com.dongguk.untactstudy.navigation
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.ImageButton
 import android.widget.TextView
@@ -22,6 +24,7 @@ import com.dongguk.untactstudy.Model.LoginUserData
 import com.dongguk.untactstudy.Model.TodoData
 import com.dongguk.untactstudy.StudyModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -94,6 +97,7 @@ class TodolistFragment : Fragment(){
     inner class TodoRecyclerViewAdapter(temp : Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         var todoList = ArrayList<String>()
+        var myUid : String = FirebaseAuth.getInstance()?.currentUser!!.uid.toString()
 
         init {
             data(temp)
@@ -106,40 +110,59 @@ class TodolistFragment : Fragment(){
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val todoText = holder.itemView.todoText
+            val checkImage = holder.itemView.checkImage
 
+            // 선택한 주차 수 보여주기
             thisWeekText.text = currentWeek.toString()+"주차 TO-DO"
 
             // todo_list_row의 todoText에 값 보여주기
-            todoText.text = todoList[position].toString()
+            var subText = todoList[position].toString().substring(0,1)
+            var realText = todoList[position].toString().substringAfterLast(subText)
 
-            /*
-             리스트에서 가져온 값이 null인 경우 to do_list_row를 숨김처리
-             => CreateTodoActivity에서 arraylist 개수 맞추느라 빈값이 생김
-             => 기본적으로는 데이터에 null, "" 들어올 수 없음 (isEmpty 체크 함)
-            */
-            if(todoText.text == null || todoText.text == "") {
+            // 원래 텍스트 데이터에는 T/F 값이 포함되어 있기 때문에 흰색으로 설정했다가 블랙으로 변경
+            todoText.setTextColor(Color.BLACK)
+
+            // T/F 값을 제거한 진짜 to-do 데이터
+            todoText.text = realText
+
+            // T/F를 제외한 텍스트 값이 없는 경우 row를 안보이게 처리함
+            // 실제 데이터가 null일 수는 없고, 개수 맞추기 위한 임시 데이터에 대한 처리임
+            if(realText == null || realText == "") {
                 holder.itemView.visibility = View.GONE
             }
 
-            Log.e(TAG, "position : "+ position+", todoText.text : "+todoText.text)
+            // T/F 값에 따라 체크이미지, 체크 없는 이미지 보여줌
+            if(subText == "T") {
+                checkImage.setImageResource(android.R.drawable.checkbox_on_background)
+            } else if (subText == "F"){
+                checkImage.setImageResource(android.R.drawable.checkbox_off_background)
+            }
 
             // todo_list_row에 대한 클릭 이벤트
             holder.itemView.setOnClickListener{
-                Log.e(TAG, "click : "+position)
-            }
-
-            // todo_list_row의 체크박스에 대한 클릭 이벤트
-            holder.itemView.checkBox.setOnCheckedChangeListener{ compoundButton: CompoundButton, isChecked: Boolean ->
-                if(isChecked) {
-                    // 사용자 DB > to-do 리스트에서 해당 항목 true로 변경
-                    Log.e(TAG, "click : "+position+", checked")
+                if(subText == "T") {
+                    todoList[position] = "F" + realText
+                    checkImage.setImageResource(android.R.drawable.checkbox_off_background)
                 } else {
-                    // 사용자 DB > to-do 리스트에서 해당 항목 false로 변경
-                    Log.e(TAG, "click : "+position+", UN checked")
+                    todoList[position] = "T" + realText
+                    checkImage.setImageResource(android.R.drawable.checkbox_on_background)
                 }
-            }
-
+                chekBoxValueUpdate()
+            } //setOnClickListener
         } //onBindViewHolder
+
+        // T/F 값 변경하는 쿼리
+        fun chekBoxValueUpdate() {
+            FirebaseFirestore.getInstance()
+                .collection("loginUserData")
+                .document(myUid)
+                .collection("todoList")
+                .document(currentWeek.toString())
+                .set(TodoData(todoList))
+                .addOnSuccessListener {
+                    Log.e(TAG, "checkbox 값 변경 완료")
+                }
+        }
 
         override fun getItemCount(): Int {
             return todoList.size
@@ -153,7 +176,7 @@ class TodolistFragment : Fragment(){
 
             // 1. 로그인 정보를 기준으로 가입한 스터디 정보를 가져온다.
             FirebaseFirestore.getInstance().collection("loginUserData")
-                .document(FirebaseAuth.getInstance().uid.toString())
+                .document(myUid)
                 .get()
                 .addOnCompleteListener {
                     task ->
@@ -208,26 +231,24 @@ class TodolistFragment : Fragment(){
                                             }
                                             Log.e(TAG, "diff : "+diff+", thisWeek : "+thisWeek+", currentWeek : "+currentWeek+", week : "+week)
 
-                                            // 3. 스터디 정보에서 현재 페이지에 해당하는 주차의 to do 리스트를 불러온다.
                                             FirebaseFirestore.getInstance()
-                                                .collection("studyInfo")
-                                                .document(studyRoomNumber)
+                                                .collection("loginUserData")
+                                                .document(myUid)
                                                 .collection("todoList")
                                                 .document(week.toString())
                                                 .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                                                    Log.e(TAG, "db week : "+week+", ")
+                                                    Log.e(TAG, "데이터 불러오는 부분 db week : "+week+", ")
                                                     todoList.clear()        // 기존에 있던 값을 지움
 
                                                     if(querySnapshot == null)
                                                         return@addSnapshotListener
-                                                        Log.e(TAG, "querySnapShot : "+querySnapshot.toObject(TodoData::class.java)!!.list.toString())
+                                                    Log.e(TAG, "데이터 불러오는 부분 querySnapShot : "+querySnapshot.toObject(TodoData::class.java)!!.list.toString())
 
                                                     var tempList = querySnapshot.toObject(TodoData::class.java)!!.list
 
                                                     // 리스트에 값이 들어있기 때문에, 사이즈만큼 반복하여 각 항목에 있는 값을 가져옴
-                                                    for(i in 1 .. tempList.size) {
-                                                        Log.e(TAG, "")
-                                                        todoList.add(tempList[i-1])
+                                                    for (i in 1..tempList.size) {
+                                                        todoList.add(tempList[i - 1])
                                                         notifyDataSetChanged()
                                                     }
                                                     currentWeek = week
