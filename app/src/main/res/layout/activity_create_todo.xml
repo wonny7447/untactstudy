@@ -31,8 +31,8 @@
 
     <ListView
         android:id="@+id/todoListView"
-        android:layout_width="400dp"
-        android:layout_height="491dp"
+        android:layout_width="387dp"
+        android:layout_height="450dp"
         android:layout_marginTop="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"

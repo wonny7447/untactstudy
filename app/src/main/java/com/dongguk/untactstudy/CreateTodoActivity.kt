@@ -1,11 +1,13 @@
 package com.dongguk.untactstudy
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.dongguk.untactstudy.Model.TodoData
+import com.dongguk.untactstudy.navigation.MyStudyFragment
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_todo.*
 import java.text.SimpleDateFormat
@@ -112,6 +114,8 @@ class CreateTodoActivity : AppCompatActivity() {
                 d = d + week_todo
             }
 
+            var intent = Intent(this, MyStudyFragment::class.java)
+            startActivity(intent)
         }//button
     }//onCreate
 }//Activity

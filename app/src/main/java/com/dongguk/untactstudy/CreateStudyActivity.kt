@@ -48,6 +48,7 @@ class CreateStudyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_study)
+        setTitle("스터디 만들기")
 
         // 스터디 번호 생성을 위한 코드
         var studyNumberList = ArrayList<StudyNumberModel>()
@@ -70,7 +71,6 @@ class CreateStudyActivity : AppCompatActivity() {
 
 
         var btn = findViewById(R.id.createStudyButton) as Button
-        var cancelbtn = findViewById(R.id.createStudyCancel) as Button
 
         dataAdapter1 = ArrayAdapter.createFromResource(
             this,
@@ -199,14 +199,6 @@ class CreateStudyActivity : AppCompatActivity() {
                 day = dataAdapter5!!.getItem(position).toString()
             }
         }
-
-        //취소 버튼
-        cancelbtn.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                startActivity(Intent(this@CreateStudyActivity, MainActivity::class.java)) //메인 액티비티로 이동
-                finish() // 현재 액티비티 종료
-            }
-        })
 
         //확인 버튼
         btn.setOnClickListener(object : View.OnClickListener {
