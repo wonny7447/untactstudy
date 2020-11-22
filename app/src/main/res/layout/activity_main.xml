@@ -8,6 +8,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!" />
+
     <FrameLayout
         android:id="@+id/main_content"
         android:layout_above="@id/nav_division"
