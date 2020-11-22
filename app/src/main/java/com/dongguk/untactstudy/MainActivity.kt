@@ -66,14 +66,13 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 var loginUserData = task.result?.toObject(LoginUserData::class.java)!!
                 val leader = loginUserData.leader
                 val totalRater = loginUserData.totalRater.toInt()
-                val totalScore = loginUserData.totalRating.toInt() / loginUserData.totalRater.toInt()
 
                 if (totalRater == 0 || totalRater == null) //평가 받은 기록 없음
                     ;
-                else //평가 받은 기록 있음
+                else {//평가 받은 기록 있음
+                    val totalScore = loginUserData.totalRating.toInt() / loginUserData.totalRater.toInt()
                     if (totalScore < 15) { //평가 총점이 30점 만점의 15점 미만
-                        println(leader)
-                        if(leader == true) {  //스터디그룹 팀장일 때
+                        if (leader == true) {  //스터디그룹 팀장일 때
                             //경고 다이얼로그
                             var builder = AlertDialog.Builder(this)
                             builder.setTitle("경고 알림")
@@ -91,8 +90,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                             }
                             builder.setPositiveButton("확인", listener)
                             builder.show()
-                        }
-                        else {//그룹원일 때
+                        } else {//그룹원일 때
                             docRef.update("studyRoomNumber", "0") //강퇴
                             docRef.update("totalRating", 0) //평가 점수 리셋
                             docRef.update("totalRater", 0) //평가 횟수 리셋
@@ -116,6 +114,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                             builder.show()
                         }
                     }
+                }
             }
         }
         supportFragmentManager.beginTransaction().replace(R.id.main_content, profileFragment).commit() // 프로필 (마이 페이지) 로 이동
