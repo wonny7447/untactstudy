@@ -1,24 +1,33 @@
 package com.dongguk.untactstudy.Model;
 
 public class studyRoomData {
-    private String title;
-    private String content;
+    private String studyName;
+    private String studyInfo;
+    private int studyRoomNumber;
 
 
-    public String getTitle() {
-        return title;
+    public String getStudyName() {
+        return studyName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setStudyName(String studyName) {
+        this.studyName = studyName;
     }
 
-    public String getContent() {
-        return content;
+    public String getStudyInfo() {
+        return studyInfo;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setStudyInfo(String studyInfo) {
+        this.studyInfo = studyInfo;
+    }
+
+    public int getStudyRoomNumber() {
+        return studyRoomNumber;
+    }
+
+    public void setStudyRoomNumber(int studyRoomNumber) {
+        this.studyRoomNumber = studyRoomNumber;
     }
 
 }
