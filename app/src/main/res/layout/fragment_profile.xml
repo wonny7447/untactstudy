@@ -1,102 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".profile_setting">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="600dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/profileimage">
-
-        </ImageView>
-
-        <TextView
-
-            android:id="@+id/mystudy_userid"
-            android:layout_width="188dp"
-            android:layout_height="33dp"
-            android:layout_marginLeft="100dp"
+        <LinearLayout
+            android:layout_width="354dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="user_id213"
-            android:textSize="16dp">
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
 
-        </TextView>
+            <LinearLayout
+                android:layout_width="98dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <Button
-            android:id="@+id/mystudy_profile_edit"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="300dp"
-            android:text="편집"
-            android:textSize="10dp" />
+                <ImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp" />
 
-        <TextView
-            android:id="@+id/mystudy_name"
-            android:layout_width="100dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="60dp"
-            android:gravity="center"
-            android:text="name"
-            android:textSize="16dp" />
+                <Button
+                    android:id="@+id/mystudy_profile_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:text="프로필 수정"
+                    android:textSize="5pt" />
 
-        <TextView
-            android:id="@+id/mystudy_introduction"
-            android:layout_width="159dp"
-            android:layout_height="49dp"
-            android:layout_marginLeft="250dp"
-            android:layout_marginTop="60dp"
-            android:gravity="center"
-            android:text="introduction"
-            android:textSize="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="232dp"
+                    android:layout_height="37dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="fill"
+                    android:text="이름"
+                    android:textColor="@color/black"
+                    android:textSize="8pt" />
+
+                <TextView
+                    android:id="@+id/user_email"
+                    android:layout_width="233dp"
+                    android:layout_height="37dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="fill"
+                    android:text="이메일"
+                    android:textColor="@color/black"
+                    android:textSize="8pt" />
+
+                <TextView
+                    android:id="@+id/user_infom"
+                    android:layout_width="233dp"
+                    android:layout_height="65dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="fill"
+                    android:text="소개"
+                    android:textColor="@color/black"
+                    android:autoSizeTextType="none" />
+
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/mystudy_studyonoff"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center"
             android:layout_marginTop="30dp"
-            android:layout_below="@id/mystudy_introduction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="인터넷 연결 확인 중"
-            android:textSize="36sp" />
+            android:textSize="10pt" />
 
-        <Button
-            android:id="@+id/mystudy_studyon"
-            android:layout_width="150dp"
-            android:layout_height="80dp"
-            android:text="Study ON"
-            android:textSize="20sp"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="25dp"
-            android:layout_below="@+id/mystudy_studyonoff"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp">
 
-        <Button
-            android:id="@+id/mystudy_studyoff"
-            android:layout_width="150dp"
-            android:layout_height="80dp"
-            android:text="Study OFF"
-            android:textSize="18sp"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="225dp"
-            android:layout_below="@+id/mystudy_studyonoff"/>
+            <Button
+                android:id="@+id/mystudy_studyon"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Study ON" />
+
+            <Button
+                android:id="@+id/mystudy_studyoff"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Study Off" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/createStudy"
-            android:layout_width="500dp"
-            android:layout_height="80dp"
-            android:text="스터디 만들기"
-            android:textSize="24sp"
-            android:layout_marginTop="40dp"
-            android:layout_below="@+id/mystudy_studyon"
-            android:layout_centerInParent="true"/>
+            android:layout_width="312dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="스터디 만들기" />
 
 
-    </RelativeLayout>
-
-
-</LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
