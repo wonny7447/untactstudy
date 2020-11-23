@@ -101,12 +101,6 @@ class StudyMemberListActivity : AppCompatActivity() {
             evaluation_button.setOnClickListener {
                 Log.e(TAG, "평가 버튼 클릭 - member_name : "+member_name.text)
 
-
-                val intent = Intent(this@StudyMemberListActivity, EvalAtivity::class.java)
-                intent.putExtra("yourUid", memberList[position].uid)
-                intent.putExtra("yourName", memberList[position].userName)
-                startActivity(intent)
-
                 val db = FirebaseFirestore.getInstance()
                 val evalAlreadyDocument = db.collection("loginUserData").document(uid).collection("evalAlreadyPersonData")
                 var isEvalAlready = false
@@ -121,22 +115,23 @@ class StudyMemberListActivity : AppCompatActivity() {
                                 isEvalAlready = true
                             }
                         }
+                        when {
+                            uid == memberList[position].uid -> {
+                                Toast.makeText(applicationContext, "자기 자신을 평가할 수 없습니다.", Toast.LENGTH_LONG).show()
+                            }
+                            isEvalAlready -> {
+                                Toast.makeText(applicationContext, "이미 평가한 상대입니다.", Toast.LENGTH_LONG).show()
+                            }
+                            else -> {
+                                val intent = Intent(this@StudyMemberListActivity, EvalAtivity::class.java)
+                                intent.putExtra("yourUid", memberList[position].uid)
+                                intent.putExtra("yourName", memberList[position].userName)
+                                startActivity(intent)
+                            }
+                        }
                     }
 
-                when {
-                    uid == memberList[position].uid -> {
-                        Toast.makeText(applicationContext, "자기 자신을 평가할 수 없습니다.", Toast.LENGTH_LONG).show()
-                    }
-                    isEvalAlready -> {
-                        Toast.makeText(applicationContext, "이미 평가한 상대입니다.", Toast.LENGTH_LONG).show()
-                    }
-                    else -> {
-                        val intent = Intent(this@StudyMemberListActivity, EvalAtivity::class.java)
-                        intent.putExtra("yourUid", memberList[position].uid)
-                        intent.putExtra("yourName", memberList[position].userName)
-                        startActivity(intent)
-                    }
-                }
+
             }
 
         } //onBindViewHolder
