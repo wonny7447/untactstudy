@@ -120,6 +120,13 @@
             android:layout_gravity="center"
             android:text="스터디 만들기" />
 
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="312dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="로그아웃" />
+
 
     </LinearLayout>
 </RelativeLayout>

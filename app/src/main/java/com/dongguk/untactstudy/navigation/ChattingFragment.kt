@@ -30,7 +30,6 @@ class ChattingFragment : Fragment(){
 
     // Logout
     private lateinit var auth : FirebaseAuth
-    var googleSignInClient : GoogleSignInClient? = null
 
     // Chat
     val fsDB = FirebaseFirestore.getInstance()
@@ -58,27 +57,31 @@ class ChattingFragment : Fragment(){
 
             FirebaseFirestore.getInstance()
                 .collection("loginUserData")
-                //.whereEqualTo("uid", uid) => 나중에 스터디 고유 key 값으로 조회하기
-                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                    userList.clear()
-                    if(querySnapshot == null) return@addSnapshotListener
-                    for (snapshot in querySnapshot?.documents!!) {
-                        userList.add(snapshot.toObject(LoginUserData::class.java)!!)
+                .document(uid)
+                .get()
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful) {
+                        val userdata = task.result?.toObject(LoginUserData::class.java)
+                        var studyRoomNumber = userdata?.studyRoomNumber
+                        FirebaseFirestore.getInstance()
+                            .collection("loginUserData")
+                            .whereEqualTo("studyRoomNumber", studyRoomNumber)
+                            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                                userList.clear()
+                                if(querySnapshot == null) return@addSnapshotListener
+                                for (snapshot in querySnapshot?.documents!!) {
+                                    if((snapshot.toObject(LoginUserData::class.java)?.uid) != uid) {
+                                        userList.add(snapshot.toObject(LoginUserData::class.java)!!)
+                                    }
+                                }
+                                notifyDataSetChanged()
+                            }
                     }
-                    notifyDataSetChanged()
                 }
         } // init
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.message_list_row, parent, false)
-
-            // Google Logout
-            var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
-            googleSignInClient = GoogleSignIn.getClient(parent.context, gso)
-
             return CustomViewHolder(view)
         } //onCreateViewHolder
 
@@ -99,18 +102,6 @@ class ChattingFragment : Fragment(){
                 intent.putExtra("yourUid", userList[position].uid.toString())
                 intent.putExtra("yourName", userList[position].userName.toString())
                 startActivity(intent)
-            }
-
-            // 로그아웃 버튼 클릭 시
-            auth = FirebaseAuth.getInstance()
-            google_sign_out_button.setOnClickListener {
-
-                FirebaseAuth.getInstance().signOut()
-                googleSignInClient?.signOut()
-
-                var logoutIntent = Intent (context, LoginActivity::class.java)
-                logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(logoutIntent)
             }
         }
 

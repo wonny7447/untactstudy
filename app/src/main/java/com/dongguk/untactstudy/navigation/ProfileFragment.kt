@@ -14,9 +14,13 @@ import com.bumptech.glide.Glide
 import com.dongguk.untactstudy.*
 import com.dongguk.untactstudy.Model.LoginUserData
 import com.dongguk.untactstudy.Model.TodoData
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_profile_setting.*
+import kotlinx.android.synthetic.main.fragment_chatting.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.profile_image
 import kotlinx.android.synthetic.main.fragment_profile.user_email
@@ -29,6 +33,7 @@ class ProfileFragment : Fragment(){
 
     // Log
     private val TAG = LoginActivity::class.java.simpleName
+    var googleSignInClient : GoogleSignInClient? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         var view = LayoutInflater.from(activity).inflate( R.layout.fragment_profile, container, false )
@@ -105,6 +110,20 @@ class ProfileFragment : Fragment(){
             }
         })
 
+        // 로그아웃 버튼 클릭 시
+        var logout = view?.findViewById<Button>(R.id.logout)
+        logout?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+
+                FirebaseAuth.getInstance().signOut()
+                googleSignInClient?.signOut()
+
+                var logoutIntent = Intent (context, LoginActivity::class.java)
+                logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(logoutIntent)
+            }
+        })
+
         var button4 = view?.findViewById<Button>(R.id.createStudy)
         button4?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -159,6 +178,15 @@ class ProfileFragment : Fragment(){
         })
 
         return view
+    }
+
+    fun signOut() {
+        // Google Logout
+        var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+        googleSignInClient = context?.let { GoogleSignIn.getClient(it, gso) }
     }
 
     // 파라미터에 따라서 알럿을 보여주고 화면 전환 시키는 function

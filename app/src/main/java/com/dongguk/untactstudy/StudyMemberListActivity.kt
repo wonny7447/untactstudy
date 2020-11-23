@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dongguk.untactstudy.Model.LoginUserData
 import com.dongguk.untactstudy.Model.SuggestionData
+import com.dongguk.untactstudy.chat.ChatRoomActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.GroupAdapter
@@ -26,10 +27,25 @@ class StudyMemberListActivity : AppCompatActivity() {
     //로그 변수
     private val TAG = LoginActivity::class.java.simpleName
     val uid = FirebaseAuth.getInstance().currentUser!!.uid
+    var myStudyRoomNumber : String = "0"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_study_member_list)
+
+        myStudyRoomNumber = intent.getStringExtra("myStudyRoomNumber").toString()
+
+        FirebaseFirestore.getInstance()
+                .collection("studyInfo")
+                .document(myStudyRoomNumber)
+                .get()
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful) {
+                        var studyData = task.result?.toObject(StudyModel::class.java)
+                        var studyName = studyData?.studyName
+                        setTitle(studyName+" 스터디 멤버")
+                    }
+                }
 
         var adapter = GroupAdapter<GroupieViewHolder>()
 
@@ -38,9 +54,6 @@ class StudyMemberListActivity : AppCompatActivity() {
             member_recyclerview.adapter = MemberRecyclerViewAdapter()
         }
 
-
-
-
     } //onCreate
 
     inner class MemberRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -48,16 +61,16 @@ class StudyMemberListActivity : AppCompatActivity() {
         val memberList = ArrayList<LoginUserData>()
 
         init {
-
-
             FirebaseFirestore.getInstance()
                     .collection("loginUserData")
-                    .whereEqualTo("studyRoomNumber", "0")
+                    .whereEqualTo("studyRoomNumber", myStudyRoomNumber)
                     .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                         memberList.clear()
                         if(querySnapshot == null) return@addSnapshotListener
                         for (snapshot in querySnapshot?.documents!!) {
-                            memberList.add(snapshot.toObject(LoginUserData::class.java)!!)
+                            if((snapshot.toObject(LoginUserData::class.java)?.uid) != uid) {
+                                memberList.add(snapshot.toObject(LoginUserData::class.java)!!)
+                            }
                         }
                         notifyDataSetChanged()
                     }
@@ -79,6 +92,10 @@ class StudyMemberListActivity : AppCompatActivity() {
 
             chat_button.setOnClickListener {
                 Log.e(TAG, "채팅 버튼 클릭 - member_name : "+member_name.text)
+                val intent = Intent(this@StudyMemberListActivity, ChatRoomActivity::class.java)
+                intent.putExtra("yourUid", member_uid.text.toString())
+                intent.putExtra("yourName", member_name.text.toString())
+                startActivity(intent)
             }
 
             evaluation_button.setOnClickListener {

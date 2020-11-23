@@ -40,9 +40,6 @@ import java.util.*
 
 class ChatRoomActivity : AppCompatActivity() {
 
-    // 보내는 사람(나)의 uid 가져오기
-    private lateinit var auth : FirebaseAuth
-
     // FireStore
     val db = FirebaseFirestore.getInstance()
 
@@ -61,7 +58,6 @@ class ChatRoomActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_room)
-        auth = FirebaseAuth.getInstance()
 
         // ChatListActivity.kt에서 intent.putextra로 보낸 값 (대화방의 user name, uid)
         val yourUid = intent.getStringExtra("yourUid").toString()
@@ -69,7 +65,9 @@ class ChatRoomActivity : AppCompatActivity() {
         setTitle(yourName+"님과의 채팅")
 
         // 나의 uid 값
-        val myUid = auth.uid.toString()
+        val myUid = FirebaseAuth.getInstance()?.currentUser!!.uid
+
+        Log.e(TAG, "myUid : "+myUid+", yourUid : "+yourUid+", yourName : "+yourName)
 
         chat_edittext.requestFocus()
         val keyboard : InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -204,7 +202,7 @@ class ChatRoomActivity : AppCompatActivity() {
 
         val yourUid = intent.getStringExtra("yourUid").toString()
         val yourName = intent.getStringExtra("yourName").toString()
-        val myUid = auth.uid.toString()
+        val myUid = FirebaseAuth.getInstance()?.currentUser!!.uid
 
         if(requestCode == FILE) {
             var attachUri = data?.data!!

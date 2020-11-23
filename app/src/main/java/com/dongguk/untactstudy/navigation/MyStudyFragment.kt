@@ -42,8 +42,22 @@ class MyStudyFragment : Fragment() {
         var button = view?.findViewById<Button>(R.id.member_list)
         button?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val intent = Intent(context, StudyMemberListActivity::class.java)
-                startActivity(intent)
+
+                var myStudyRoomNumber: String
+                FirebaseFirestore.getInstance()
+                        .collection("loginUserData")
+                        .document(FirebaseAuth.getInstance().uid.toString())
+                        .get()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                var userdata = task.result?.toObject(LoginUserData::class.java)
+                                myStudyRoomNumber = userdata?.studyRoomNumber.toString()
+
+                                val intent = Intent(context, StudyMemberListActivity::class.java)
+                                intent.putExtra("myStudyRoomNumber", myStudyRoomNumber)
+                                startActivity(intent)
+                            }
+                        }
             }
 
         }) //memberlist로 이동
