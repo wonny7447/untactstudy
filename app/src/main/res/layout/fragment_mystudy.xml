@@ -15,4 +15,32 @@
         android:layout_marginTop="57dp"
         android:layout_marginEnd="53dp"
         android:text="스터디 멤버 보기" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="57dp"
+        android:text="study on" />
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="257dp"
+        android:text="study off" />
+    <Button
+        android:id="@+id/add_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
+        android:layout_marginLeft="257dp"
+        android:text="add" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/postlistRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="290dp"/>
 </RelativeLayout>
