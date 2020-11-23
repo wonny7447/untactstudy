@@ -96,6 +96,26 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                             docRef.update("totalRating", 0) //평가 점수 리셋
                             docRef.update("totalRater", 0) //평가 횟수 리셋
 
+                            docRef
+                                .collection("evalAlreadyPersonData")
+                                .get()
+                                .addOnSuccessListener { result ->
+                                    for (document in result) {
+                                        docRef.collection("evalAlreadyPersonData").document(document.id)
+                                            .delete()
+                                    }
+                                }
+
+                            docRef
+                                .collection("todoList")
+                                .get()
+                                .addOnSuccessListener { result ->
+                                    for (document in result) {
+                                        docRef.collection("todoList").document(document.id)
+                                            .delete()
+                                    }
+                                }
+
                             //강퇴 다이얼로그
                             var builder = AlertDialog.Builder(this)
                             builder.setTitle("강제 퇴장 알림")

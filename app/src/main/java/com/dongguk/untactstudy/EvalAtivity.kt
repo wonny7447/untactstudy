@@ -3,11 +3,13 @@ package com.dongguk.untactstudy
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.bumptech.glide.Glide
 import com.dongguk.untactstudy.Model.LoginUserData
 import com.dongguk.untactstudy.Model.SuggestionData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_eval.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 class EvalAtivity : AppCompatActivity() {
 
@@ -24,6 +26,7 @@ class EvalAtivity : AppCompatActivity() {
         userName.text = yourName+"님에 대한 평가를 입력하세요"
 
         var loginUserData = LoginUserData()
+        var userData = LoginUserData()
         var suggestionData = SuggestionData()
 
         button.setOnClickListener() {
@@ -44,6 +47,18 @@ class EvalAtivity : AppCompatActivity() {
                         docRef.update("totalRating", loginUserData.totalRating)
 
                         suggestionData.suggestion = editTextTextPersonName.text.toString()
+                        suggestionData.evalUid = uid
+
+                        mydocRef
+                            .get()
+                            .addOnCompleteListener { task ->
+                                if(task.isSuccessful) {
+                                    userData = task.result?.toObject(LoginUserData::class.java)!!
+
+                                    suggestionData.evalUserName = userData.userName
+
+                                }
+                            }
                         suggestionData.evalTargetUid = yourUid
                         suggestionData.evalTargetName = yourName
                         suggestionData.rating = (ratingBar1.rating + ratingBar2.rating + ratingBar3.rating) * 2 // 점수 환산 (30점 만점)
