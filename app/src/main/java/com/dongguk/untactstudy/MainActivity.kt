@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                                 override fun onClick(p0: DialogInterface?, p1: Int) {
                                     when (p1) {
                                         DialogInterface.BUTTON_POSITIVE ->
-                                            tv1.text = ""
+                                            tv1.text = " "
                                     }
                                 }
                             }
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                                 override fun onClick(p0: DialogInterface?, p1: Int) {
                                     when (p1) {
                                         DialogInterface.BUTTON_POSITIVE ->
-                                            tv1.text = ""
+                                            tv1.text = " "
                                     }
                                 }
                             }
