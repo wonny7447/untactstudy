@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".addpost">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-32dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <Button
+            android:id="@+id/addpost_insert"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="160dp"
+            android:layout_marginTop="400dp"
+            android:gravity="center"
+            android:text="수정"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="573dp" />
+
+        <EditText
+            android:id="@+id/post_title"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="115dp"
+            android:layout_marginTop="150dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="title"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="313dp" />
+
+
+        <EditText
+            android:id="@+id/post_body"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="115dp"
+            android:layout_marginTop="300dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="New body"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="313dp" />
+        <ImageButton
+            android:id="@+id/postattach_button"
+            android:layout_width="48dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="382dp"
+            android:layout_marginLeft="100dp"
+            app:layout_constraintEnd_toStartOf="@+id/chat_edittext"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView_chat"
+            app:srcCompat="@android:drawable/ic_menu_upload" />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

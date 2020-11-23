@@ -128,6 +128,7 @@ class ChatRoomActivity : AppCompatActivity() {
         recyclerView_chat.adapter = adapter
         readRef.addChildEventListener(childEventListener)
 
+
         // 첨부파일을 보낸 챗을 클릭하면 첨부파일이 다운로드 됨
         adapter.setOnItemClickListener { item, view ->
             val fileName = (item as ChatAttachLeftAndRight).fileName

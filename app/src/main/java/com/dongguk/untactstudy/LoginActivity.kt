@@ -1,4 +1,3 @@
-
 package com.dongguk.untactstudy
 
 import android.content.Intent
@@ -58,9 +57,9 @@ class LoginActivity : AppCompatActivity() {
 
         // 구글 로그인을 위해 구성되어야 하는 코드 (Id, Email request)
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
     } // onCreate
 
@@ -85,67 +84,67 @@ class LoginActivity : AppCompatActivity() {
     fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
         var credential = GoogleAuthProvider.getCredential(account?.idToken, null)
         auth?.signInWithCredential(credential)
-                ?.addOnCompleteListener { task ->
-                    if(task.isSuccessful) {
-                        // 로그인 성공 시
-                        val isNew = task.result!!.additionalUserInfo!!.isNewUser
+            ?.addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    // 로그인 성공 시
+                    val isNew = task.result!!.additionalUserInfo!!.isNewUser
 
-                        // 화면 이동
-                        if(isNew){  //최초 로그인 유저인 경우
+                    // 화면 이동
+                    if(isNew){  //최초 로그인 유저인 경우
 
-                            // FireStore 데이터베이스에 로그인 사용자 정보 저장 (테이블 이름 : loginUserData)
-                            val uid = auth?.uid.toString()
-                            val userName = auth?.currentUser?.displayName.toString()
-                            val email = auth?.currentUser?.email.toString()
-                            val photoUrl = auth?.currentUser?.photoUrl.toString()
-                            val time = System.currentTimeMillis()
-                            val loginUserData = LoginUserData(uid, userName, email, photoUrl, time, "", "", false, 0f, 0, false)
+                        // FireStore 데이터베이스에 로그인 사용자 정보 저장 (테이블 이름 : loginUserData)
+                        val uid = auth?.uid.toString()
+                        val userName = auth?.currentUser?.displayName.toString()
+                        val email = auth?.currentUser?.email.toString()
+                        val photoUrl = auth?.currentUser?.photoUrl.toString()
+                        val time = System.currentTimeMillis()
+                        val loginUserData = LoginUserData(uid, userName, email, photoUrl, time, "", "", false, 0f, 0, false)
 
-                            val db = FirebaseFirestore.getInstance().collection("loginUserData")
-                            db.document(uid)
-                                .set(loginUserData)
-                                .addOnCompleteListener {
-                                    Log.e(TAG, "DB에 로그인 정보 생성 성공")
-                                }
-                                .addOnFailureListener {
-                                    Log.e(TAG, "DB에 로그인 정보 생성 실패")
-                                }
+                        val db = FirebaseFirestore.getInstance().collection("loginUserData")
+                        db.document(uid)
+                            .set(loginUserData)
+                            .addOnCompleteListener {
+                                Log.e(TAG, "DB에 로그인 정보 생성 성공")
+                            }
+                            .addOnFailureListener {
+                                Log.e(TAG, "DB에 로그인 정보 생성 실패")
+                            }
 
-                            startActivity(Intent(this, StudyCategoryActivity::class.java))  //관심 스터디 분야창으로 이동
-                            finish()    //로그인 화면 종료
-                        }
-                        else{   //기존 로그인 유저인 경우
-
-                            val time = System.currentTimeMillis()
-                            val db = FirebaseFirestore.getInstance().collection("loginUserData")
-                            db.document(auth?.uid.toString())
-                                .update("time", time)
-                                .addOnCompleteListener {
-                                    Log.e(TAG, "DB에 로그인 시간 갱신 성공")
-                                }
-                                .addOnFailureListener {
-                                    Log.e(TAG, "DB에 로그인 시간 갱신 실패")
-                                }
-
-                            var loginUserData = LoginUserData()
-                            val docRef = db.document(FirebaseAuth.getInstance().currentUser!!.uid)
-
-                            docRef.get()
-                                .addOnCompleteListener { task ->
-                                    if (task.isSuccessful) {
-                                        loginUserData = task.result?.toObject(LoginUserData::class.java)!!
-
-                                        docRef.update("onStudy", false) //스터디 여부를 파이어스토어에 전송
-                                        startActivity(Intent(this, MainActivity::class.java)) //메인 액티비티로 이동
-
-                                    }
-                                } //addonCompleteListener
-
-                        }
-                    } else {
-                        // 로그인 실패 시
-                        Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
+                        startActivity(Intent(this, StudyCategoryActivity::class.java))  //관심 스터디 분야창으로 이동
+                        finish()    //로그인 화면 종료
                     }
+                    else{   //기존 로그인 유저인 경우
+
+                        val time = System.currentTimeMillis()
+                        val db = FirebaseFirestore.getInstance().collection("loginUserData")
+                        db.document(auth?.uid.toString())
+                            .update("time", time)
+                            .addOnCompleteListener {
+                                Log.e(TAG, "DB에 로그인 시간 갱신 성공")
+                            }
+                            .addOnFailureListener {
+                                Log.e(TAG, "DB에 로그인 시간 갱신 실패")
+                            }
+
+                        var loginUserData = LoginUserData()
+                        val docRef = db.document(FirebaseAuth.getInstance().currentUser!!.uid)
+
+                        docRef.get()
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    loginUserData = task.result?.toObject(LoginUserData::class.java)!!
+
+                                    docRef.update("onStudy", false) //스터디 여부를 파이어스토어에 전송
+                                    startActivity(Intent(this, MainActivity::class.java)) //메인 액티비티로 이동
+
+                                }
+                            } //addonCompleteListener
+
+                    }
+                } else {
+                    // 로그인 실패 시
+                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
                 }
+            }
     } //firebaseAuthWithGoogle
 }
