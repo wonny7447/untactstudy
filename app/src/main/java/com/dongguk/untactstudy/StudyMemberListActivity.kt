@@ -90,6 +90,13 @@ class StudyMemberListActivity : AppCompatActivity() {
             member_name.text = memberList[position].userName
             member_uid.text = memberList[position].uid
 
+            // onStudy 값에 따라서 리스트에서 접속 상태 보여줌
+            if(memberList[position].onStudy == true) {
+                holder.itemView.studyStatus.setImageResource(android.R.drawable.presence_online)
+            } else {
+                holder.itemView.studyStatus.setImageResource(android.R.drawable.presence_invisible)
+            }
+
             chat_button.setOnClickListener {
                 Log.e(TAG, "채팅 버튼 클릭 - member_name : "+member_name.text)
                 val intent = Intent(this@StudyMemberListActivity, ChatRoomActivity::class.java)
