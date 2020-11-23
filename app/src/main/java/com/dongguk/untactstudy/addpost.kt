@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.Toast
 import com.dongguk.untactstudy.Adapter.ChatAttachLeftAndRight
 import com.dongguk.untactstudy.Model.addpostModel
+import com.dongguk.untactstudy.navigation.FindStudyFragment
 import com.dongguk.untactstudy.navigation.MyStudyFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -58,7 +59,7 @@ class addpost : AppCompatActivity() {
             val title = post_title.text.toString()
             val body = post_body.text.toString()
             val time = System.currentTimeMillis()
-
+            val postphotouri =  postphotouri.toString()
             val addpostModel = addpostModel(title, body, postphotouri.toString() ,time, userName, userUid, myStudyRoomNumber)
 
             FirebaseFirestore.getInstance()
@@ -68,12 +69,14 @@ class addpost : AppCompatActivity() {
                 .add(addpostModel)
                 .addOnCompleteListener {
                     Log.e(TAG, "게시글 저장 완료")
-                    //startActivity(Intent(this@addpost, MyStudyFragment::class.java))
+
                 }
-                .addOnFailureListener {
-                    Log.e(TAG, "게시글 저장 실패")
-                }
+                        .addOnFailureListener {
+                            Log.e(TAG, "게시글 저장 실패")
+
+                        }
         }
+
     }
 
         fun openContent() {

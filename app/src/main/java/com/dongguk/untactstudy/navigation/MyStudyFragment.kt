@@ -140,6 +140,7 @@ class MyStudyFragment : Fragment() {
             holder.itemView.post_list_title.text = postList[position].title
             holder.itemView.post_list_body.text = postList[position].body
             holder.itemView.post_list_userName.text = postList[position].userName
+            holder.itemView.post_list_uri.text = postList[position].postphotourl
             val postTime = SimpleDateFormat("yyyy-MM-dd_HHmmss").format(postList[position].time)
             holder.itemView.post_list_time.text = postTime
 
