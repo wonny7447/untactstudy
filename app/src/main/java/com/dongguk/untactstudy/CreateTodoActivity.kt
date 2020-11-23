@@ -8,6 +8,7 @@ import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.dongguk.untactstudy.Model.TodoData
 import com.dongguk.untactstudy.navigation.MyStudyFragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_todo.*
 import java.text.SimpleDateFormat
@@ -106,7 +107,21 @@ class CreateTodoActivity : AppCompatActivity() {
                     .document(i.toString())
                     .set(TodoData(tempList))
                     .addOnSuccessListener {
-                        Log.e(TAG, "todo list 데이터 insert 성공")
+                        Log.e(TAG, "week : "+i+", studyInfo에 todo list 데이터 insert 성공")
+
+                        for(i in 0 .. ((tempList.size) - 1)) {
+                            var orientText : String = tempList[i]
+                            tempList[i] = "F"+orientText
+                        }
+
+                        FirebaseFirestore.getInstance().collection("loginUserData")
+                            .document(FirebaseAuth.getInstance()?.currentUser!!.uid)
+                            .collection("todoList")
+                            .document(i.toString())
+                            .set(TodoData(tempList))
+                            .addOnSuccessListener {
+                                Log.e(TAG, "week : "+i+", loginUserData에 todo list 데이터 insert 성공")
+                            }
                     }
 
                 // 반복을 위한 변수 값 추가
@@ -114,8 +129,7 @@ class CreateTodoActivity : AppCompatActivity() {
                 d = d + week_todo
             }
 
-            var intent = Intent(this, MyStudyFragment::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, MainActivity::class.java))
         }//button
     }//onCreate
 }//Activity
