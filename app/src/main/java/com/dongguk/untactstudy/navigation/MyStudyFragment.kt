@@ -38,54 +38,73 @@ class MyStudyFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.fragment_mystudy, container, false)
 
+        var loginUserData = LoginUserData()
+        val db = FirebaseFirestore.getInstance()
+                .collection("loginUserData")
+                .document(FirebaseAuth.getInstance()?.currentUser!!.uid)
 
-        var button = view?.findViewById<Button>(R.id.member_list)
-        button?.setOnClickListener(object : View.OnClickListener {
+
+        var member_list = view?.findViewById<Button>(R.id.member_list)
+        member_list?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-
                 var myStudyRoomNumber: String
-                FirebaseFirestore.getInstance()
-                        .collection("loginUserData")
-                        .document(FirebaseAuth.getInstance().uid.toString())
-                        .get()
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                var userdata = task.result?.toObject(LoginUserData::class.java)
-                                myStudyRoomNumber = userdata?.studyRoomNumber.toString()
+                db.get()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            var userdata = task.result?.toObject(LoginUserData::class.java)
+                            myStudyRoomNumber = userdata?.studyRoomNumber.toString()
 
-                                val intent = Intent(context, StudyMemberListActivity::class.java)
-                                intent.putExtra("myStudyRoomNumber", myStudyRoomNumber)
-                                startActivity(intent)
-                            }
+                            val intent = Intent(context, StudyMemberListActivity::class.java)
+                            intent.putExtra("myStudyRoomNumber", myStudyRoomNumber)
+                            startActivity(intent)
                         }
+                    }
             }
 
         }) //memberlist로 이동
 
         var add_button = view?.findViewById<Button>(R.id.add_post)
-
         add_button?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
                 var myStudyRoomNumber: String
-                FirebaseFirestore.getInstance()
-                        .collection("loginUserData")
-                        .document(FirebaseAuth.getInstance().uid.toString())
-                        .get()
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                var userdata = task.result?.toObject(LoginUserData::class.java)
-                                myStudyRoomNumber = userdata?.studyRoomNumber.toString()
+                db.get()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            var userdata = task.result?.toObject(LoginUserData::class.java)
+                            myStudyRoomNumber = userdata?.studyRoomNumber.toString()
 
-                                val intent = Intent(context, addpost::class.java)
-                                intent.putExtra("myStudyRoomNumber", myStudyRoomNumber)
-                                intent.putExtra("userName", userdata?.userName.toString())
-                                intent.putExtra("userUid", userdata?.uid.toString())
-                                startActivity(intent)
-                            }
+                            val intent = Intent(context, addpost::class.java)
+                            intent.putExtra("myStudyRoomNumber", myStudyRoomNumber)
+                            intent.putExtra("userName", userdata?.userName.toString())
+                            intent.putExtra("userUid", userdata?.uid.toString())
+                            startActivity(intent)
                         }
+                    }
             }
         }) // add 버튼 누르면 로그인데이터 가져가면서 intent
+
+        var studyOnButton = view?.findViewById<Button>(R.id.mystudy_studyon)
+        studyOnButton?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                db.update("onStudy", true)
+                        .addOnSuccessListener {
+                            Log.e(TAG, "Study On으로 상태 변경 성공")
+                        }
+            }
+
+        }) //studyOnButton 클릭 이벤트 이동
+
+        var studyOffButton = view?.findViewById<Button>(R.id.mystudy_studyoff)
+        studyOffButton?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                db.update("onStudy", false)
+                        .addOnSuccessListener {
+                            Log.e(TAG, "Study Off으로 상태 변경 성공")
+                        }
+            }
+
+        }) //studyOffButton 클릭 이벤트 이동
 
         view.postlistRecyclerView.adapter = postRecyclerViewAdapter()
         view.postlistRecyclerView.layoutManager = LinearLayoutManager(activity)

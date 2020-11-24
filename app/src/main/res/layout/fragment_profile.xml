@@ -80,39 +80,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/mystudy_studyonoff"
-            android:layout_marginTop="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="인터넷 연결 확인 중"
-            android:textSize="10pt" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp">
-
-            <Button
-                android:id="@+id/mystudy_studyon"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="Study ON" />
-
-            <Button
-                android:id="@+id/mystudy_studyoff"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Study Off" />
-
-        </LinearLayout>
-
         <Button
             android:id="@+id/createStudy"
             android:layout_width="312dp"
@@ -126,6 +93,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="로그아웃" />
+
+        <Button
+            android:id="@+id/createQuiz"
+            android:layout_width="312dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="퀴즈 만들기" />
 
 
     </LinearLayout>

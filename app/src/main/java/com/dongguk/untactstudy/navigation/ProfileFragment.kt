@@ -65,48 +65,11 @@ class ProfileFragment : Fragment(){
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("loginUserData").document(uid)
 
-        docRef.get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    loginUserData = task.result?.toObject(LoginUserData::class.java)!!
-
-                    if(loginUserData.onStudy)
-                    {
-                        mystudy_studyonoff.text = "Study ON"
-                    }
-                    else
-                    {
-                        mystudy_studyonoff.text = "Study OFF"
-                    }
-
-                }
-            } //addonCompleteListener
-
         var button = view?.findViewById<Button>(R.id.mystudy_profile_edit)
         button?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val intent = Intent(context, profile_setting::class.java)
                 startActivity(intent)
-            }
-        })
-
-        var button2 = view?.findViewById<Button>(R.id.mystudy_studyon)
-        button2?.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                mystudy_studyonoff.text = "Study ON"
-
-                docRef.update("onStudy", true) //스터디 여부를 파이어스토어에 전송
-
-            }
-        })
-
-        var button3 = view?.findViewById<Button>(R.id.mystudy_studyoff)
-        button3?.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                mystudy_studyonoff.text = "Study OFF"
-
-                docRef.update("onStudy", false) //스터디 여부를 파이어스토어에 전송
-
             }
         })
 
@@ -209,10 +172,4 @@ class ProfileFragment : Fragment(){
         builder.setPositiveButton("확인", listener)
         builder.show()
     } //noticeAndSwitch
-
-    fun changeFragmentTextView(text : String)
-    {
-        mystudy_studyonoff.text = text
-    }
-
 }

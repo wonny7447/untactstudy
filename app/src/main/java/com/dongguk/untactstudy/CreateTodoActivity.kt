@@ -111,7 +111,7 @@ class CreateTodoActivity : AppCompatActivity() {
 
                         for(i in 0 .. ((tempList.size) - 1)) {
                             var orientText : String = tempList[i]
-                            tempList[i] = "F"+orientText
+                            tempList[i] = "FF"+orientText
                         }
 
                         FirebaseFirestore.getInstance().collection("loginUserData")

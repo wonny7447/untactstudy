@@ -254,7 +254,7 @@ class FindStudyFragment : Fragment(){
 
                                             for(i in 0 .. ((TodoData.size) - 1)) {
                                                 var orientText : String = TodoData[i]
-                                                TodoData.set(i, "F"+orientText)
+                                                TodoData.set(i, "FF"+orientText)
                                             }
 
                                             FirebaseFirestore.getInstance()

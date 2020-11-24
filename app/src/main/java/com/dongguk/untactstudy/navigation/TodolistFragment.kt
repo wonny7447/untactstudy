@@ -116,7 +116,7 @@ class TodolistFragment : Fragment(){
             thisWeekText.text = currentWeek.toString()+"주차 TO-DO"
 
             // todo_list_row의 todoText에 값 보여주기
-            var subText = todoList[position].toString().substring(0,1)
+            var subText = todoList[position].toString().substring(0,2)
             var realText = todoList[position].toString().substringAfterLast(subText)
 
             // 원래 텍스트 데이터에는 T/F 값이 포함되어 있기 때문에 흰색으로 설정했다가 블랙으로 변경
@@ -132,19 +132,19 @@ class TodolistFragment : Fragment(){
             }
 
             // T/F 값에 따라 체크이미지, 체크 없는 이미지 보여줌
-            if(subText == "T") {
+            if(subText == "TT") {
                 checkImage.setImageResource(android.R.drawable.checkbox_on_background)
-            } else if (subText == "F"){
+            } else if (subText == "FF"){
                 checkImage.setImageResource(android.R.drawable.checkbox_off_background)
             }
 
             // todo_list_row에 대한 클릭 이벤트
             holder.itemView.setOnClickListener{
-                if(subText == "T") {
-                    todoList[position] = "F" + realText
+                if(subText == "TT") {
+                    todoList[position] = "FF" + realText
                     checkImage.setImageResource(android.R.drawable.checkbox_off_background)
                 } else {
-                    todoList[position] = "T" + realText
+                    todoList[position] = "TT" + realText
                     checkImage.setImageResource(android.R.drawable.checkbox_on_background)
                 }
                 chekBoxValueUpdate()
