@@ -69,6 +69,7 @@ class addpost : AppCompatActivity() {
                 .add(addpostModel)
                 .addOnCompleteListener {
                     Log.e(TAG, "게시글 저장 완료")
+                    startActivity(Intent(this, MainActivity::class.java))
 
                 }
                         .addOnFailureListener {
