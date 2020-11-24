@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UntactStudy">
-        <activity android:name=".CreateTodoActivity"></activity>
+        <activity android:name=".QuizActivity"></activity>
+        <activity android:name=".CreateTodoActivity" />
         <activity android:name=".EvalAtivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>

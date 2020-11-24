@@ -9,20 +9,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.CompoundButton
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.dongguk.untactstudy.R
-import com.dongguk.untactstudy.LoginActivity
-import com.dongguk.untactstudy.MainActivity
+import com.dongguk.untactstudy.*
 import com.dongguk.untactstudy.Model.LoginUserData
 import com.dongguk.untactstudy.Model.TodoData
-import com.dongguk.untactstudy.StudyModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -90,6 +84,44 @@ class TodolistFragment : Fragment(){
                 view.todoRecyclerView.adapter = TodoRecyclerViewAdapter(currentWeek)
             }
         }
+
+        // 퀴즈 버튼 클릭 시 이벤트
+        var quizButton = view?.findViewById<Button>(R.id.quizButton)
+        quizButton?.setOnClickListener {
+
+            FirebaseFirestore.getInstance().collection("studyInfo")
+                .document(studyRoomNumber)
+                .get()
+                .addOnCompleteListener {
+                    task ->
+                    if(task.isSuccessful) {
+                        var studyModel = task.result?.toObject(StudyModel::class.java)
+                        if(studyModel?.quizYN == true) {
+                            var intent = Intent(context, QuizActivity::class.java)
+                            intent.putExtra("studyRoomNumber", studyRoomNumber)
+                            intent.putExtra("week", currentWeek.toString())
+                            startActivity(intent)
+                        } else {
+                            var builder = AlertDialog.Builder(context)
+                            builder.setTitle("")
+                            builder.setMessage("등록된 퀴즈가 없습니다.")
+
+                            var listener = object : DialogInterface.OnClickListener {
+                                override fun onClick(dialog: DialogInterface?, which: Int) {
+                                    when (which) {
+                                        DialogInterface.BUTTON_POSITIVE -> {
+                                            quizDialog.text = ""
+                                        }
+                                    }
+                                }
+                            }
+                            builder.setPositiveButton("확인", listener)
+                            builder.show()
+                        }
+                    }
+                }
+        } // quiz button
+
 
         return view
     } // onCreateView

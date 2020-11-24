@@ -261,7 +261,8 @@ class CreateStudyActivity : AppCompatActivity() {
                         uid.toString(),
                         SimpleDateFormat("yyyy-MM-dd").format(Date()),
                         studyStartDate,
-                        year+"-"+month+"-"+day
+                        year+"-"+month+"-"+day,
+                        false
                     )
 
                     FirebaseFirestore.getInstance().collection("studyInfo")

@@ -40,33 +40,35 @@ class ProfileFragment : Fragment(){
 
         var userdata : LoginUserData ? = null
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
+        val db = FirebaseFirestore.getInstance()
+                .collection("loginUserData")
+                .document(uid)
 
-        FirebaseFirestore.getInstance().collection("loginUserData")
-                .document(FirebaseAuth.getInstance().uid.toString())
-                .get()
-                .addOnCompleteListener { task ->
-                    if(task.isSuccessful) {
-                        userdata = task.result?.toObject(LoginUserData::class.java)
 
-                        user_email?.text = userdata?.userEmail.toString()
-                        user_name?.text = userdata?.userName.toString()
-                        Glide.with(this).load(userdata?.userPhotoUrl).into(profile_image)
-                        if(userdata?.introduction.toString() == "") {
-                            user_infom?.text = "프로필을 등록하세요"
-                        } else {
-                            user_infom?.text = userdata?.introduction.toString()
-                        }
+        // 프로필 세팅
+        db.get()
+        .addOnCompleteListener { task ->
+            if(task.isSuccessful) {
+                userdata = task.result?.toObject(LoginUserData::class.java)
 
-                    }
+                user_email.text = userdata?.userEmail.toString()
+                user_name.text = userdata?.userName.toString()
+                myStudyRoomNumber.text = userdata?.studyRoomNumber.toString()
+                myLeader.text = userdata?.leader.toString()
+
+                Glide.with(this).load(userdata?.userPhotoUrl).into(profile_image)
+                if(userdata?.introduction.toString() == "") {
+                    user_infom?.text = "프로필을 등록하세요"
+                } else {
+                    user_infom?.text = userdata?.introduction.toString()
                 }
 
+            }
+        }
 
-        var loginUserData = LoginUserData()
-        val db = FirebaseFirestore.getInstance()
-        val docRef = db.collection("loginUserData").document(uid)
-
-        var button = view?.findViewById<Button>(R.id.mystudy_profile_edit)
-        button?.setOnClickListener(object : View.OnClickListener {
+        // 프로필 편집 버튼 클릭 시
+        var mystudy_profile_edit = view?.findViewById<Button>(R.id.mystudy_profile_edit)
+        mystudy_profile_edit?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val intent = Intent(context, profile_setting::class.java)
                 startActivity(intent)
@@ -87,70 +89,74 @@ class ProfileFragment : Fragment(){
             }
         })
 
-        var button4 = view?.findViewById<Button>(R.id.createStudy)
-        button4?.setOnClickListener(object : View.OnClickListener {
+        // 스터디 생성하기 버튼 클릭 시
+        var createStudy = view?.findViewById<Button>(R.id.createStudy)
+        createStudy?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
-                var studyRoomNumber : String
-                var leader : Boolean
+                var studyRoomNumber = myStudyRoomNumber.text.toString()
+                var leader : Boolean = false
+                if(myLeader.text.toString() == "true") {
+                    leader = true
+                }
+                else {
+                    leader = false
+                }
 
-                FirebaseFirestore.getInstance()
-                    .collection("loginUserData")
-                    .document(uid)
-                    .get()
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val userData = task.result?.toObject(LoginUserData::class.java)
-                            studyRoomNumber = userData?.studyRoomNumber.toString()
-                            leader = userData?.leader!!
+                Log.e(TAG, "studyRoomNumber : "+studyRoomNumber+", leader : "+leader.toString())
 
-                            // 조건1) 가입된 스터디 없으므로 스터디 생성 가능
-                            if(studyRoomNumber == "0") {
-                                val intent = Intent(context, CreateStudyActivity::class.java)
-                                startActivity(intent)
-                            }
-                            // 조건2) 가입한 스터디가 있는 경우
-                            else if(studyRoomNumber != "0") {
-                                // 가입한 스터디 정보를 먼저 불러옴
-                                FirebaseFirestore.getInstance()
-                                    .collection("studyInfo")
-                                    .document(studyRoomNumber)
-                                    .get()
-                                    .addOnCompleteListener { task ->
-                                        if(task.isSuccessful) {
-                                            val sdf = SimpleDateFormat("yyyy-MM-dd")
-                                            val studyData = task.result?.toObject(StudyModel::class.java)
-                                            var studyStartDate : Long = sdf.parse(studyData?.studyStartDate).time
-                                            var studyEndDate = sdf.parse(studyData?.studyEndDate).time
-                                            var today = sdf.parse(SimpleDateFormat("yyyy-MM-dd").format(Date())).time
-                                            Log.e(TAG, "studyRoomNumber : "+studyRoomNumber+", studyStartDate : "+studyStartDate+", studyEndDate : "+studyEndDate+", today : "+today)
+                // 조건1) 가입된 스터디 없으므로 스터디 생성 가능
+                if(studyRoomNumber == "0") {
+                    val intent = Intent(context, CreateStudyActivity::class.java)
+                    startActivity(intent)
+                }
+                // 조건2) 가입한 스터디가 있는 경우
+                else if(studyRoomNumber != "0") {
+                    // 가입한 스터디 정보를 먼저 불러옴
+                    FirebaseFirestore.getInstance()
+                        .collection("studyInfo")
+                        .document(studyRoomNumber)
+                        .get()
+                        .addOnCompleteListener { task ->
+                            if(task.isSuccessful) {
+                                val sdf = SimpleDateFormat("yyyy-MM-dd")
+                                val studyData = task.result?.toObject(StudyModel::class.java)
+                                var studyStartDate : Long = sdf.parse(studyData?.studyStartDate).time
+                                var studyEndDate = sdf.parse(studyData?.studyEndDate).time
+                                var today = sdf.parse(SimpleDateFormat("yyyy-MM-dd").format(Date())).time
+                                Log.e(TAG, "studyRoomNumber : "+studyRoomNumber+", studyStartDate : "+studyStartDate+", studyEndDate : "+studyEndDate+", today : "+today)
 
-                                            // 조건 2-1) 종료일자가 지났으면 스터디 생성 가능
-                                            if(studyEndDate < today) {
-                                                val intent = Intent(context, CreateStudyActivity::class.java)
-                                                startActivity(intent)
-                                            } else {
-                                                noticeAndSwitch()
-                                            }
-                                        } //if(task.isSuccessful)
-                                    } //addOnCompleteListener
-                            }
-                        }
-                    }
+                                // 조건 2-1) 종료일자가 지났으면 스터디 생성 가능
+                                if(studyEndDate < today) {
+                                    val intent = Intent(context, CreateStudyActivity::class.java)
+                                    startActivity(intent)
+                                } else {
+                                    noticeAndSwitch()
+                                }
+                            } //if(task.isSuccessful)
+                        } //addOnCompleteListener
+                }
+            }
+        })
+
+        // 퀴즈 만들기 버튼 클릭 시
+        var createQuiz = view?.findViewById<Button>(R.id.createQuiz)
+        createQuiz?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
             }
         })
 
         return view
     }
 
-    fun signOut() {
+    /*fun signOut() {
         // Google Logout
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
         googleSignInClient = context?.let { GoogleSignIn.getClient(it, gso) }
-    }
+    }*/
 
     // 파라미터에 따라서 알럿을 보여주고 화면 전환 시키는 function
     // 화면전환은 fragment -> fragment만 가능
