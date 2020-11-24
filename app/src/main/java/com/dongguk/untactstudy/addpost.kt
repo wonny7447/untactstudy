@@ -12,6 +12,7 @@ import com.dongguk.untactstudy.Adapter.ChatAttachLeftAndRight
 import com.dongguk.untactstudy.Model.addpostModel
 import com.dongguk.untactstudy.navigation.FindStudyFragment
 import com.dongguk.untactstudy.navigation.MyStudyFragment
+import com.dongguk.untactstudy.navigation.TodolistFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -28,12 +29,7 @@ import java.util.jar.Manifest
 
 class addpost : AppCompatActivity() {
 
-
-    // 보내는 사람(나)의 uid 가져오기
-    private lateinit var auth : FirebaseAuth
-
     // File 전송에 쓰이는 코드
-    var GALLERY = 0
     var FILE = 1
     var postphotouri : String ?= ""
 
@@ -42,6 +38,8 @@ class addpost : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addpost)
+        setTitle("새 글 쓰기")
+        postattach_button.setImageResource(android.R.drawable.ic_menu_save)
 
         val userUid = intent.getStringExtra("userUid").toString()
         val userName = intent.getStringExtra("userName").toString()
@@ -69,35 +67,33 @@ class addpost : AppCompatActivity() {
                 .add(addpostModel)
                 .addOnCompleteListener {
                     Log.e(TAG, "게시글 저장 완료")
-                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                    supportFragmentManager.beginTransaction().replace(R.id.addPostActivity, MyStudyFragment()).addToBackStack(null).commit()
 
                 }
-                        .addOnFailureListener {
-                            Log.e(TAG, "게시글 저장 실패")
-
-                        }
+                .addOnFailureListener {
+                    Log.e(TAG, "게시글 저장 실패")
+                }
         }
-
     }
 
-        fun openContent() {
-            var intent = Intent(Intent.ACTION_PICK)
-            //intent.type = auth.uid.toString()+"/*"
-            intent.type = "*/*"
-            intent.setAction(Intent.ACTION_GET_CONTENT)
-            startActivityForResult(intent, FILE)
-        } //openContent
+    fun openContent() {
+        var intent = Intent(Intent.ACTION_PICK)
+        //intent.type = auth.uid.toString()+"/*"
+        intent.type = "*/*"
+        intent.setAction(Intent.ACTION_GET_CONTENT)
+        startActivityForResult(intent, FILE)
+    } //openContent
 
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-            super.onActivityResult(requestCode, resultCode, data)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-            if(requestCode == FILE) {
-                var attachUri = data?.data!!
-                var attachUriString = data?.data.toString()
-                uploadFile(attachUri, attachUriString)
-            }
-        } //onActivityResult
-
+        if(requestCode == FILE) {
+            var attachUri = data?.data!!
+            var attachUriString = data?.data.toString()
+            uploadFile(attachUri, attachUriString)
+        }
+    } //onActivityResult
 
     fun uploadFile(attachUri:Uri, attachUriString: String) {
 
@@ -112,6 +108,7 @@ class addpost : AppCompatActivity() {
             Log.e(TAG, "storage success")
             postphotouri = fileName
             Log.e(TAG, "postphotouri : "+postphotouri)
+            attachFileName.text = postphotouri
         }
     } //uploadFile
 }

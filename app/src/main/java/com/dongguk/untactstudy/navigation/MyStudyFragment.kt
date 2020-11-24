@@ -4,14 +4,17 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.dongguk.untactstudy.*
 import com.dongguk.untactstudy.Model.LoginUserData
 import com.dongguk.untactstudy.Model.addpostModel
@@ -19,6 +22,7 @@ import com.dongguk.untactstudy.chat.ChatRoomActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_addpost.*
@@ -26,6 +30,7 @@ import kotlinx.android.synthetic.main.activity_addpost.view.*
 import kotlinx.android.synthetic.main.fragment_chatting.view.*
 import kotlinx.android.synthetic.main.fragment_mystudy.*
 import kotlinx.android.synthetic.main.fragment_mystudy.view.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.post_list_row.view.*
 import java.text.SimpleDateFormat
 
@@ -37,6 +42,8 @@ class MyStudyFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.fragment_mystudy, container, false)
+
+        ViewCompat.setAccessibilityPaneTitle(view, "스터디 룸")
 
         var loginUserData = LoginUserData()
         val db = FirebaseFirestore.getInstance()
@@ -116,6 +123,7 @@ class MyStudyFragment : Fragment() {
     inner class postRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         val postList = ArrayList<addpostModel>()
+        var userImage : String = ""
 
         init {
             val uid = FirebaseAuth.getInstance().currentUser!!.uid
@@ -129,12 +137,14 @@ class MyStudyFragment : Fragment() {
                         if(task.isSuccessful) {
                             val userData = task.result?.toObject(LoginUserData::class.java)
                             myStudyRoomNumber = userData?.studyRoomNumber.toString()
+                            userImage = userData?.userPhotoUrl.toString()
                             Log.e(TAG, " db myStudyRoomNumber : " + myStudyRoomNumber)
 
                             FirebaseFirestore.getInstance()
                                 .collection("postData")
                                 .document(myStudyRoomNumber)
                                 .collection("studyPostData")
+                                .orderBy("time", Query.Direction.DESCENDING)
                                 .addSnapshotListener{ querySnapshot, firebaseFirestoreException ->
                                     postList.clear()
                                     if(querySnapshot == null) return@addSnapshotListener
@@ -156,11 +166,16 @@ class MyStudyFragment : Fragment() {
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
+            Glide.with(this@MyStudyFragment).load(userImage).into(holder.itemView.post_list_user_image)
+            holder.itemView.post_list_title.setSingleLine()
             holder.itemView.post_list_title.text = postList[position].title
+            holder.itemView.post_list_body.setSingleLine()
             holder.itemView.post_list_body.text = postList[position].body
-            holder.itemView.post_list_userName.text = postList[position].userName
-            holder.itemView.post_list_uri.text = postList[position].postphotourl
-            val postTime = SimpleDateFormat("yyyy-MM-dd_HHmmss").format(postList[position].time)
+            if(postList[position].postphotourl.toString() != "") {
+                holder.itemView.post_list_uri.setImageResource(android.R.drawable.ic_menu_save)
+            }
+
+            val postTime = SimpleDateFormat("yyyy-MM-dd").format(postList[position].time)
             holder.itemView.post_list_time.text = postTime
 
             holder.itemView.setOnClickListener {
@@ -172,6 +187,7 @@ class MyStudyFragment : Fragment() {
                 intent.putExtra("userName", postList[position].userName)
                 intent.putExtra("userUid", postList[position].userUid)
                 intent.putExtra("studyRoomNumber", postList[position].studyRoomNumber)
+                intent.putExtra("userImage", userImage)
                 startActivity(intent)
             }
             Log.e(TAG, "position : " + position)

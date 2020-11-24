@@ -1,66 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".addpost">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="-32dp"
-        tools:layout_editor_absoluteY="0dp">
+    android:orientation="vertical"
+    tools:context=".addpost"
+    android:id="@+id/addPostActivity">
 
-        <Button
-            android:id="@+id/addpost_insert"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="160dp"
-            android:layout_marginTop="400dp"
-            android:gravity="center"
-            android:text="수정"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="573dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/post_title"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="115dp"
-            android:layout_marginTop="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:ems="10"
-            android:gravity="center"
-            android:hint="title"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="313dp" />
+            android:hint="제목을 입력하세요." />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/postattach_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_menu_save" />
+
+        <TextView
+            android:id="@+id/attachFileName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="fill"
+            android:hint="     (첨부파일을 등록하세요.)"
+            android:autoSizeTextType="none"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/post_body"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="115dp"
-            android:layout_marginTop="300dp"
+            android:layout_width="match_parent"
+            android:layout_height="198dp"
             android:ems="10"
-            android:gravity="center"
-            android:hint="New body"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="313dp" />
-        <ImageButton
-            android:id="@+id/postattach_button"
-            android:layout_width="48dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="382dp"
-            android:layout_marginLeft="100dp"
-            app:layout_constraintEnd_toStartOf="@+id/chat_edittext"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView_chat"
-            app:srcCompat="@android:drawable/ic_menu_upload" />
-    </RelativeLayout>
+            android:gravity="left"
+            android:hint="내용을 입력하세요." />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/addpost_insert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:text="게시글 작성" />
+
+</LinearLayout>

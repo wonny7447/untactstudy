@@ -80,7 +80,8 @@ class QuizActivity : AppCompatActivity() {
                         override fun onClick(dialog: DialogInterface?, which: Int) {
                             when (which) {
                                 DialogInterface.BUTTON_POSITIVE -> {
-
+                                    finish()
+                                    supportFragmentManager.beginTransaction().replace(R.id.quizActivity, TodolistFragment()).addToBackStack(null).commit()
                                 }
                             }
                         }

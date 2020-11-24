@@ -1,43 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".postdetail">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="-32dp"
-        tools:layout_editor_absoluteY="0dp">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/postdetail_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textColor="#ffff0000"
-        android:layout_marginTop="150dp"
-        tools:layout_editor_absoluteX="173dp"
-        tools:layout_editor_absoluteY="153dp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="100dp">
+
+            <ImageView
+                android:id="@+id/post_detail_user_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                tools:srcCompat="@tools:sample/avatars" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/postdetail_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:text="게시글 제목입니다."
+            android:textColor="@color/black"
+            android:textSize="8pt" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/postdetail_name"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="게시자 : ㅇㅇㅇ"
+            tools:ignore="RtlCompat" />
+
+        <TextView
+            android:id="@+id/postdetail_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:text="게시일자 : yyyy-mm-dd"
+            tools:ignore="RtlCompat" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/attach_download"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@android:drawable/ic_menu_save" />
+
+        <TextView
+            android:id="@+id/attachFileName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="fill"
+            android:layout_marginLeft="15dp"
+            android:hint="     (첨부파일 없음)"
+            android:autoSizeTextType="none"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/postdetail_body"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_marginTop="250dp"
-        android:textColor="#ffff0000"
-        tools:layout_editor_absoluteX="176dp"
-        tools:layout_editor_absoluteY="258dp" />
+        android:layout_width="350dp"
+        android:layout_height="390dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="게시글 내용입니다."
+        android:textSize="8pt" />
 
-    <Button
-        android:id="@+id/attach_download"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="download file"
-        android:layout_marginTop="350dp"
-        tools:layout_editor_absoluteX="135dp"
-        tools:layout_editor_absoluteY="398dp" />
-    </RelativeLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

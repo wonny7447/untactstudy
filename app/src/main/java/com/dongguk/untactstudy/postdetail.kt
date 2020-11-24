@@ -7,6 +7,7 @@ import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.dongguk.untactstudy.Model.addpostModel
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_postdetail.*
@@ -31,11 +32,16 @@ class postdetail : AppCompatActivity() {
         val postphotourl = intent.getStringExtra("postphotourl").toString()
         val time = intent.getStringExtra("time").toString()
         val userName = intent.getStringExtra("userName").toString()
+        val userImage = intent.getStringExtra("userImage").toString()
         val userUid = intent.getStringExtra("userUid").toString()
         val studyRoomNumber = intent.getStringExtra("studyRoomNumber").toString()
 
-        postdetail_title?.text = title
-        postdetail_body?.text = body
+        postdetail_title.text = title
+        postdetail_body.text = body
+        attachFileName.text = postphotourl
+        postdetail_time.text = "게시일자 : "+time.toString()
+        postdetail_name.text = "게시자 : "+userName
+        Glide.with(this).load(userImage).into(post_detail_user_image)
 
         attach_download.setOnClickListener{
             val extender = postphotourl.substringAfterLast(".")

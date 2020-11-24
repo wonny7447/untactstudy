@@ -80,7 +80,7 @@
                     android:textSize="8pt"
                     android:textColor="@color/black"
                     android:gravity="fill"
-                    android:text="스터디 이름" />
+                    android:text="스터디 인원" />
 
                 <EditText
                     android:id="@+id/createStudyMemberAmount"

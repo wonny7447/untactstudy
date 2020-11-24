@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/quizRow"
         android:layout_width="match_parent"
-        android:layout_height="73dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
@@ -31,25 +31,25 @@
         <RadioButton
             android:id="@+id/ex1_Radio"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:autoSizeTextType="none" />
 
         <RadioButton
             android:id="@+id/ex2_Radio"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:autoSizeTextType="none" />
 
         <RadioButton
             android:id="@+id/ex3_Radio"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:autoSizeTextType="none" />
 
         <RadioButton
             android:id="@+id/ex4_Radio"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:autoSizeTextType="none" />
 
     </RadioGroup>

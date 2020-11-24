@@ -119,13 +119,14 @@
             android:layout_gravity="center"
             android:text="로그아웃" />
 
+        <!--
         <Button
             android:id="@+id/createQuiz"
             android:layout_width="312dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="퀴즈 만들기" />
-
+        -->
 
     </LinearLayout>
 </RelativeLayout>

@@ -140,11 +140,11 @@ class ProfileFragment : Fragment(){
         })
 
         // 퀴즈 만들기 버튼 클릭 시
-        var createQuiz = view?.findViewById<Button>(R.id.createQuiz)
+        /*var createQuiz = view?.findViewById<Button>(R.id.createQuiz)
         createQuiz?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
             }
-        })
+        })*/
 
         return view
     }
