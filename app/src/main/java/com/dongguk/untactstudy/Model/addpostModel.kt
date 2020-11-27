@@ -7,9 +7,10 @@ class addpostModel (
         val time : Long,
         val userName : String,
         val userUid : String,
-        val studyRoomNumber : String
+        val studyRoomNumber : String,
+        val userImage : String
 ){
 
-        constructor() : this("","","",0, "", "", "")
+        constructor() : this("","","",0, "", "", "", "")
 }
 

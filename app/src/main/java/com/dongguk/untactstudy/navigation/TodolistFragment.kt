@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dongguk.untactstudy.*
 import com.dongguk.untactstudy.Model.LoginUserData
+import com.dongguk.untactstudy.Model.StudyTodoData
 import com.dongguk.untactstudy.Model.TodoData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -129,6 +130,8 @@ class TodolistFragment : Fragment(){
     inner class TodoRecyclerViewAdapter(temp : Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         var todoList = ArrayList<String>()
+        var countList = ArrayList<Int>()
+        var baseTodoList = ArrayList<String>()
         var myUid : String = FirebaseAuth.getInstance()?.currentUser!!.uid.toString()
 
         init {
@@ -155,7 +158,7 @@ class TodolistFragment : Fragment(){
             todoText.setTextColor(Color.BLACK)
 
             // T/F 값을 제거한 진짜 to-do 데이터
-            todoText.text = realText
+            todoText.text = realText+"   : "+countList[position].toString()
 
             // T/F를 제외한 텍스트 값이 없는 경우 row를 안보이게 처리함
             // 실제 데이터가 null일 수는 없고, 개수 맞추기 위한 임시 데이터에 대한 처리임
@@ -174,9 +177,11 @@ class TodolistFragment : Fragment(){
             holder.itemView.setOnClickListener{
                 if(subText == "TT") {
                     todoList[position] = "FF" + realText
+                    countList[position] -= 1
                     checkImage.setImageResource(android.R.drawable.checkbox_off_background)
                 } else {
                     todoList[position] = "TT" + realText
+                    countList[position] += 1
                     checkImage.setImageResource(android.R.drawable.checkbox_on_background)
                 }
                 chekBoxValueUpdate()
@@ -193,6 +198,16 @@ class TodolistFragment : Fragment(){
                 .set(TodoData(todoList))
                 .addOnSuccessListener {
                     Log.e(TAG, "checkbox 값 변경 완료")
+                }
+
+            // studyInfo 원부 테이블의 count 값을 바꿈 : 다른 멤버들은 몇명이나 진행했는지 체크를 위함
+            FirebaseFirestore.getInstance().collection("studyInfo")
+                .document(studyRoomNumber)
+                .collection("todoList")
+                .document(currentWeek.toString())
+                .set(StudyTodoData(countList, baseTodoList as MutableList<String>))
+                .addOnSuccessListener {
+                    Log.e(TAG, "studyInfo Count 값 변경 완료")
                 }
         }
 
@@ -263,6 +278,20 @@ class TodolistFragment : Fragment(){
                                             }
                                             Log.e(TAG, "diff : "+diff+", thisWeek : "+thisWeek+", currentWeek : "+currentWeek+", week : "+week)
 
+                                            FirebaseFirestore.getInstance().collection("studyInfo")
+                                                    .document(studyRoomNumber)
+                                                    .collection("todoList")
+                                                    .document(week.toString())
+                                                    .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+
+                                                        countList.clear()
+                                                        baseTodoList.clear()
+                                                        if(querySnapshot == null)
+                                                            return@addSnapshotListener
+                                                        countList = querySnapshot.toObject(StudyTodoData::class.java)!!.countList as ArrayList<Int>
+                                                        baseTodoList = querySnapshot.toObject(StudyTodoData::class.java)!!.list as ArrayList<String>
+                                                    }
+
                                             FirebaseFirestore.getInstance()
                                                 .collection("loginUserData")
                                                 .document(myUid)
@@ -281,8 +310,8 @@ class TodolistFragment : Fragment(){
                                                     // 리스트에 값이 들어있기 때문에, 사이즈만큼 반복하여 각 항목에 있는 값을 가져옴
                                                     for (i in 1..tempList.size) {
                                                         todoList.add(tempList[i - 1])
-                                                        notifyDataSetChanged()
                                                     }
+                                                    notifyDataSetChanged()
                                                     currentWeek = week
                                                 } //addSnapshotListener
                                         } //if-else

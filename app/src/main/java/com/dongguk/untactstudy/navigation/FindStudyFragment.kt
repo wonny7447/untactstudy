@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dongguk.untactstudy.LoginActivity
 import com.dongguk.untactstudy.Model.LoginUserData
+import com.dongguk.untactstudy.Model.StudyTodoData
 import com.dongguk.untactstudy.Model.TodoData
-import com.dongguk.untactstudy.Model.studyRoomData
 import com.dongguk.untactstudy.R
+import com.dongguk.untactstudy.StudyModel
 import com.dongguk.untactstudy.profile_setting
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_findstudy.view.*
 import kotlinx.android.synthetic.main.message_list_row.view.*
 import kotlinx.android.synthetic.main.study_room_item.view.*
@@ -30,7 +32,7 @@ class FindStudyFragment : Fragment(){
     var firestore: FirebaseFirestore? = null
     private val TAG = LoginActivity::class.java.simpleName
 
-    val studyRoomList = ArrayList<studyRoomData>()
+    val studyRoomList = ArrayList<StudyModel>()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -54,7 +56,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -72,7 +74,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -90,7 +92,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -108,7 +110,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -126,7 +128,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -144,7 +146,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -162,7 +164,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -180,7 +182,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -209,7 +211,7 @@ class FindStudyFragment : Fragment(){
                         studyRoomList.clear()
                         if(querySnapshot == null) return@addSnapshotListener
                         for (snapshot in querySnapshot?.documents!!) {
-                            studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
+                            studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
                         }
                         notifyDataSetChanged()
                     }
@@ -226,15 +228,13 @@ class FindStudyFragment : Fragment(){
 
             var studyRoom : String
 
-            studyName.text = studyRoomList[position].getStudyName()
-            studyInformation.text = studyRoomList[position].getStudyInfo()
+            studyName.text = studyRoomList[position].studyName
+            studyInformation.text = studyRoomList[position].studyInfo
 
-            var studyRoomNum = studyRoomList[position].getStudyRoomNumber().toString()
-
-            studyRoom = studyRoomList[position].getStudyRoomNumber().toString()
+            studyRoom = studyRoomList[position].studyRoomNumber.toString()
 
             holder.itemView.apply_button.setOnClickListener{
-                Log.e(TAG, "studyRoomNum : "+studyRoomNum)
+                Log.e(TAG, "studyRoomNum : "+studyRoom)
 
                 FirebaseFirestore.getInstance()
                         .collection("loginUserData")
@@ -246,30 +246,39 @@ class FindStudyFragment : Fragment(){
                             FirebaseFirestore.getInstance()
                                     .collection("studyInfo")
                                     .document(studyRoom)
-                                    .collection("todoList")
-                                    .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                                        if(querySnapshot == null) return@addSnapshotListener
-                                        for (snapshot in querySnapshot?.documents!!) {
-                                            var TodoData = snapshot.toObject(TodoData::class.java)!!.list
+                                    .update("realMemberAmount", studyRoomList[position].realMemberAmount+1)
+                                    .addOnSuccessListener {
+                                        Log.e(TAG, "studyInfo에 인원수 증가 완료")
 
-                                            for(i in 0 .. ((TodoData.size) - 1)) {
-                                                var orientText : String = TodoData[i]
-                                                TodoData.set(i, "FF"+orientText)
-                                            }
+                                        FirebaseFirestore.getInstance()
+                                                .collection("studyInfo")
+                                                .document(studyRoom)
+                                                .collection("todoList")
+                                                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                                                    if(querySnapshot == null) return@addSnapshotListener
+                                                    for (snapshot in querySnapshot?.documents!!) {
+                                                        var userTodoList = snapshot.toObject(StudyTodoData::class.java)!!.list
+                                                        Log.e(TAG, "userTodoList.size : "+userTodoList.size)
 
-                                            FirebaseFirestore.getInstance()
-                                                    .collection("loginUserData")
-                                                    .document(FirebaseAuth.getInstance()?.currentUser!!.uid)
-                                                    .collection("todoList")
-                                                    .document(snapshot.id)
-                                                    .set(TodoData(TodoData))
-                                                    .addOnSuccessListener {
-                                                        Log.e(TAG, "loginUserData에 todoList 생성 완료")
+                                                        for(i in 0 .. ((userTodoList.size) - 1)) {
+                                                            var orientText : String = userTodoList[i]
+                                                            userTodoList.set(i, "FF"+orientText)
+                                                        }
+
+                                                        FirebaseFirestore.getInstance()
+                                                                .collection("loginUserData")
+                                                                .document(FirebaseAuth.getInstance()?.currentUser!!.uid)
+                                                                .collection("todoList")
+                                                                .document(snapshot.id)
+                                                                .set(TodoData(userTodoList))
+                                                                .addOnSuccessListener {
+                                                                    Log.e(TAG, "loginUserData에 todoList 생성 완료")
+                                                                }
+                                                                .addOnFailureListener {
+                                                                    Log.e(TAG, "loginUserData에 todoList 생성 실패")
+                                                                }
                                                     }
-                                                    .addOnFailureListener {
-                                                        Log.e(TAG, "loginUserData에 todoList 생성 실패")
-                                                    }
-                                            }
+                                                }
                                     }
                         }
                         .addOnFailureListener {

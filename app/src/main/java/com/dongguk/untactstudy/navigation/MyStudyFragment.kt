@@ -85,6 +85,7 @@ class MyStudyFragment : Fragment() {
                             intent.putExtra("myStudyRoomNumber", myStudyRoomNumber)
                             intent.putExtra("userName", userdata?.userName.toString())
                             intent.putExtra("userUid", userdata?.uid.toString())
+                            intent.putExtra("userImage", userdata?.userPhotoUrl.toString())
                             startActivity(intent)
                         }
                     }
@@ -123,7 +124,6 @@ class MyStudyFragment : Fragment() {
     inner class postRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         val postList = ArrayList<addpostModel>()
-        var userImage : String = ""
 
         init {
             val uid = FirebaseAuth.getInstance().currentUser!!.uid
@@ -137,7 +137,6 @@ class MyStudyFragment : Fragment() {
                         if(task.isSuccessful) {
                             val userData = task.result?.toObject(LoginUserData::class.java)
                             myStudyRoomNumber = userData?.studyRoomNumber.toString()
-                            userImage = userData?.userPhotoUrl.toString()
                             Log.e(TAG, " db myStudyRoomNumber : " + myStudyRoomNumber)
 
                             FirebaseFirestore.getInstance()
@@ -159,14 +158,17 @@ class MyStudyFragment : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.post_list_row, parent, false)
-
-
             return postViewHolder(view)
         } //onCreateViewHolder
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-            Glide.with(this@MyStudyFragment).load(userImage).into(holder.itemView.post_list_user_image)
+            if(postList[position].userImage == "" || postList[position].userImage == null) {
+                Glide.with(this@MyStudyFragment).load(R.drawable.profileimage).into(holder.itemView.post_list_user_image)
+            } else {
+                Glide.with(this@MyStudyFragment).load(postList[position].userImage).into(holder.itemView.post_list_user_image)
+            }
+
             holder.itemView.post_list_title.setSingleLine()
             holder.itemView.post_list_title.text = postList[position].title
             holder.itemView.post_list_body.setSingleLine()
@@ -187,7 +189,7 @@ class MyStudyFragment : Fragment() {
                 intent.putExtra("userName", postList[position].userName)
                 intent.putExtra("userUid", postList[position].userUid)
                 intent.putExtra("studyRoomNumber", postList[position].studyRoomNumber)
-                intent.putExtra("userImage", userImage)
+                intent.putExtra("userImage", postList[position].userImage)
                 startActivity(intent)
             }
             Log.e(TAG, "position : " + position)

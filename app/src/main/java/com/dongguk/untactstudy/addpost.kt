@@ -44,6 +44,7 @@ class addpost : AppCompatActivity() {
         val userUid = intent.getStringExtra("userUid").toString()
         val userName = intent.getStringExtra("userName").toString()
         val myStudyRoomNumber = intent.getStringExtra("myStudyRoomNumber").toString()
+        val userImage = intent.getStringExtra("userImage").toString()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
@@ -58,7 +59,7 @@ class addpost : AppCompatActivity() {
             val body = post_body.text.toString()
             val time = System.currentTimeMillis()
             val postphotouri =  postphotouri.toString()
-            val addpostModel = addpostModel(title, body, postphotouri.toString() ,time, userName, userUid, myStudyRoomNumber)
+            val addpostModel = addpostModel(title, body, postphotouri.toString() ,time, userName, userUid, myStudyRoomNumber, userImage)
 
             FirebaseFirestore.getInstance()
                 .collection("postData")

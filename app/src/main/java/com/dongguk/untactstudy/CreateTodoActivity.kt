@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.dongguk.untactstudy.Model.StudyTodoData
 import com.dongguk.untactstudy.Model.TodoData
 import com.dongguk.untactstudy.navigation.MyStudyFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -100,12 +101,13 @@ class CreateTodoActivity : AppCompatActivity() {
             for(i in 1 .. week) {
                 var tempList = todoList.subList(c.toInt(), d.toInt())
                 Log.e(TAG, "c : "+c+", d : "+d+", tempList"+i+" : "+tempList)
+                var countList = List<Int>(tempList.size) {0}
 
                 FirebaseFirestore.getInstance().collection("studyInfo")
                     .document(studyNumber.toString())
                     .collection("todoList")
                     .document(i.toString())
-                    .set(TodoData(tempList))
+                    .set(StudyTodoData(countList as MutableList<Int>, tempList))
                     .addOnSuccessListener {
                         Log.e(TAG, "week : "+i+", studyInfo에 todo list 데이터 insert 성공")
 

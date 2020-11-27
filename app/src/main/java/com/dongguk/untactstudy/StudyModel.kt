@@ -11,7 +11,8 @@ class StudyModel(
     val studyCreateDate : String,
     val studyStartDate : String,
     val studyEndDate : String,
-    val quizYN : Boolean
+    val quizYN : Boolean,
+    val realMemberAmount : Int
 ) {
-    constructor() : this(0, "","","","","","","","","", false)
+    constructor() : this(0, "","","","","","","","","", false, 0)
 }
