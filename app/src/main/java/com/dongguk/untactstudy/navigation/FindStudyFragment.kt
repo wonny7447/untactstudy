@@ -1,29 +1,26 @@
 package com.dongguk.untactstudy.navigation
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dongguk.untactstudy.LoginActivity
 import com.dongguk.untactstudy.Model.LoginUserData
-import com.dongguk.untactstudy.Model.StudyTodoData
+import com.dongguk.untactstudy.Model.StudyModel
 import com.dongguk.untactstudy.Model.TodoData
+import com.dongguk.untactstudy.Model.studyRoomData
 import com.dongguk.untactstudy.R
-import com.dongguk.untactstudy.StudyModel
-import com.dongguk.untactstudy.profile_setting
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_findstudy.view.*
 import kotlinx.android.synthetic.main.message_list_row.view.*
 import kotlinx.android.synthetic.main.study_room_item.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -32,7 +29,7 @@ class FindStudyFragment : Fragment(){
     var firestore: FirebaseFirestore? = null
     private val TAG = LoginActivity::class.java.simpleName
 
-    val studyRoomList = ArrayList<StudyModel>()
+    val studyRoomList = ArrayList<studyRoomData>()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -56,7 +53,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -74,7 +71,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -92,7 +89,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -110,7 +107,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -128,7 +125,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -146,7 +143,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -164,7 +161,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -182,7 +179,7 @@ class FindStudyFragment : Fragment(){
                             studyRoomList.clear()
                             if(querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
-                                studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
+                                studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
                             (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
                         }
@@ -211,7 +208,7 @@ class FindStudyFragment : Fragment(){
                         studyRoomList.clear()
                         if(querySnapshot == null) return@addSnapshotListener
                         for (snapshot in querySnapshot?.documents!!) {
-                            studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
+                            studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                         }
                         notifyDataSetChanged()
                     }
@@ -222,67 +219,171 @@ class FindStudyFragment : Fragment(){
             return CustomViewHolder(view);
         }
 
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int){
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val studyName = holder.itemView.textView1
             val studyInformation = holder.itemView.textView2
 
-            var studyRoom : String
+            var studyRoom: String
 
-            studyName.text = studyRoomList[position].studyName
-            studyInformation.text = studyRoomList[position].studyInfo
+            studyName.text = studyRoomList[position].getStudyName()
+            studyInformation.text = studyRoomList[position].getStudyInfo()
 
-            studyRoom = studyRoomList[position].studyRoomNumber.toString()
+            var studyRoomNum = studyRoomList[position].getStudyRoomNumber().toString()
 
-            holder.itemView.apply_button.setOnClickListener{
-                Log.e(TAG, "studyRoomNum : "+studyRoom)
+            studyRoom = studyRoomList[position].getStudyRoomNumber().toString()
+
+            holder.itemView.apply_button.setOnClickListener {
+                Log.e(TAG, "studyRoomNum : " + studyRoomNum)
 
                 FirebaseFirestore.getInstance()
                         .collection("loginUserData")
                         .document(FirebaseAuth.getInstance()?.currentUser!!.uid)
-                        .update("studyRoomNumber", studyRoom)
-                        .addOnSuccessListener {
-                            Log.e(TAG, "loginUserData에 스터디 가입 처리 완료")
+                        .get()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val userData = task.result?.toObject(LoginUserData::class.java)
 
-                            FirebaseFirestore.getInstance()
-                                    .collection("studyInfo")
-                                    .document(studyRoom)
-                                    .update("realMemberAmount", studyRoomList[position].realMemberAmount+1)
-                                    .addOnSuccessListener {
-                                        Log.e(TAG, "studyInfo에 인원수 증가 완료")
+                                var currentStudyRoom = userData?.studyRoomNumber.toString()
+                                Log.e(TAG, "currentStudyRoom : " + currentStudyRoom)
+                                if (currentStudyRoom == "0") {
+                                    Log.e(TAG, "currentStudyRoom 이 0임")
+                                    FirebaseFirestore.getInstance()
+                                            .collection("studyInfo")
+                                            .document(studyRoom)
+                                            .get()
+                                            .addOnCompleteListener { task ->
+                                                if (task.isSuccessful) {
+                                                    val sdf = SimpleDateFormat("yyyy-MM-dd")
+                                                    val applyStudyRoom = task.result?.toObject(StudyModel::class.java)
+                                                    var applyStudyRoomStartDate = sdf.parse(applyStudyRoom?.studyStartDate).time
+                                                    var today = sdf.parse(SimpleDateFormat("yyyy-MM-dd").format(Date())).time
 
-                                        FirebaseFirestore.getInstance()
-                                                .collection("studyInfo")
-                                                .document(studyRoom)
-                                                .collection("todoList")
-                                                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                                                    if(querySnapshot == null) return@addSnapshotListener
-                                                    for (snapshot in querySnapshot?.documents!!) {
-                                                        var userTodoList = snapshot.toObject(StudyTodoData::class.java)!!.list
-                                                        Log.e(TAG, "userTodoList.size : "+userTodoList.size)
-
-                                                        for(i in 0 .. ((userTodoList.size) - 1)) {
-                                                            var orientText : String = userTodoList[i]
-                                                            userTodoList.set(i, "FF"+orientText)
-                                                        }
-
+                                                    if (applyStudyRoomStartDate > today) {
+                                                        Log.e(TAG, "지원 가능1")
                                                         FirebaseFirestore.getInstance()
                                                                 .collection("loginUserData")
                                                                 .document(FirebaseAuth.getInstance()?.currentUser!!.uid)
-                                                                .collection("todoList")
-                                                                .document(snapshot.id)
-                                                                .set(TodoData(userTodoList))
+                                                                .update("studyRoomNumber", studyRoom)
                                                                 .addOnSuccessListener {
-                                                                    Log.e(TAG, "loginUserData에 todoList 생성 완료")
+                                                                    Log.e(TAG, "loginUserData에 스터디 가입 처리 완료")
+
+                                                                    FirebaseFirestore.getInstance()
+                                                                            .collection("studyInfo")
+                                                                            .document(studyRoom)
+                                                                            .collection("todoList")
+                                                                            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                                                                                if (querySnapshot == null) return@addSnapshotListener
+                                                                                for (snapshot in querySnapshot?.documents!!) {
+                                                                                    var TodoData = snapshot.toObject(TodoData::class.java)!!.list
+
+                                                                                    for (i in 0..((TodoData.size) - 1)) {
+                                                                                        var orientText: String = TodoData[i]
+                                                                                        TodoData.set(i, "FF" + orientText)
+                                                                                    }
+
+                                                                                    FirebaseFirestore.getInstance()
+                                                                                            .collection("loginUserData")
+                                                                                            .document(FirebaseAuth.getInstance()?.currentUser!!.uid)
+                                                                                            .collection("todoList")
+                                                                                            .document(snapshot.id)
+                                                                                            .set(TodoData(TodoData))
+                                                                                            .addOnSuccessListener {
+                                                                                                Log.e(TAG, "loginUserData에 todoList 생성 완료")
+                                                                                            }
+                                                                                            .addOnFailureListener {
+                                                                                                Log.e(TAG, "loginUserData에 todoList 생성 실패")
+                                                                                            }
+                                                                                }
+                                                                            }
                                                                 }
                                                                 .addOnFailureListener {
-                                                                    Log.e(TAG, "loginUserData에 todoList 생성 실패")
+                                                                    Log.e(TAG, "loginUserData에 스터디 가입 처리 실패")
                                                                 }
+                                                    } else {
+                                                        Log.e(TAG, "스터디 지원 기간이 지나서 지원이 불가능 합니다.1")
                                                     }
                                                 }
-                                    }
-                        }
-                        .addOnFailureListener {
-                            Log.e(TAG, "loginUserData에 스터디 가입 처리 실패")
+                                            }
+                                }
+                                else {
+                                    Log.e(TAG, "currentStudyRoom 이 0이 아님")
+                                    FirebaseFirestore.getInstance()
+                                            .collection("studyInfo")
+                                            .document(currentStudyRoom)
+                                            .get()
+                                            .addOnCompleteListener { task ->
+                                                if (task.isSuccessful) {
+                                                    val sdf = SimpleDateFormat("yyyy-MM-dd")
+                                                    val currentStudyRoomData = task.result?.toObject(StudyModel::class.java)
+                                                    var currentStudyRoomEndDate = sdf.parse(currentStudyRoomData?.studyEndDate).time
+                                                    var today = sdf.parse(SimpleDateFormat("yyyy-MM-dd").format(Date())).time
+                                                    Log.e(TAG, "현재 포함된 스터디 룸의 종료 일자" + currentStudyRoomEndDate+"현재 시간"+ today)
+                                                    if (currentStudyRoomEndDate < today) {
+                                                        Log.e(TAG, "현재 스터디에 포함되어 있지 않음")
+                                                        FirebaseFirestore.getInstance()
+                                                                .collection("studyInfo")
+                                                                .document(studyRoom)
+                                                                .get()
+                                                                .addOnCompleteListener { task ->
+                                                                    if (task.isSuccessful) {
+                                                                        val applyStudyRoom = task.result?.toObject(StudyModel::class.java)
+                                                                        var applyStudyRoomStartDate = sdf.parse(applyStudyRoom?.studyStartDate).time
+
+                                                                        if (applyStudyRoomStartDate > today) {
+                                                                            Log.e(TAG, "지원 가능2")
+                                                                            FirebaseFirestore.getInstance()
+                                                                                    .collection("loginUserData")
+                                                                                    .document(FirebaseAuth.getInstance()?.currentUser!!.uid)
+                                                                                    .update("studyRoomNumber", studyRoom)
+                                                                                    .addOnSuccessListener {
+                                                                                        Log.e(TAG, "loginUserData에 스터디 가입 처리 완료")
+
+                                                                                        FirebaseFirestore.getInstance()
+                                                                                                .collection("studyInfo")
+                                                                                                .document(studyRoom)
+                                                                                                .collection("todoList")
+                                                                                                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                                                                                                    if (querySnapshot == null) return@addSnapshotListener
+                                                                                                    for (snapshot in querySnapshot?.documents!!) {
+                                                                                                        var TodoData = snapshot.toObject(TodoData::class.java)!!.list
+
+                                                                                                        for (i in 0..((TodoData.size) - 1)) {
+                                                                                                            var orientText: String = TodoData[i]
+                                                                                                            TodoData.set(i, "FF" + orientText)
+                                                                                                        }
+
+                                                                                                        FirebaseFirestore.getInstance()
+                                                                                                                .collection("loginUserData")
+                                                                                                                .document(FirebaseAuth.getInstance()?.currentUser!!.uid)
+                                                                                                                .collection("todoList")
+                                                                                                                .document(snapshot.id)
+                                                                                                                .set(TodoData(TodoData))
+                                                                                                                .addOnSuccessListener {
+                                                                                                                    Log.e(TAG, "loginUserData에 todoList 생성 완료")
+                                                                                                                }
+                                                                                                                .addOnFailureListener {
+                                                                                                                    Log.e(TAG, "loginUserData에 todoList 생성 실패")
+                                                                                                                }
+                                                                                                    }
+                                                                                                }
+                                                                                    }
+                                                                                    .addOnFailureListener {
+                                                                                        Log.e(TAG, "loginUserData에 스터디 가입 처리 실패")
+                                                                                    }
+                                                                        }
+                                                                        else {
+                                                                            Log.e(TAG, "스터디 지원 기간이 지나서 지원이 불가능합니다.2")
+                                                                        }
+                                                                    }
+                                                                }
+                                                    }
+                                                    else {
+                                                        Log.e(TAG, "아직 스터디에 포함되어 있어 지원이 불가능합니다.2")
+                                                    }
+                                                }
+                                            }
+                                }
+                            }
                         }
             }
         }

@@ -1,4 +1,4 @@
-package com.dongguk.untactstudy
+package com.dongguk.untactstudy.Model
 
 class StudyModel(
     val studyRoomNumber: Long,
