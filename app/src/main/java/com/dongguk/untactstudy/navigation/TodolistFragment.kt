@@ -11,15 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dongguk.untactstudy.*
 import com.dongguk.untactstudy.Model.LoginUserData
+import com.dongguk.untactstudy.Model.StudyModel
 import com.dongguk.untactstudy.Model.StudyTodoData
 import com.dongguk.untactstudy.Model.TodoData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -218,7 +217,7 @@ class TodolistFragment : Fragment(){
         // 실제 to do 리스트에 보여주는 데이터를 불러오는 로직
         fun data(temp : Long){
             var userData : LoginUserData ? = null
-            var studyData : StudyModel ?= null
+            var studyData : StudyModel?= null
             var week = temp
 
             // 1. 로그인 정보를 기준으로 가입한 스터디 정보를 가져온다.

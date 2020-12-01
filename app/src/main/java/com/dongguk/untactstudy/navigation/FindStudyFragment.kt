@@ -1,11 +1,13 @@
 package com.dongguk.untactstudy.navigation
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +44,42 @@ class FindStudyFragment : Fragment(){
         view.my_recycler_view.adapter = StudyListRecyclerViewAdapter()
         view.my_recycler_view.layoutManager = LinearLayoutManager(activity)
 
+        val searchView = view?.findViewById<SearchView>(R.id.search_view)
+
+        //검색어 입력시 입력 버튼 표시 여부
+        searchView?.setSubmitButtonEnabled(true)
+
+        //입력된 내용에 대한 QueryListener 추가
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                FirebaseFirestore.getInstance()
+                        .collection("studyInfo")
+                        .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                            studyRoomList.clear()
+                            if (querySnapshot == null) return@addSnapshotListener
+                            for (snapshot in querySnapshot?.documents!!) {
+                                val studyNameData = snapshot.toObject(studyRoomData::class.java)!!.studyName.toLowerCase()
+                                val studyRoomNumberData = snapshot.toObject(studyRoomData::class.java)!!.studyRoomNumber.toString()
+                                if (studyNameData.contains(query?.toLowerCase().toString()) || studyRoomNumberData == query)
+                                    studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
+                            }
+                            //우선 모든 데이터를 가져온 다음에 studyName 에 query 가 포함되어 있거나
+                            //query 와 studyRoomNumber 가 일치하는 경우만 추가시킴
+                            (view.my_recycler_view.adapter as StudyListRecyclerViewAdapter).notifyDataSetChanged()
+                        }
+                searchView.clearFocus() //검색 후 키보드 가림
+
+                return true
+            }
+
+            //나중에 검색어 입력하는 도중에 추천 검색어 표시? 정도로 활용하면 될 것 같아요
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
+
+
+
         val button0 = view?.findViewById<Button>(R.id.study_tag_0)
 
         button0?.setOnClickListener(object : View.OnClickListener {
@@ -51,7 +89,7 @@ class FindStudyFragment : Fragment(){
                         //.whereEqualTo("uid", uid) => 나중에 스터디 고유 key 값으로 조회하기
                         .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                             studyRoomList.clear()
-                            if(querySnapshot == null) return@addSnapshotListener
+                            if (querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
                                 studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
@@ -65,11 +103,11 @@ class FindStudyFragment : Fragment(){
             override fun onClick(v: View?) {
                 FirebaseFirestore.getInstance()
                         .collection("studyInfo")
-                        .whereEqualTo("sort2nd","토익")
+                        .whereEqualTo("sort2nd", "토익")
                         //.whereEqualTo("uid", uid) => 나중에 스터디 고유 key 값으로 조회하기
                         .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                             studyRoomList.clear()
-                            if(querySnapshot == null) return@addSnapshotListener
+                            if (querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
                                 studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
@@ -83,11 +121,11 @@ class FindStudyFragment : Fragment(){
             override fun onClick(v: View?) {
                 FirebaseFirestore.getInstance()
                         .collection("studyInfo")
-                        .whereEqualTo("sort2nd","토플")
+                        .whereEqualTo("sort2nd", "토플")
                         //.whereEqualTo("uid", uid) => 나중에 스터디 고유 key 값으로 조회하기
                         .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                             studyRoomList.clear()
-                            if(querySnapshot == null) return@addSnapshotListener
+                            if (querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
                                 studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
@@ -101,11 +139,11 @@ class FindStudyFragment : Fragment(){
             override fun onClick(v: View?) {
                 FirebaseFirestore.getInstance()
                         .collection("studyInfo")
-                        .whereEqualTo("sort2nd","HSK")
+                        .whereEqualTo("sort2nd", "HSK")
                         //.whereEqualTo("uid", uid) => 나중에 스터디 고유 key 값으로 조회하기
                         .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                             studyRoomList.clear()
-                            if(querySnapshot == null) return@addSnapshotListener
+                            if (querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
                                 studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
@@ -119,11 +157,11 @@ class FindStudyFragment : Fragment(){
             override fun onClick(v: View?) {
                 FirebaseFirestore.getInstance()
                         .collection("studyInfo")
-                        .whereEqualTo("sort2nd","JLPT")
+                        .whereEqualTo("sort2nd", "JLPT")
                         //.whereEqualTo("uid", uid) => 나중에 스터디 고유 key 값으로 조회하기
                         .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                             studyRoomList.clear()
-                            if(querySnapshot == null) return@addSnapshotListener
+                            if (querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
                                 studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
@@ -137,11 +175,11 @@ class FindStudyFragment : Fragment(){
             override fun onClick(v: View?) {
                 FirebaseFirestore.getInstance()
                         .collection("studyInfo")
-                        .whereEqualTo("sort2nd","정보처리기사")
+                        .whereEqualTo("sort2nd", "정보처리기사")
                         //.whereEqualTo("uid", uid) => 나중에 스터디 고유 key 값으로 조회하기
                         .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                             studyRoomList.clear()
-                            if(querySnapshot == null) return@addSnapshotListener
+                            if (querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
                                 studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
@@ -155,11 +193,11 @@ class FindStudyFragment : Fragment(){
             override fun onClick(v: View?) {
                 FirebaseFirestore.getInstance()
                         .collection("studyInfo")
-                        .whereEqualTo("sort2nd","컴퓨터활용능력")
+                        .whereEqualTo("sort2nd", "컴퓨터활용능력")
                         //.whereEqualTo("uid", uid) => 나중에 스터디 고유 key 값으로 조회하기
                         .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                             studyRoomList.clear()
-                            if(querySnapshot == null) return@addSnapshotListener
+                            if (querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
                                 studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
@@ -173,11 +211,11 @@ class FindStudyFragment : Fragment(){
             override fun onClick(v: View?) {
                 FirebaseFirestore.getInstance()
                         .collection("studyInfo")
-                        .whereEqualTo("sort2nd","ADSP")
+                        .whereEqualTo("sort2nd", "ADSP")
                         //.whereEqualTo("uid", uid) => 나중에 스터디 고유 key 값으로 조회하기
                         .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                             studyRoomList.clear()
-                            if(querySnapshot == null) return@addSnapshotListener
+                            if (querySnapshot == null) return@addSnapshotListener
                             for (snapshot in querySnapshot?.documents!!) {
                                 studyRoomList.add(snapshot.toObject(studyRoomData::class.java)!!)
                             }
@@ -227,6 +265,7 @@ class FindStudyFragment : Fragment(){
 
             studyName.text = studyRoomList[position].getStudyName()
             studyInformation.text = studyRoomList[position].getStudyInfo()
+
 
             var studyRoomNum = studyRoomList[position].getStudyRoomNumber().toString()
 
@@ -317,7 +356,7 @@ class FindStudyFragment : Fragment(){
                                                     val currentStudyRoomData = task.result?.toObject(StudyModel::class.java)
                                                     var currentStudyRoomEndDate = sdf.parse(currentStudyRoomData?.studyEndDate).time
                                                     var today = sdf.parse(SimpleDateFormat("yyyy-MM-dd").format(Date())).time
-                                                    Log.e(TAG, "현재 포함된 스터디 룸의 종료 일자" + currentStudyRoomEndDate+"현재 시간"+ today)
+                                                    Log.e(TAG, "현재 포함된 스터디 룸의 종료 일자" + currentStudyRoomEndDate + "현재 시간" + today)
                                                     if (currentStudyRoomEndDate < today) {
                                                         Log.e(TAG, "현재 스터디에 포함되어 있지 않음")
                                                         FirebaseFirestore.getInstance()
@@ -385,6 +424,9 @@ class FindStudyFragment : Fragment(){
                                 }
                             }
                         }
+            }
+            holder.itemView.textView2.setOnClickListener {
+
             }
         }
 

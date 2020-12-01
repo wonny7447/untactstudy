@@ -29,5 +29,4 @@ public class studyRoomData {
     public void setStudyRoomNumber(int studyRoomNumber) {
         this.studyRoomNumber = studyRoomNumber;
     }
-
 }

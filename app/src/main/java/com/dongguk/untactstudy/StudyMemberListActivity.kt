@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dongguk.untactstudy.Model.LoginUserData
-import com.dongguk.untactstudy.Model.SuggestionData
+import com.dongguk.untactstudy.Model.StudyModel
 import com.dongguk.untactstudy.chat.ChatRoomActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

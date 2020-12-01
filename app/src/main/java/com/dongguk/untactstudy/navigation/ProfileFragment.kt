@@ -13,14 +13,10 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.dongguk.untactstudy.*
 import com.dongguk.untactstudy.Model.LoginUserData
-import com.dongguk.untactstudy.Model.TodoData
-import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.dongguk.untactstudy.Model.StudyModel
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_profile_setting.*
-import kotlinx.android.synthetic.main.fragment_chatting.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.profile_image
 import kotlinx.android.synthetic.main.fragment_profile.user_email
