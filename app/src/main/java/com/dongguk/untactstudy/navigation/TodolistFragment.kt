@@ -14,10 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dongguk.untactstudy.*
-import com.dongguk.untactstudy.Model.LoginUserData
-import com.dongguk.untactstudy.Model.StudyModel
-import com.dongguk.untactstudy.Model.StudyTodoData
-import com.dongguk.untactstudy.Model.TodoData
+import com.dongguk.untactstudy.Model.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.GroupAdapter
@@ -131,6 +128,8 @@ class TodolistFragment : Fragment(){
         var todoList = ArrayList<String>()
         var countList = ArrayList<Int>()
         var baseTodoList = ArrayList<String>()
+        var completeCount : Int = 0
+        var totalTodo : Int = 0
         var myUid : String = FirebaseAuth.getInstance()?.currentUser!!.uid.toString()
 
         init {
@@ -177,10 +176,12 @@ class TodolistFragment : Fragment(){
                 if(subText == "TT") {
                     todoList[position] = "FF" + realText
                     countList[position] -= 1
+                    completeCount -= 1
                     checkImage.setImageResource(android.R.drawable.checkbox_off_background)
                 } else {
                     todoList[position] = "TT" + realText
                     countList[position] += 1
+                    completeCount += 1
                     checkImage.setImageResource(android.R.drawable.checkbox_on_background)
                 }
                 chekBoxValueUpdate()
@@ -189,15 +190,26 @@ class TodolistFragment : Fragment(){
 
         // T/F 값 변경하는 쿼리
         fun chekBoxValueUpdate() {
-            FirebaseFirestore.getInstance()
+
+            var myTodoDatabase = FirebaseFirestore.getInstance()
                 .collection("loginUserData")
                 .document(myUid)
-                .collection("todoList")
-                .document(currentWeek.toString())
-                .set(TodoData(todoList))
-                .addOnSuccessListener {
-                    Log.e(TAG, "checkbox 값 변경 완료")
-                }
+
+            // todoList의 체크 값 변경
+            myTodoDatabase.collection("todoList")
+                    .document(currentWeek.toString())
+                    .set(TodoData(todoList))
+                    .addOnSuccessListener {
+                        Log.e(TAG, "checkbox 값 변경 완료")
+                    }
+
+            // todoCount의 완료 개수 파악
+            myTodoDatabase.collection("todoCount")
+                    .document(currentWeek.toString())
+                    .set(TodoCountData(completeCount, totalTodo))
+                    .addOnSuccessListener {
+                        Log.e(TAG, "checkbox 값 변경 완료")
+                    }
 
             // studyInfo 원부 테이블의 count 값을 바꿈 : 다른 멤버들은 몇명이나 진행했는지 체크를 위함
             FirebaseFirestore.getInstance().collection("studyInfo")
@@ -277,6 +289,7 @@ class TodolistFragment : Fragment(){
                                             }
                                             Log.e(TAG, "diff : "+diff+", thisWeek : "+thisWeek+", currentWeek : "+currentWeek+", week : "+week)
 
+                                            // 전체 인원 중 몇명이나 완료했는지 체크하기 위한 데이터 호출부
                                             FirebaseFirestore.getInstance().collection("studyInfo")
                                                     .document(studyRoomNumber)
                                                     .collection("todoList")
@@ -291,6 +304,23 @@ class TodolistFragment : Fragment(){
                                                         baseTodoList = querySnapshot.toObject(StudyTodoData::class.java)!!.list as ArrayList<String>
                                                     }
 
+                                            // to-do 리스트 데이터 가져오는 부분
+                                            FirebaseFirestore.getInstance()
+                                                .collection("loginUserData")
+                                                .document(myUid)
+                                                .collection("todoCount")
+                                                .document(week.toString())
+                                                .get()
+                                                .addOnCompleteListener {
+                                                    task ->
+                                                    if(task.isSuccessful) {
+                                                        var TodoCountData = task.result?.toObject(TodoCountData::class.java)
+                                                        completeCount = TodoCountData!!.completeCount
+                                                        totalTodo = TodoCountData!!.totalCount
+                                                    }
+                                                }
+
+                                            // to-do 리스트 데이터 가져오는 부분
                                             FirebaseFirestore.getInstance()
                                                 .collection("loginUserData")
                                                 .document(myUid)

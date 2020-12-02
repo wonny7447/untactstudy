@@ -12,10 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dongguk.untactstudy.LoginActivity
-import com.dongguk.untactstudy.Model.LoginUserData
-import com.dongguk.untactstudy.Model.StudyModel
-import com.dongguk.untactstudy.Model.TodoData
-import com.dongguk.untactstudy.Model.studyRoomData
+import com.dongguk.untactstudy.Model.*
 import com.dongguk.untactstudy.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -314,10 +311,14 @@ class FindStudyFragment : Fragment(){
                                                                                 if (querySnapshot == null) return@addSnapshotListener
                                                                                 for (snapshot in querySnapshot?.documents!!) {
                                                                                     var TodoData = snapshot.toObject(TodoData::class.java)!!.list
+                                                                                    var todoCount : Int = 0
 
                                                                                     for (i in 0..((TodoData.size) - 1)) {
                                                                                         var orientText: String = TodoData[i]
                                                                                         TodoData.set(i, "FF" + orientText)
+                                                                                        if(orientText != "") {
+                                                                                            todoCount += 1
+                                                                                        }
                                                                                     }
 
                                                                                     FirebaseFirestore.getInstance()
@@ -331,6 +332,19 @@ class FindStudyFragment : Fragment(){
                                                                                             }
                                                                                             .addOnFailureListener {
                                                                                                 Log.e(TAG, "loginUserData에 todoList 생성 실패")
+                                                                                            }
+
+                                                                                    FirebaseFirestore.getInstance()
+                                                                                            .collection("loginUserData")
+                                                                                            .document(FirebaseAuth.getInstance()?.currentUser!!.uid)
+                                                                                            .collection("todoCount")
+                                                                                            .document(snapshot.id)
+                                                                                            .set(TodoCountData(0, todoCount))
+                                                                                            .addOnSuccessListener {
+                                                                                                Log.e(TAG, "loginUserData에 todoCount 생성 완료")
+                                                                                            }
+                                                                                            .addOnFailureListener {
+                                                                                                Log.e(TAG, "loginUserData에 todoCount 생성 실패")
                                                                                             }
                                                                                 }
                                                                             }
