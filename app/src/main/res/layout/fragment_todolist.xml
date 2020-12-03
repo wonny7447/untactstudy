@@ -49,6 +49,7 @@
             android:layout_height="457dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            android:background="@drawable/round"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

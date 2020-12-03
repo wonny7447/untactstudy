@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
+import kotlinx.android.synthetic.main.activity_quiz_review_pop.*
 import kotlinx.android.synthetic.main.fragment_todolist.*
 import kotlinx.android.synthetic.main.fragment_todolist.view.*
 import kotlinx.android.synthetic.main.todo_list_row.view.*
@@ -36,6 +37,7 @@ class TodolistFragment : Fragment(){
     var thisWeek : Long = 0
     var currentWeek : Long = 0
     var studyRoomNumber : String = "0"
+    var realMemberAmount : Int = 0
 
     private val mFragmentManager = fragmentManager
 
@@ -75,10 +77,56 @@ class TodolistFragment : Fragment(){
 
             // 현재 보여주는 to do 리스트의 주차 수 값이 마지막 주차보다 작을때만 리스트 새로 보여줌
             if(currentWeek < endWeek) {
-                currentWeek = currentWeek + 1
 
-                view.todoRecyclerView.removeAllViewsInLayout()
-                view.todoRecyclerView.adapter = TodoRecyclerViewAdapter(currentWeek)
+                // 퀴즈 복습 팝업을 위한 처리 부분
+                // 1. 스터디의 퀴즈유무 확인
+                FirebaseFirestore.getInstance().collection("studyInfo")
+                    .document(studyRoomNumber)
+                    .get()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            var studyModel = task.result?.toObject(StudyModel::class.java)
+                            // 1-1. 스터디에 등록된 퀴즈가 있는 경우
+                            if (studyModel?.quizYN == true) {
+                                FirebaseFirestore.getInstance().collection("loginUserData")
+                                    .document(FirebaseAuth.getInstance()?.currentUser!!.uid.toString())
+                                    .collection("quizScore")
+                                    .document(currentWeek.toString())
+                                    .get()
+                                    .addOnCompleteListener { task ->
+                                        var ScoreModel = task.result?.toObject(ScoreModel::class.java)
+
+                                        // 2-1. 퀴즈 결과(document)가 없는 경우 (미응시 상태) => 응시하세요
+                                        if(ScoreModel == null) {
+                                            dialog("퀴즈를 풀어야 다음 주차를 진행할 수 있습니다.", false)
+                                        }
+                                        // 2-2. 퀴즈 결과가 100점인 경우 복습하지 않고 바로 다음 주차로 넘어감
+                                        else if(ScoreModel.score == 100) {
+                                            currentWeek = currentWeek + 1
+
+                                            view.todoRecyclerView.removeAllViewsInLayout()
+                                            view.todoRecyclerView.adapter = TodoRecyclerViewAdapter(currentWeek)
+                                        }
+                                        // 2-3. 복습 창 띄우기
+                                        else {
+                                            dialog("퀴즈의 정답을 확인하세요.", true)
+                                            Log.e(TAG, "====Back ")
+                                            currentWeek = currentWeek + 1
+
+                                            view.todoRecyclerView.removeAllViewsInLayout()
+                                            view.todoRecyclerView.adapter = TodoRecyclerViewAdapter(currentWeek)
+                                        }
+                                    }
+                            }
+                            // 1-2. 스터디에 등록된 퀴즈가 없으면 그냥 다음 주차 보여줌
+                            else {
+                                currentWeek = currentWeek + 1
+
+                                view.todoRecyclerView.removeAllViewsInLayout()
+                                view.todoRecyclerView.adapter = TodoRecyclerViewAdapter(currentWeek)
+                            }
+                        }
+                    }
             }
         }
 
@@ -123,6 +171,54 @@ class TodolistFragment : Fragment(){
         return view
     } // onCreateView
 
+    fun dialog(alertMessage : String, intentTF : Boolean) {
+
+        var dialView = layoutInflater.inflate(R.layout.activity_quiz_review_pop, null)
+        if(intentTF == true) {
+
+            var quizAnswerList = ArrayList<String>()
+            var quizAnswerAdapter =
+                ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, quizAnswerList)
+
+            var QAView = dialView.findViewById<ListView>(R.id.quizAnswerView)
+            QAView.adapter = quizAnswerAdapter
+            QAView.choiceMode = ListView.CHOICE_MODE_SINGLE
+
+            FirebaseFirestore.getInstance().collection("studyInfo").document(studyRoomNumber)
+                .collection("studyQuizWeek")
+                .document(currentWeek.toString())
+                .collection("studyQuiz")
+                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    quizAnswerList.clear()
+                    if (querySnapshot == null) return@addSnapshotListener
+                    for (snapshot in querySnapshot?.documents!!) {
+
+                        var quiz = snapshot.toObject(QuizModel::class.java )?.quiz.toString()
+                        var answerNum = snapshot.toObject(QuizModel::class.java )?.answer.toString()
+                        var answerString : String = ""
+                        if(answerNum == "1")    answerString = snapshot.toObject(QuizModel::class.java )?.ex1.toString()
+                        else if(answerNum == "2")    answerString = snapshot.toObject(QuizModel::class.java )?.ex2.toString()
+                        else if(answerNum == "3")    answerString = snapshot.toObject(QuizModel::class.java )?.ex3.toString()
+                        else if(answerNum == "4")    answerString = snapshot.toObject(QuizModel::class.java )?.ex4.toString()
+
+                        var quizAnswerString: String = snapshot.id + ". " + quiz + "\n\n정답 : " + answerString
+                        quizAnswerList.add(quizAnswerString)
+                        quizAnswerAdapter.notifyDataSetChanged()
+                    }
+                }
+        }
+
+        var builder = AlertDialog.Builder(context)
+        builder.setTitle("")
+        builder.setMessage(alertMessage)
+        if(intentTF == true) {
+            builder.setView(dialView)
+        }
+
+        builder.setPositiveButton("확인", null)
+        builder.show()
+    } //dialog
+
     inner class TodoRecyclerViewAdapter(temp : Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         var todoList = ArrayList<String>()
@@ -156,7 +252,7 @@ class TodolistFragment : Fragment(){
             todoText.setTextColor(Color.BLACK)
 
             // T/F 값을 제거한 진짜 to-do 데이터
-            todoText.text = realText+"   : "+countList[position].toString()
+            todoText.text = realText+"\n(완료인원  : "+countList[position].toString()+"명 / "+realMemberAmount+"명)"
 
             // T/F를 제외한 텍스트 값이 없는 경우 row를 안보이게 처리함
             // 실제 데이터가 null일 수는 없고, 개수 맞추기 위한 임시 데이터에 대한 처리임
@@ -257,6 +353,9 @@ class TodolistFragment : Fragment(){
                                     task ->
                                     if(task.isSuccessful) {
                                         studyData = task.result?.toObject(StudyModel::class.java)
+
+                                        realMemberAmount = studyData!!.realMemberAmount
+
                                         val sdf = SimpleDateFormat("yyyy-MM-dd")
                                         var today = sdf.parse(SimpleDateFormat("yyyy-MM-dd").format(Date())).time
 
