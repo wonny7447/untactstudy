@@ -19,8 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StudyRecommendActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".ScoreActivity" />
+        <activity android:name=".StudyRecommendActivity" />
         <activity android:name=".StudyCategoryActivity" />
         <activity android:name=".profile_setting" />
         <activity android:name=".CreateStudyActivity" />

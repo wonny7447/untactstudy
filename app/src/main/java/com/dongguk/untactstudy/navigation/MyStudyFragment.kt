@@ -114,6 +114,14 @@ class MyStudyFragment : Fragment() {
 
         }) //studyOffButton 클릭 이벤트 이동
 
+        var score_button = view?.findViewById<Button>(R.id.mystudy_myscore)
+        score_button?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                val intent = Intent(context, ScoreActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
         view.postlistRecyclerView.adapter = postRecyclerViewAdapter()
         view.postlistRecyclerView.layoutManager = LinearLayoutManager(activity)
 

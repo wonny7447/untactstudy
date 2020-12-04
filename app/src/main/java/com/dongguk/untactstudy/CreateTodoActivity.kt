@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.dongguk.untactstudy.MainActivity
 import com.dongguk.untactstudy.Model.StudyTodoData
 import com.dongguk.untactstudy.Model.TodoData
 import com.dongguk.untactstudy.navigation.MyStudyFragment

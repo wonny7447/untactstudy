@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/yourscoreis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="당신의 점수는"
+        android:textSize="48sp"
+        />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/yourscoreis"
+        android:layout_marginTop="50dp"
+        android:text="점수 계산 중..."
+        android:textSize="48sp"
+        />
+
+    <TextView
+        android:id="@+id/todoscore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/score"
+        android:layout_marginTop="100dp"
+        android:text="점수 계산 중..."
+        android:textSize="28sp"
+        />
+    <TextView
+        android:id="@+id/quizscore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/todoscore"
+        android:layout_marginTop="50dp"
+        android:text="점수 계산 중..."
+        android:textSize="28sp"
+        />
+    <TextView
+        android:id="@+id/ratingscore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/quizscore"
+        android:layout_marginTop="50dp"
+        android:text="점수 계산 중..."
+        android:textSize="28sp"
+        />
+</RelativeLayout>

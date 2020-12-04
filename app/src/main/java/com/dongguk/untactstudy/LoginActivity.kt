@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.dongguk.untactstudy.MainActivity
 import com.dongguk.untactstudy.Model.LoginUserData
 import com.dongguk.untactstudy.navigation.ProfileFragment
 import com.google.android.gms.auth.api.Auth
