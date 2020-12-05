@@ -118,7 +118,7 @@ class ScoreActivity  : AppCompatActivity() {
                                     Log.e(TAG, "studyStartDate : " + studyStartDate + ", today : " + today)
 
                                     if(studyStartDate > today) {
-                                        // 스터디가 시작하지 않았을 때에는 Todo점수와 퀴즈 점수를 만점 처리 (따라서, 강퇴 불가)
+                                        // 스터디가 시작하지 않았을 때에는 Todo점수와 퀴즈 점수를 만점 처리 (따라서, 강퇴 불가) 단, 점수에 보여지지는 않음
                                         totalTodoScore = 20f
                                         totalQuizScore = 50f
                                         totalScore = totalQuizScore + totalTodoScore
