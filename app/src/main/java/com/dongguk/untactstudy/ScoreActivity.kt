@@ -140,7 +140,7 @@ class ScoreActivity  : AppCompatActivity() {
                                         }
                                         Log.e(TAG, "diff : " + diff + ", thisWeek : " + thisWeek)
 
-                                        for(i in 1..thisWeek) {
+                                        for(i in 1 until thisWeek) {
                                             //퀴즈 점수를 불러온다
                                             FirebaseFirestore.getInstance()
                                                 .collection("loginUserData")

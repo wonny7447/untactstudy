@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                                             }
                                             Log.e(TAG, "diff : " + diff + ", thisWeek : " + thisWeek)
 
-                                            for(i in 1..thisWeek) {
+                                            for(i in 1 until thisWeek) {
                                                 //퀴즈 점수를 불러온다
                                                 FirebaseFirestore.getInstance()
                                                     .collection("loginUserData")
@@ -226,7 +226,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                     val totalRatingScore = loginUserData.totalRating.toInt() / loginUserData.totalRater.toInt()
                     totalScore += totalRatingScore
                     Log.e(TAG, "Total Score : " + totalScore)
-                    if (totalScore < 50 && thisWeek > 1) { //평가 총점이 30점 만점의 15점 미만
+                    if (totalScore < 50 && thisWeek > 1) { //평가 총점이 100점 만점의 50점 미만
                         if (leader == true) {  //스터디그룹 팀장일 때
                             //경고 다이얼로그
                             var builder = AlertDialog.Builder(this)
