@@ -30,6 +30,7 @@
         <activity android:name=".StudyMemberListActivity" />
         <activity android:name=".addpost" />
         <activity android:name=".postdetail" />
+        <activity android:name=".ShowDetail"/>
     </application>
 
 </manifest>
