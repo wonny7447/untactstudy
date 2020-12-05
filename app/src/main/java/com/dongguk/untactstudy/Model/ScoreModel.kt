@@ -1,8 +1,8 @@
 package com.dongguk.untactstudy.Model
 
 class ScoreModel(
-    val score: Int
+    val score: Float
 )
 {
-    constructor() : this(0)
+    constructor() : this(0f)
 }

@@ -50,8 +50,8 @@ class QuizActivity : AppCompatActivity() {
 
         // 퀴즈 완료 버튼 클릭 시 이벤트
         quizSubmit.setOnClickListener {
-            var trueCount : Int = 0
-            var falseCount : Int = 0
+            var trueCount : Float = 0f
+            var falseCount : Float = 0f
             for (i in 0..correctAnswerList.size - 1) {
                 Log.e(TAG, "correctAnswerList : " + correctAnswerList.get(i))
                 if(correctAnswerList.get(i)) {

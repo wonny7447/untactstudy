@@ -27,9 +27,9 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
-    var totalQuizScore : Long = 0
-    var totalTodoScore : Long = 0
-    var totalScore : Long = 0
+    var totalQuizScore : Float = 0f
+    var totalTodoScore : Float = 0f
+    var totalScore : Float = 0f
     var thisWeek : Long = 0
     val TAG = LoginActivity::class.java.simpleName
 
@@ -136,8 +136,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
                                         if(studyStartDate > today) {
                                             // 스터디가 시작하지 않았을 때에는 Todo점수와 퀴즈 점수를 만점 처리 (따라서, 강퇴 불가)
-                                            totalTodoScore = 20
-                                            totalQuizScore = 50
+                                            totalTodoScore = 20f
+                                            totalQuizScore = 50f
                                             totalScore = totalQuizScore + totalTodoScore
                                             ScoreCheck()
                                         } else {
@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                                                             totalQuizScore += quizScoreData?.score!!
                                                         }
                                                     }
-                                                //todo 완료율을 불러온다 (글씨 상태가?)
+                                                //to-do 완료율을 불러온다
                                                 FirebaseFirestore.getInstance()
                                                     .collection("loginUserData")
                                                     .document(myUid)
@@ -197,7 +197,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
                                                         totalQuizScore /= thisWeek
                                                         totalQuizScore /= 2
-                                                        totalTodoScore = completeTodo / totalTodo * 20
+                                                        totalTodoScore = completeTodo / totalTodo * 20f
                                                         totalScore = totalQuizScore + totalTodoScore
                                                         ScoreCheck()
                                                     }//task.isSuccessful

@@ -52,14 +52,31 @@
             android:background="@drawable/round"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-
-        <Button
-            android:id="@+id/quizButton"
+        <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginRight="15dp"
-            android:text="Quiz 풀기"/>
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/reviewButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="15dp"
+                android:text="Quiz 결과 보기"/>
+
+            <Button
+                android:id="@+id/quizButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="15dp"
+                android:text="Quiz 풀기"/>
+
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/quizDialog"

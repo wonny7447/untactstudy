@@ -44,6 +44,9 @@ class TodolistFragment : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.fragment_todolist, container, false)
 
+        var reviewButton = view?.findViewById<Button>(R.id.reviewButton)
+        reviewButton!!.visibility = View.INVISIBLE
+
         var adapter = GroupAdapter<GroupieViewHolder>()
         view.todoRecyclerView.adapter = TodoRecyclerViewAdapter(currentWeek)
         view.todoRecyclerView.layoutManager = LinearLayoutManager(activity)
@@ -75,8 +78,15 @@ class TodolistFragment : Fragment(){
                 endWeek = diffEnd / 7
             }
 
+            // 퀴즈 리뷰 버튼 노출을 위한 마지막 주 체크
+            if(currentWeek == (endWeek - 1)) {
+                reviewButton!!.visibility = View.VISIBLE
+            }
+
             // 현재 보여주는 to do 리스트의 주차 수 값이 마지막 주차보다 작을때만 리스트 새로 보여줌
             if(currentWeek < endWeek) {
+
+                Log.e(TAG, "다음 버튼 클릭 시 리스트 새로 뿌리기")
 
                 // 퀴즈 복습 팝업을 위한 처리 부분
                 // 1. 스터디의 퀴즈유무 확인
@@ -88,6 +98,8 @@ class TodolistFragment : Fragment(){
                             var studyModel = task.result?.toObject(StudyModel::class.java)
                             // 1-1. 스터디에 등록된 퀴즈가 있는 경우
                             if (studyModel?.quizYN == true) {
+
+                                Log.e(TAG, "1-1. 스터디에 등록된 퀴즈가 있는 경우")
                                 FirebaseFirestore.getInstance().collection("loginUserData")
                                     .document(FirebaseAuth.getInstance()?.currentUser!!.uid.toString())
                                     .collection("quizScore")
@@ -98,10 +110,12 @@ class TodolistFragment : Fragment(){
 
                                         // 2-1. 퀴즈 결과(document)가 없는 경우 (미응시 상태) => 응시하세요
                                         if(ScoreModel == null) {
+                                            Log.e(TAG, "2-1. 퀴즈 결과(document)가 없는 경우 (미응시 상태)")
                                             dialog("퀴즈를 풀어야 다음 주차를 진행할 수 있습니다.", false)
                                         }
                                         // 2-2. 퀴즈 결과가 100점인 경우 복습하지 않고 바로 다음 주차로 넘어감
-                                        else if(ScoreModel.score == 100) {
+                                        else if(ScoreModel.score == 100f) {
+                                            Log.e(TAG, "2-2. 퀴즈 결과가 100점인 경우 복습하지 않고 바로 다음 주차로 넘어감")
                                             currentWeek = currentWeek + 1
 
                                             view.todoRecyclerView.removeAllViewsInLayout()
@@ -109,6 +123,7 @@ class TodolistFragment : Fragment(){
                                         }
                                         // 2-3. 복습 창 띄우기
                                         else {
+                                            Log.e(TAG, "2-3. 복습 창 띄우기")
                                             dialog("퀴즈의 정답을 확인하세요.", true)
                                             Log.e(TAG, "====Back ")
                                             currentWeek = currentWeek + 1
@@ -120,6 +135,7 @@ class TodolistFragment : Fragment(){
                             }
                             // 1-2. 스터디에 등록된 퀴즈가 없으면 그냥 다음 주차 보여줌
                             else {
+                                Log.e(TAG, "1-2. 스터디에 등록된 퀴즈가 없으면 그냥 다음 주차 보여줌")
                                 currentWeek = currentWeek + 1
 
                                 view.todoRecyclerView.removeAllViewsInLayout()
@@ -127,7 +143,8 @@ class TodolistFragment : Fragment(){
                             }
                         }
                     }
-            }
+
+            }//if
         }
 
         // 퀴즈 버튼 클릭 시 이벤트
@@ -167,6 +184,13 @@ class TodolistFragment : Fragment(){
                 }
         } // quiz button
 
+        // 리뷰 버튼 클릭 시 이벤트
+        reviewButton?.setOnClickListener {
+            Log.e(TAG, "리뷰 버튼 클릭")
+
+            var intent = Intent(context, QuizReviewChartActivity::class.java)
+            startActivity(intent)
+        }// review button
 
         return view
     } // onCreateView
