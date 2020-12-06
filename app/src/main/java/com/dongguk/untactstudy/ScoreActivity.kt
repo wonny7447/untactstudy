@@ -53,19 +53,27 @@ class ScoreActivity  : AppCompatActivity() {
         }
         else
         {
-            if(isNoRate)
-            {
+            if(thisWeek < 2) {
+                todoscore.text = "점수는 2주차부터 계산됩니다"
+                quizscore.text = "점수는 2주차부터 계산됩니다"
+                if (isNoRate) {
+                    ratingscore.text = "평가 데이터가 없습니다"
+                } else {
+                    ratingscore.text = "유저 평가 " + totalRatingScore.toString() + "점 / 30점"
+                }
                 score.text = "측정 불가"
-                ratingscore.text = "평가 데이터가 없습니다"
             }
-            else
-            {
-                score.text = totalScore.toString() + "점"
-                ratingscore.text = totalRatingScore.toString() + "점 / 30점"
+            else {
+                if (isNoRate) {
+                    score.text = "측정 불가"
+                    ratingscore.text = "평가 데이터가 없습니다"
+                } else {
+                    score.text = totalScore.toString() + "점"
+                    ratingscore.text = "유저 평가 " + totalRatingScore.toString() + "점 / 30점"
+                }
+                todoscore.text = "할 일 점수 " + totalTodoScore.toString() + "점 / 20점"
+                quizscore.text = "퀴즈 점수 " + totalQuizScore.toString() + "점 / 50점"
             }
-            todoscore.text = totalTodoScore.toString() + "점 / 20점"
-            quizscore.text = totalQuizScore.toString() + "점 / 50점"
-
         }
     }
 
@@ -151,7 +159,11 @@ class ScoreActivity  : AppCompatActivity() {
                                                 .addOnCompleteListener { task ->
                                                     if (task.isSuccessful) {
                                                         quizScoreData = task.result?.toObject(ScoreModel::class.java)
-                                                        totalQuizScore += quizScoreData?.score!!
+                                                        if(quizScoreData?.score != null)
+                                                        {
+                                                            totalQuizScore += quizScoreData?.score!!
+                                                        }
+
                                                     }
                                                 }
                                             //todo 완료율을 불러온다 (글씨 상태가?)
@@ -179,8 +191,9 @@ class ScoreActivity  : AppCompatActivity() {
                                             .get()
                                             .addOnCompleteListener { task ->
                                                 if (task.isSuccessful) {
-
-                                                    totalQuizScore /= thisWeek
+                                                    if(thisWeek > 1) {
+                                                        totalQuizScore /= (thisWeek - 1)
+                                                    }
                                                     totalQuizScore /= 2
                                                     totalTodoScore = completeTodo / totalTodo * 20f
                                                     totalScore = totalQuizScore + totalTodoScore
@@ -210,7 +223,7 @@ class ScoreActivity  : AppCompatActivity() {
                     ShowScore()
                 }
                 else {//평가 받은 기록 있음
-                    val totalRatingScore = loginUserData.totalRating.toInt() / loginUserData.totalRater.toInt()
+                    totalRatingScore = loginUserData.totalRating / loginUserData.totalRater
                     totalScore += totalRatingScore
                     Log.e(TAG, "Total Score : " + totalScore)
                     ShowScore()
