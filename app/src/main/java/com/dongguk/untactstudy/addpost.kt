@@ -59,18 +59,29 @@ class addpost : AppCompatActivity() {
             val body = post_body.text.toString()
             val time = System.currentTimeMillis()
             val postphotouri =  postphotouri.toString()
-            val addpostModel = addpostModel(title, body, postphotouri.toString() ,time, userName, userUid, myStudyRoomNumber, userImage)
+            var postDocumentId = userUid+"-"+time.toString()
+            val addpostModel = addpostModel(
+                    title,
+                    body,
+                    postphotouri,
+                    time,
+                    userName,
+                    userUid,
+                    myStudyRoomNumber,
+                    userImage,
+                    postDocumentId
+            )
 
             FirebaseFirestore.getInstance()
                 .collection("postData")
                 .document(myStudyRoomNumber)
                 .collection("studyPostData")
-                .add(addpostModel)
+                .document(postDocumentId)
+                .set(addpostModel)
                 .addOnCompleteListener {
                     Log.e(TAG, "게시글 저장 완료")
                     finish()
                     supportFragmentManager.beginTransaction().replace(R.id.addPostActivity, MyStudyFragment()).addToBackStack(null).commit()
-
                 }
                 .addOnFailureListener {
                     Log.e(TAG, "게시글 저장 실패")
