@@ -167,7 +167,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                                                     .addOnCompleteListener { task ->
                                                         if (task.isSuccessful) {
                                                             quizScoreData = task.result?.toObject(ScoreModel::class.java)
-                                                            totalQuizScore += quizScoreData?.score!!
+                                                            if(quizScoreData?.score != null) {
+                                                                totalQuizScore += quizScoreData?.score!!
+                                                            }
                                                         }
                                                     }
                                                 //to-do 완료율을 불러온다
@@ -194,8 +196,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                                                 .get()
                                                 .addOnCompleteListener { task ->
                                                     if (task.isSuccessful) {
-
-                                                        totalQuizScore /= thisWeek
+                                                        if(thisWeek > 1) {
+                                                            totalQuizScore /= (thisWeek - 1)
+                                                        }
                                                         totalQuizScore /= 2
                                                         totalTodoScore = completeTodo / totalTodo * 20f
                                                         totalScore = totalQuizScore + totalTodoScore

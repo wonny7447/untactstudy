@@ -198,6 +198,7 @@ class MyStudyFragment : Fragment() {
                 intent.putExtra("userUid", postList[position].userUid)
                 intent.putExtra("studyRoomNumber", postList[position].studyRoomNumber)
                 intent.putExtra("userImage", postList[position].userImage)
+                intent.putExtra("postDocumentId", postList[position].postDocumentId)
                 startActivity(intent)
             }
             Log.e(TAG, "position : " + position)

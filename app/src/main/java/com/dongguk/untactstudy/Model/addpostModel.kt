@@ -8,9 +8,10 @@ class addpostModel (
         val userName : String,
         val userUid : String,
         val studyRoomNumber : String,
-        val userImage : String
+        val userImage : String,
+        val postDocumentId : String
 ){
 
-        constructor() : this("","","",0, "", "", "", "")
+        constructor() : this("","","",0, "", "", "", "", "")
 }
 
