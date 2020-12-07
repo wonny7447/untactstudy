@@ -37,14 +37,10 @@
             android:textSize="15sp"
             android:textColor="@android:color/darker_gray"/>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/apply_button"
-        android:layout_margin="2dp"
-        android:layout_width="90dp"
+    <ImageView
         android:layout_height="50dp"
-        android:textSize="13sp"
-        android:background="@drawable/round_shape_button"
-        android:text="@string/apply_sign"
+        android:layout_width="50dp"
+        android:src="@drawable/right_arrow"
         />
+
 </LinearLayout>
