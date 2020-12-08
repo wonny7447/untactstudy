@@ -199,8 +199,14 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                                                         if(thisWeek > 1) {
                                                             totalQuizScore /= (thisWeek - 1)
                                                         }
-                                                        totalQuizScore /= 2
-                                                        totalTodoScore = completeTodo / totalTodo * 20f
+                                                        totalQuizScore = totalQuizScore/2
+
+                                                        try{
+                                                            totalTodoScore = completeTodo / totalTodo * 20f
+                                                        }catch(ex:ArithmeticException){
+                                                            totalTodoScore = 0F
+                                                        }
+
                                                         totalScore = totalQuizScore + totalTodoScore
                                                         ScoreCheck()
                                                     }//task.isSuccessful

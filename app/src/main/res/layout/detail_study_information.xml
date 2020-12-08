@@ -16,14 +16,13 @@
             >
 
             <TextView
-                android:layout_width="320dp"
+                android:layout_width="302dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp"
                 android:paddingLeft="20dp"
+                android:text="상세정보"
                 android:textColor="#FFFFFF"
-                android:text="상세정보">
-            </TextView>
+                android:textSize="20sp"></TextView>
             <Button
                 android:id="@+id/apply_button"
                 android:layout_width="90dp"
