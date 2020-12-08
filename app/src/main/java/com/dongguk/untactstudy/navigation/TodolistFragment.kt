@@ -245,11 +245,11 @@ class TodolistFragment : Fragment(){
 
     inner class TodoRecyclerViewAdapter(temp : Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        var todoList = ArrayList<String>()
-        var countList = ArrayList<Int>()
-        var baseTodoList = ArrayList<String>()
-        var completeCount : Int = 0
-        var totalTodo : Int = 0
+        private var todoList = ArrayList<String>()
+        private var countList = ArrayList<Int>()
+        private var baseTodoList = ArrayList<String>()
+        private var completeCount : Int = 0
+        private var totalTodo : Int = 0
         var myUid : String = FirebaseAuth.getInstance()?.currentUser!!.uid.toString()
 
         init {
