@@ -18,7 +18,7 @@ class ScoreActivity  : AppCompatActivity() {
 
     val TAG = LoginActivity::class.java.simpleName
     var fbAuth = FirebaseAuth.getInstance()
-    var uid = fbAuth?.uid.toString()
+    var myUid = fbAuth?.uid.toString()
 
     var thisWeek : Long = 0
 
@@ -28,6 +28,16 @@ class ScoreActivity  : AppCompatActivity() {
     var totalScore : Float = 0f
     var isNoRate : Boolean = false
     var isNotStart : Boolean = false
+
+    var userData : LoginUserData? = null
+    var studyData : StudyModel? = null
+    var quizScoreData : ScoreModel? = null
+    var todoCountData : TodoCountData? = null
+    var studyRoomNumber = "0"
+    var studyStartDate : Long = 0
+    var studyEndDate : Long = 0
+    var totalTodo : Long = 0
+    var completeTodo : Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,18 +89,7 @@ class ScoreActivity  : AppCompatActivity() {
 
     fun CalculateScore() {
 
-        val TAG = LoginActivity::class.java.simpleName
-        var fbAuth = FirebaseAuth.getInstance()
-        var myUid = fbAuth?.uid.toString()
-        var userData : LoginUserData? = null
-        var studyData : StudyModel? = null
-        var quizScoreData : ScoreModel? = null
-        var todoCountData : TodoCountData? = null
-        var studyRoomNumber = "0"
-        var studyStartDate : Long = 0
-        var studyEndDate : Long = 0
-        var totalTodo : Long = 0
-        var completeTodo : Long = 0
+
 
         FirebaseFirestore.getInstance().collection("loginUserData")
             .document(myUid)
@@ -148,58 +147,9 @@ class ScoreActivity  : AppCompatActivity() {
                                         }
                                         Log.e(TAG, "diff : " + diff + ", thisWeek : " + thisWeek)
 
-                                        for(i in 1 until thisWeek) {
-                                            //퀴즈 점수를 불러온다
-                                            FirebaseFirestore.getInstance()
-                                                .collection("loginUserData")
-                                                .document(myUid)
-                                                .collection("quizScore")
-                                                .document(i.toString())
-                                                .get()
-                                                .addOnCompleteListener { task ->
-                                                    if (task.isSuccessful) {
-                                                        quizScoreData = task.result?.toObject(ScoreModel::class.java)
-                                                        if(quizScoreData?.score != null)
-                                                        {
-                                                            totalQuizScore += quizScoreData?.score!!
-                                                        }
+                                        QuizScoreLoad(1)
 
-                                                    }
-                                                }
-                                            //todo 완료율을 불러온다 (글씨 상태가?)
-                                            FirebaseFirestore.getInstance()
-                                                .collection("loginUserData")
-                                                .document(myUid)
-                                                .collection("todoCount")
-                                                .document(i.toString())
-                                                .get()
-                                                .addOnCompleteListener { task ->
-                                                    if (task.isSuccessful) {
-                                                        todoCountData = task.result?.toObject(
-                                                            TodoCountData::class.java)
-                                                        totalTodo += todoCountData?.totalCount!!
-                                                        completeTodo += todoCountData?.completeCount!!
-                                                    }//task.isSuccessful
-                                                }//addOnCompleteListener
-                                        }//for
 
-                                        FirebaseFirestore.getInstance()
-                                            .collection("loginUserData")
-                                            .document(myUid)
-                                            .collection("todoCount")
-                                            .document(1.toString())
-                                            .get()
-                                            .addOnCompleteListener { task ->
-                                                if (task.isSuccessful) {
-                                                    if(thisWeek > 1) {
-                                                        totalQuizScore /= (thisWeek - 1)
-                                                    }
-                                                    totalQuizScore /= 2
-                                                    totalTodoScore = completeTodo / totalTodo * 20f
-                                                    totalScore = totalQuizScore + totalTodoScore
-                                                    ScoreCheck()
-                                                }//task.isSuccessful
-                                            }//addOnCompleteListener
                                     }//if-else
                                 }//task.isSuccessful
                             }//addOnCompleteListener
@@ -211,7 +161,7 @@ class ScoreActivity  : AppCompatActivity() {
     fun ScoreCheck()
     {
         val db = FirebaseFirestore.getInstance()
-        val docRef = db.collection("loginUserData").document(uid)
+        val docRef = db.collection("loginUserData").document(myUid)
         docRef.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 var loginUserData = task.result?.toObject(LoginUserData::class.java)!!
@@ -232,5 +182,69 @@ class ScoreActivity  : AppCompatActivity() {
             }//task.isSuccessful
         }//addOnCompleteListener
     }//fun ScoreCheck
+
+    fun QuizScoreLoad(i : Int)
+    {
+        //퀴즈 점수를 불러온다
+        FirebaseFirestore.getInstance()
+            .collection("loginUserData")
+            .document(myUid)
+            .collection("quizScore")
+            .document(i.toString())
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    quizScoreData = task.result?.toObject(ScoreModel::class.java)
+                    if(quizScoreData?.score != null)
+                    {
+                        totalQuizScore += quizScoreData?.score!!
+                    }
+                    if(i < thisWeek - 1)
+                    {
+                        QuizScoreLoad((i + 1))
+                    }
+                    else
+                    {
+                        TodoScoreLoad(1)
+                    }
+
+                }
+            }
+    }//QuizScoreLoad
+
+    fun TodoScoreLoad(i : Int)
+    {
+        //todo 완료율을 불러온다 (글씨 상태가?)
+        FirebaseFirestore.getInstance()
+            .collection("loginUserData")
+            .document(myUid)
+            .collection("todoCount")
+            .document(i.toString())
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    todoCountData = task.result?.toObject(
+                        TodoCountData::class.java)
+                    totalTodo += todoCountData?.totalCount!!
+                    completeTodo += todoCountData?.completeCount!!
+
+                    if(i < thisWeek - 1)
+                    {
+                        TodoScoreLoad((i + 1))
+                    }
+                    else
+                    {
+                        if(thisWeek > 1) {
+                            totalQuizScore /= (thisWeek - 1)
+                        }
+                        totalQuizScore /= 2
+                        totalTodoScore = completeTodo * 20f / totalTodo
+                        totalScore = totalQuizScore + totalTodoScore
+                        ScoreCheck()
+                    }
+
+                }//task.isSuccessful
+            }//addOnCompleteListener
+    }
 }
 
