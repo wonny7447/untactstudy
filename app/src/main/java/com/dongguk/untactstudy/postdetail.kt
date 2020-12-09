@@ -9,12 +9,15 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dongguk.untactstudy.Adapter.PostCommentItem
+import com.dongguk.untactstudy.Model.LoginUserData
 import com.dongguk.untactstudy.Model.PostCommentModel
 import com.dongguk.untactstudy.Model.addpostModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -56,6 +59,21 @@ class postdetail : AppCompatActivity() {
         postdetail_name.text = "게시자 : "+userName
         Glide.with(this).load(userImage).into(post_detail_user_image)
 
+        //댓글에 로그인 사용자 정보 세팅을 위해서 로그인 정보를 가져옴
+        var currentUserName : String = ""
+        var currentUserUid : String = FirebaseAuth.getInstance()?.currentUser!!.uid
+        var postUserDataModel : LoginUserData ? = null
+
+        FirebaseFirestore.getInstance().collection("loginUserData")
+                .document(currentUserUid)
+                .get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        postUserDataModel = task.result?.toObject(LoginUserData::class.java)
+                        currentUserName = postUserDataModel!!.userName
+                    }
+                }
+
 
         // 첨부파일 다운로드 클릭 버튼 이벤트
         attach_download.setOnClickListener{
@@ -76,8 +94,8 @@ class postdetail : AppCompatActivity() {
 
             val postCommentModel = PostCommentModel(
                     SimpleDateFormat("yyyyMMdd_HHmmss").format(Date()),
-                    userName,
-                    userUid,
+                    currentUserName,
+                    currentUserUid,
                     commentText,
                     postDocumentId
             )
@@ -102,9 +120,6 @@ class postdetail : AppCompatActivity() {
 
                 val comment = model?.comment.toString()
                 val userName = model?.userName.toString()
-                /*val userUid = model?.userUid
-                val postDocumentId = model?.postDocumentId
-                val time = model?.time*/
 
                 adapter.add(PostCommentItem(userName, comment))
 

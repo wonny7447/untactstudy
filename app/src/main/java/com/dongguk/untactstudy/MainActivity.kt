@@ -155,6 +155,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                                             Log.e(TAG, "diff : " + diff + ", thisWeek : " + thisWeek)
 
                                             QuizScoreLoad(1)
+                                            
                                         }//if-else
                                 }//task.isSuccessful
                             }//addOnCompleteListener

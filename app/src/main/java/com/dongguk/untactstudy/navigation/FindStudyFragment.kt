@@ -63,7 +63,7 @@ class FindStudyFragment : Fragment(){
                                 val studyNameData = studyData!!.studyName.toLowerCase()
                                 val studyRoomNumberData = studyData!!.studyRoomNumber.toString()
                                 var studyStartDate : Long = sdf.parse(studyData?.studyStartDate).time
-                                if (studyNameData.contains(query?.toLowerCase().toString()) || studyRoomNumberData == query && studyStartDate > today)
+                                if ((studyNameData.contains(query?.toLowerCase().toString()) || studyRoomNumberData == query) && studyStartDate > today)
                                     studyRoomList.add(snapshot.toObject(StudyModel::class.java)!!)
                             }
                             //우선 모든 데이터를 가져온 다음에 studyName 에 query 가 포함되어 있거나
